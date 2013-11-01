@@ -1,264 +1,219 @@
 <!DOCTYPE html> 
-<html>
+<html manifest="sedWe.appcache">
 <head>
 <meta charset="utf-8">
-<title>SED WE Web App</title>
-<link rel="apple-touch-startup-image" href=""
-<meta name="viewport" content="width=device-width, initial-scale=1, maximun-scale=1, user-scalable=no"/>
+<title>SED_WE Web App</title>
+<link rel="apple-touch-startup-image" href="icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="initial-scale=1.0">
+<meta name="viewport" content="width=320.1">
 <link rel="apple-touch-icon" href="icon.png"/>
 <link href="jquery-mobile/jquery.mobile.theme-1.3.2.min.css" rel="stylesheet" type="text/css"/>
 <link href="jquery-mobile/jquery.mobile.structure-1.3.2.min.css" rel="stylesheet" type="text/css"/>
 <script src="modernizr-latest.js"></script>
-<script src="jquery-mobile/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="localStorage.js"></script>
 <script src="jquery-mobile/jquery.mobile-1.3.2.min.js" type="text/javascript"></script>
-
-
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js" type="text/javascript"></script>
+<style>
+.error{
+    border-color: #F78181;
+    color:red;
+	block;
+}
+</style>
 </head> 
-<body> <div data-role="page" id="HomePage">
-	<div data-role="header">
-		<h1>Welcome to SED_WE</h1>
-	</div>
-	<div data-role="content">	
-		<ul data-role="listview">
-			<li><a href="#newSample">Add New Sample</a></li>
-            <li><a href="#imgUpload">Manage Images</a></li>
-			<li><a href="#tutorial">Tutorials</a></li>
-		</ul>		
-	</div>
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div>
-</div>
-    
 
-<div data-role="page" id="newSample" >
-	<div data-role="header"  data-add-back-btn="true">
-		<h1>New Sample Form</h1>
-	</div>
-    
-	<div data-role="content">	
-		<ul data-role="listview">
-			<li id="suspendedTitle" onClick="setTitle('Suspended Sediment')"><a href="#page2" data-transition="pop">Suspended Sediment</a></li>
-            <li id="bottomTitle" onClick="setTitle("Bottom Material")"><a href="#page2">Bottom Material</a></li>
-			<li id="bedloadTitle" onClick="setTitle("Bedload")"><a href="#page2">Bedload</a></li>
-		</ul>		
-	</div>
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div>
-</div>
-
-<div data-role="page" id="page2" data-add-back-btn="true">
-	<div data-role="header" data-position="fixed" >
-    
-		<h1 id="pageHeader"></h1>
-	</div>
-	<div data-role="content">	
-		<form id="suspendedProperties" >
-        <label for="stationDropdown">Select Station:</label>
-        <select class="target" name="stationDropdown" id="stationDropdown" onChange="storeData(this.id,this.value)" >
-        	<option value="50028000">Tanama River</option>
-            <option value="50010500">Rio Guajataca, Lares</option>
-            <option value="60008002">Example River2</option>
-            <option value="60008003">Example River3</option>
-            <option value="60008004">Example River4</option>
-         </select>
-         
-         
-		<label for="sampleMediumDropdown">Select Sample Medium:</label>
-            <select name="sampleMediumDropdown" id="sampleMediumDropdown" onChange="storeData(this.id,this.value)">
-              <option value="WS">WS(Surface Water)</option>
-              <option value="WSQ">WSQ(Surface Water QC)</option>
-            </select>
-            
-        <label for="date">Begin Date:</label>
-        	<input name="date" id="beginDate" type="date" onChange="storeData(this.id,this.value)" />
-         
-         <label for="hydroEvent">Hydrologic Event:</label> <select name="hydroEvent" id="hydroEvent" onChange="storeData(this.id,this.value)" >
-                                <option value="4">4- stable, low stage</option>
-                                <option value="5">5- falling stage</option>
-                                <option value="6">6- stable, high stage</option>
-                                <option value="7">7- peakstage</option>
-                                <option value="8">8- rising state</option>
-                                <option value="9" selected>9- stable, normal stage</option>
-                                <option value="A">A- Not Determined</option>
-                                <option value="X">X- Not applicable</option>  
-         					  </select>
-    
-    <label for="containerCuantity">Add: </label><input type="number" min="1" value="1" id="containerCuantity" onChange="storeData(this.id,this.value)"/> 
-    <select id="singleMultiContainer" name="singleMultiContainer" onChange="storeData(this.id,this.value)">
-                                            <option value="single">Single container sample</option>
-                                            <option value="multi">Multiple sets container</option>
-                                           </select>
-   
-    <h4 >Analyses Requested:(Applies to all samples)</h4>
-     
-      <label for="analysesC">Concentration</label><input type="checkbox" name="analysis" id="analysesC" value="C" onClick="chkBox(this.id,this.value)" />
-	  <label for="analysesSF">Sand-Fine break**</label><input type="checkbox" name="analysis" id="analysesSF" value="SF" onClick="chkBox(this.id,this.value)"/>
-      <label for="analysesSA">Sand Analysis**</label><input type="checkbox" name="analysis" id="analysesSA"value="SA" onClick="chkBox(this.id,this.value)"/>
-    <label for="analysesT">Turbidity</label><input type="checkbox" name="analysis" id="analysesT" value="T" onClick="chkBox(this.id,this.value)" />
-     <label for="analysesLOI">Loss-on-ignition**</label><input type="checkbox" name="analysis" id="analysesLOI" value="LOI" onClick="chkBox(this.id,this.value)"/>
-     <label for="analysesDS">Dissolved Solids</label><input type="checkbox" name="analysis" id="analysesDS"value="DS" onClick="chkBox(this.id,this.value)"/>
-     <label for="analysesSC">Specific Conductance</label> <input type="checkbox" name="analysis" id="analysesSC" value="SC" onClick="chkBox(this.id,this.value)"/>									
-     <label for="analysesZ">Full-size fractions**</label><input type="checkbox" name="analysis" id="analysesZ"value="Z"  onClick="chkBox(this.id,this.value)"/>
-    
-	</form>		
-	</div>
-	<div data-role="footer" data-position="fixed" >
-	  <div data-inline="true" data-type="horizontal"><a href="#" data-icon="bars" data-iconpos="notext" data-inline="true"  data-role="button">Menu</a><a id="addSampleInfo"  data-icon="arrow-r" data-iconpos="right" data-inline="true" data-role="button" data-theme="e" >Next</a></div>
-		
+<body>
+<!--###################################################
+	##########      User Selection Page      ##########
+    ###################################################
+    -->
+<div data-role="page" id="userPage">
+ <div data-role="header" data-position="fixed">
+        	<h1>SED_WE</h1>            
+    </div>
+  <div data-role="content"><h3>Select your role:</h3>
+    <div data-role="listview">
+    	<li><a href="#HomePage" data-transition="slide" onClick="login(this.text)">Observer</a>
+        </li>
+        <li><a href="#HomePage" data-transition="slide" onClick="login(this.text)">Technician</a>
+        </li>
+        <li><a href="#HomePage" data-transition="slide" onClick="login(this.text)">Reviewer</a>
+        </li>
+        <li><a href="#HomePage" data-transition="slide" onClick="login(this.text)">Administrator</a>
+        </li>
+    </div>
+  </div>
+   <div data-role="footer" data-position="fixed">
+   		<h1> </h1>
     </div>
 </div>
 
-<div data-role="page" id="page3" >
-	<div data-role="header">
-		<h1>Bottom Material</h1>
+<!--###################################################
+	##########            HOME Page          ##########
+    ###################################################
+    -->
+<div data-role="page" id="HomePage" data-add-back-btn="true">
+    <div data-role="header" data-position="fixed">
+        	<h1>Welcome [Name]</h1>
+    </div>
+    <div data-role="content">
+        <div data-collapsed="false" data-content-theme="c" data-iconpos="right" data-role="collapsible" data-theme="a" data-collapsed-icon="plus" data-expanded-icon="minus" >
+        <h1>Shipments Manager</h1>
+        <div data-role="listview">
+        <li><a href="#newSample" data-transition="slide">Add sets or groups</a>
+        </li>
+        <li><a href="#" data-transition="slide">Current</a>
+        </li>
+        <li><a href="#" data-transition="slide">History</a>
+        </li>
+        </div>
+        </div>
+        <div data-role="collapsible" data-collapsed="true" data-content-theme="c"data-collapsed-icon="plus" data-theme="a" data-expanded-icon="minus" data-iconpos="right">
+        <h1>Manage Images</h1>
+        </div>
+        <div data-role="collapsible" data-collapsed="true" data-content-theme="c"data-collapsed-icon="plus" data-theme="a" data-expanded-icon="minus" data-iconpos="right">
+        <h1>Tutorials</h1>
+        </div>
+        </div>
+    </div>
+    <div data-role="footer">
+        
 	</div>
-	<div data-role="content">	
-		<form id="suspendedProperties">
-        <label for="stationDropdown">Select Station:</label>
-        <select name="stationDropdown" id="stationDropdown" onChange="storeData(this.id,this.value)" >
-        	<option value="50028000">Tanama River</option>
-            <option value="50010500">Rio Guajataca, Lares</option>
-            <option value="60008002">Example River2</option>
-            <option value="60008003">Example River3</option>
-            <option value="60008004">Example River4</option>
-         </select>
-         
-         
-		<label for="sampleMediumDropdown">Select Sample Medium:</label>
-            <select name="sampleMediumDropdown" id="sampleMediumDropdown" onChange="storeData(this.id,this.value)">
-              <option value="WS">WS(Surface Water)</option>
-              <option value="WSQ">WSQ(Surface Water QC)</option>
-            </select>
-            
-        <label for="date">Begin Date:</label>
-        	<input naem="date" id="beginDate" type="date" onChange="storeData(this.id,this.value)" />
-         
-         <label for="hydroEvent">Hydrologic Event:</label> <select name="hydroEvent" id="hydroEvent" onChange="storeData(this.id,this.value)" >
-                                <option value="4">4- stable, low stage</option>
-                                <option value="5">5- falling stage</option>
-                                <option value="6">6- stable, high stage</option>
-                                <option value="7">7- peakstage</option>
-                                <option value="8">8- rising state</option>
-                                <option value="9" selected>9- stable, normal stage</option>
-                                <option value="A">A- Not Determined</option>
-                                <option value="X">X- Not applicable</option>  
-         					  </select>
-    
-    <label for="containerCuantity">Add: </label><input type="number" min="1" value="1" id="containerCuantity"onChange="storeData(this.id,this.value)"/> 
-    <select id="singleMultiContainer"name="singleMultiContainer" onChange="storeData(this.id,this.value)">
-                                            <option value="single">Single container sample</option>
-                                            <option value="multi">Multiple sets container</option>
-                                           </select>
-   
-    <h4>Analyses Requested:(Applies to all samples)</h4>
-     
-      <label for="analysesC">Concentration</label><input type="checkbox" name="analysis" id="analysesC" value="C" onChange="isChecked(this.id,this.value)"/>
-	  <label for="analysesSF">Sand-Fine break**</label><input type="checkbox" name="analysis" id="analysesSF" value="SF"onChange="isChecked(this.id,this.value)"/>
-      <label for="analysesSA">Sand Analysis**</label><input type="checkbox" name="analysis" id="analysesSA"value="SA" onChange="isChecked(this.id,this.value)"/>
-    <label for="analysesT">Turbidity</label><input type="checkbox" name="analysis" id="analysesT" value="T" onChange="isChecked(this.id,this.value)"/>
-     <label for="analysesLOI">Loss-on-ignition**</label><input type="checkbox" name="analysis" id="analysesLOI" value="LOI" onChange="isChecked(this.id,this.value)"/>
-     <label for="analysesDS">Dissolved Solids</label><input type="checkbox" name="analysis" id="analysesDS"value="DS" onChange="isChecked(this.id,this.value)"/>
-     <label for="analysesSC">Specific Conductance</label> <input type="checkbox" name="analysis" id="analysesSC" value="SC" onChange="isChecked(this.id,this.value)"/>									
-     <label for="analysesZ">Full-size fractions**</label><input type="checkbox" name="analysis" id="analysesZ"value="Z" on onChange="isChecked(this.id,this.value)"/>
-    
+    <!--
+    ###################################################
+	##########         New Sample Page       ##########
+    ###################################################
+    -->
+<div data-role="page" id="newSample">
+    <div data-role="header" data-add-back-btn="true" data-position="fixed"> 
+        	<h1>Add new sample</h1>
 
-	</form>		
-	</div>
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div>
+    </div>
+    <div data-role="content">
+        <ul data-role="listview">
+            <li><a href="#page2" id="suspendedTitle" name="sampleType" onClick="setTitle(this.name,this.text)">Suspended Sediment</a>
+            </li>
+            <li><a href="#page2"id="bottomTitle" name="sampleType" onClick="setTitle(this.name,this.text)">Bottom Material</a>
+            </li>
+            <li><a href="#page2" id="bedloadTitle" name="sampleType" onClick="setTitle(this.name,this.text)">Bedload</a>
+            </li>
+        </ul>
+    </div>
+    <div data-role="footer" data-position="fixed">
+        	<h4> </h4>
+
+    </div>
 </div>
+<div data-role="page" id="page2" data-add-back-btn="true">
+    <div data-role="header" data-position="fixed">
+        	<h1 id="page2Header"></h1>
 
-<div data-role="page" id="page4">
-	<div data-role="header">
-		<h1>Bedload</h1>
-	</div>
-	<div data-role="content">	
-		<form id="suspendedProperties">
-        <label for="stationDropdown">Select Station:</label>
-        <select name="stationDropdown" id="stationDropdown" onChange="storeData(this.id,this.value)" >
-        	<option value="50028000">Tanama River</option>
-            <option value="50010500">Rio Guajataca, Lares</option>
-            <option value="60008002">Example River2</option>
-            <option value="60008003">Example River3</option>
-            <option value="60008004">Example River4</option>
-         </select>
-         
-         
-		<label for="sampleMediumDropdown">Select Sample Medium:</label>
-            <select name="sampleMediumDropdown" id="sampleMediumDropdown" onChange="storeData(this.id,this.value)">
-              <option value="WS">WS(Surface Water)</option>
-              <option value="WSQ">WSQ(Surface Water QC)</option>
+    </div>
+    <div data-role="content">
+    <!--
+        ######################################################################################
+        ########################              First Form              ########################
+        ######################################################################################
+        -->
+        <form id="sampleProperties">
+            <label for="station">Select Station:</label>
+            <select  name="station" id="station" onBlur="storeData(this.id,this.value)" required="true">
+                <option value="50028000">Tanama River</option>
+                <option value="50010500">Rio Guajataca, Lares</option>
+                <option value="60008002">Example River2</option>
+                <option value="60008003">Example River3</option>
+                <option value="60008004">Example River4</option>
             </select>
-            
-        <label for="date">Begin Date:</label>
-        	<input naem="date" id="beginDate" type="date" onChange="storeData(this.id,this.value)" />
-         
-         <label for="hydroEvent">Hydrologic Event:</label> <select name="hydroEvent" id="hydroEvent" onChange="storeData(this.id,this.value)" >
-                                <option value="4">4- stable, low stage</option>
-                                <option value="5">5- falling stage</option>
-                                <option value="6">6- stable, high stage</option>
-                                <option value="7">7- peakstage</option>
-                                <option value="8">8- rising state</option>
-                                <option value="9" selected>9- stable, normal stage</option>
-                                <option value="A">A- Not Determined</option>
-                                <option value="X">X- Not applicable</option>  
-         					  </select>
-    
-    <label for="containerCuantity">Add: </label><input type="number" min="1" value="1" id="containerCuantity"onChange="storeData(this.id,this.value)"/> 
-    <select id="singleMultiContainer"name="singleMultiContainer" onChange="storeData(this.id,this.value)">
-                                            <option value="single">Single container sample</option>
-                                            <option value="multi">Multiple sets container</option>
-                                           </select>
-   
-    <h4>Analyses Requested:(Applies to all samples)</h4>
-     
-      <label for="analysesC">Concentration</label><input type="checkbox" name="analysis" id="analysesC" value="C" onChange="isChecked(this.id,this.value)"/>
-	  <label for="analysesSF">Sand-Fine break**</label><input type="checkbox" name="analysis" id="analysesSF" value="SF"onChange="isChecked(this.id,this.value)"/>
-      <label for="analysesSA">Sand Analysis**</label><input type="checkbox" name="analysis" id="analysesSA"value="SA" onChange="isChecked(this.id,this.value)"/>
-    <label for="analysesT">Turbidity</label><input type="checkbox" name="analysis" id="analysesT" value="T" onChange="isChecked(this.id,this.value)"/>
-     <label for="analysesLOI">Loss-on-ignition**</label><input type="checkbox" name="analysis" id="analysesLOI" value="LOI" onChange="isChecked(this.id,this.value)"/>
-     <label for="analysesDS">Dissolved Solids</label><input type="checkbox" name="analysis" id="analysesDS"value="DS" onChange="isChecked(this.id,this.value)"/>
-     <label for="analysesSC">Specific Conductance</label> <input type="checkbox" name="analysis" id="analysesSC" value="SC" onChange="isChecked(this.id,this.value)"/>									
-     <label for="analysesZ">Full-size fractions**</label><input type="checkbox" name="analysis" id="analysesZ"value="Z" on onChange="isChecked(this.id,this.value)"/>
-    
-
-	</form>			
-	</div>
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div>
-</div>
-<div data-role="page" id="sampleInfo" data-add-back-btn="true">
-  <div data-role="header">
-    <h1 id="sampleInfoHeader">Sample Information</h1>
-  </div>
-  <div data-role="content">
-  <!--Here start the form-->
-          <form>
-          <div id="multiAtributes">
-          <label for="method">Select Methods:</label> 
-          <select name="method" onChange="storeData(this.name,this.value)">
-                <option value="EDI">EDI</option>
-                <option value="EWI">EWI</option>
-            </select>
-           
-            <select name="compositeOrIndividual" id="compositeOrIndividual" onChange="storeData(this.name,this.value)">
-                <option value="compsite">Composite the containers</option>
-                <option value="individual">Individual analysis of containers</option>
+            <div class="hide">
+            <div class='suspendedAdditionalFields'>
+            <label for="sampleMediumDropdown">Select sample medium:</label>
+            <select name="sampleMediumDropdown" id="sampleMediumDropdown" onBlur="storeData(this.name,this.value)">
+                <option value="WS">WS(Surface Water)</option>
+                <option value="WSQ">WSQ(Surface Water QC)</option>
             </select>
             </div>
-   
-            <label>Begin Date:</label> 
-            <input type="date" name="beginDateInfo" id="beginDateInfo" onChange="storeData(this.name,this.value)"  required/>
+            <div class='bottomAdditionalFields'>
+            <label for="sampleMediumDropdownBottom">Select sample medium</label>
+            <select name="sampleMediumDropdown" id="sampleMediumDropdownBottom" onBlur="storeData(this.name,this.value)">
+                <option value="SB">SB (bottom material)</option>
+                <option value="SBQ">SBQ (bottom material QC)</option>
+            </select>
+            </div>
+            </div>
+            <label for="date">Begin Date:</label>
+            <input name="date" id="beginDate" type="date" onChange="storeData(this.id,this.value)" />
+
+            <div class="hide">
+            <label for='EVENT'>Hydrologic event:</label>
+            <select name="EVENT" id="EVENT" onBlur="storeData(this.name,this.value)">
+                <option value="1">1- Drought</option>
+                <option value="2">2- Spill</option>
+                <option value="3">3- Regulated Flow</option>
+                <option value="4">4- Snowmelt</option>
+                <option value="5">5- Earthquake</option>
+                <option value="6">6- Hurricane</option>
+                <option value="7">7- Flood</option>
+                <option value="8">8- Volcanic activity</option>
+                <option value="9" selected>9- Routine Sample</option>
+                <option value="A">A- Spring breakup</option>
+                <option value="B">B- Under ice cover</option>
+                <option value="C">C- Glacial lake outbreak</option>
+                <option value="D">D- Mudflow</option>
+                <option value="E">E- Tidal action</option>
+                <option value="F">F- Fire, affected by fire prior sampling</option>
+                <option value="H">H- Dambreak</option>
+                <option value="J">J- Storm</option>
+                <option value="K">K- Backwater</option>
+                <option value="X">X- Not applicable</option>
+            </select>
+            </div>
+            <div class="ui-grid-a">
+           	 <label for="containerCuantity">Add a group of single container or sets of multiple samples: </label> 	 
+             <div class="ui-block-a">
+             	<input type="number" min="1" value="1" max="40" id="containerCuantity" name="containerCuantity" onBlur="storeData(this.id,this.value)"/></div>
+             <div class="ui-block-b">
+            	<select id="singleMultiContainer" name="singleMultiContainer"  onChange="storeData(this.id,this.value)">
+                	<option value="" selected>--Select Container or Set--</option>
+               	 	<option value="single">Single container sample</option>
+               	 	<option value="multi">Multiple sets container</option>
+           		</select>
+            	</div>
+            </div>
+        </form>
+        
+  <!--##################################################################
+  	  ########################  First Form Ends  #######################
+      ##################################################################
+      -->
+    </div>
+    <div data-role="footer" data-position="fixed">
+        <div data-inline="true" data-type="horizontal"><a href="#" data-icon="bars" data-iconpos="notext" data-inline="true" data-mini="false" data-role="button">Menu</a><a id="addSampleParameters" data-icon="arrow-r" data-iconpos="right" data-inline="true" data-role="button" data-mini="false" data-theme="e">Next</a>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="sampleParametersPage" data-add-back-btn="true">
+    <div data-role="header" data-position="fixed">
+         <h1 id="sampleParametersPageHeader"> </h1>
+
+    </div>
+    <div data-role="content">
+       <!--####################################################################
+       	   ######################## Second Form Starts ########################
+           ####################################################################
+           -->
+        <form id="sampleParameters">
             
-            <label>Begin Time:</label> <input type="time" name="time" id="time"onChange="storeData(this.name,this.value)"required/>
-            
-            <label> Time Datum:</label>
+            <label for="beginDate1">Begin Date:</label>
+            <input type="date" name="beginDate" id="beginDate1" onChange="storeData(this.name,this.value)" required/>
+            <label for="beginTime">Begin Time:</label>
+            <input type="time" name="time" id="time" onChange="storeData(this.name,this.value)" required/>
+           
+           <div class="hide">
+            <label>Time Datum:</label>
             <select name="timeDatum" id="timeDatum" onChange="storeData(this.name,this.value)">
                 <option value="SITEFILE">use default from SITEFILE</option>
                 <option value="AST">AST</option>
@@ -275,389 +230,998 @@
                 <option value="HST">HST</option>
                 <option value="HDT">HDT</option>
             </select>
-        
-           <h3>Possible Add-on analyses for this sample:</h3>
-           <label for="fullSizeFraction">Full size fraction</label><input type="checkbox" name="fullSizeFraction" id="fullSizeFraction" value="Z" onChange="chkBox(this.name,this.value)"/>
-            <label for="sandFineBreak">Sand fine break</label><input type="checkbox" name="sandFineBreak" id="sandFineBreak" value="SF"  onChange="chkBox(this.name,this.value)"/>
-            <label for="sand">Sand</label><input type="checkbox" name="sand" id="sand" value="SA"  onChange="chkBox(this.name,this.value)"/>
-          
-            <div data-role="fieldcontain">
-              <fieldset data-role="controlgroup" data-type="horizontal">
-                <legend><h4>Is this container broken?</h4></legend>
-                <input type="radio" name="containerBroken" id="containerBroken0" value="Yes" onChange="storeData(this.name,this.value)"/>
-                <label for="containerBroken0">Yes</label>
-                <input type="radio" name="containerBroken" id="containerBroken1" value="No" onChange="storeData(this.name,this.value)"/>
-                <label for="containerBroken1">No</label>
-              </fieldset>
+           </div>
+            <div class="hide">
+             <h3>Possible Add-on analyses for this sample:</h3>
+
+            <label for="fullSizeFraction">Full size fraction</label>
+            <input type="checkbox" name="fullSizeFraction" id="fullSizeFraction" value="Z" onChange="chkBox(this.name,this.value)" />
+            <label for="sandFineBreak">Sand fine break</label>
+            <input type="checkbox" name="sandFineBreak" id="sandFineBreak" value="SF" onChange="chkBox(this.name,this.value)" />
+            <label for="sand">Sand</label>
+            <input type="checkbox" name="sand" id="sand" value="SA" onChange="chkBox(this.name,this.value)" />
             </div>
-<label for="agencySelect">Collecting Agency:</label> <select name="agencySelect" id="agencySelect" onChange="storeData(this.name,this.value)">
-                                    <option value="USGS-WRD" selected>USGS-WRD</option>
-                                    <option value="USGS-GD">USGS-GD</option>
-                                    <option value="observer">Observer</option>
-                                    <option value="other">Other</option>
-                                  </select>
-                                  
-                                  
-           <label for="containerNum">Container Number:</label><input type="number" min="00000000" max="99999999" name="containerNum" id="containerNum" onChange="storeData(this.name,this.value)" placeholder="Must be 8 digits"/> 
-            <label>Hydrologic Condition:</label> <select name="HSTAT" id="HSTAT" onChange="storeData(this.name,this.value)">
-                                        <option value="4">4- stable, low stage</option>
-                                        <option value="5">5- falling stage</option>
-                                        <option value="6">6- stable, high stage</option>
-                                        <option value="7">7- peakstage</option>
-                                        <option value="8">8- rising state</option>
-                                        <option value="9" selected>9- stable, normal stage</option>
-                                        <option value="A">A- Not Determined</option>
-                                        <option value="X">X- Not applicable</option>  
-                              </select>
-                        
-           <label for='EVENT'>Hydrologic event:</label> <select name="EVENT" id="EVENT" onChange="storeData(this.name,this.value)">
-                                        <option value="1">1- Drought</option> 
-                                        <option value="2">2- Spill</option>
-                                        <option value="3">3- Regulated Flow</option>
-                                        <option value="4">4- Snowmelt</option>
-                                        <option value="5">5- Earthquake</option>
-                                        <option value="6">6- Hurricane</option>
-                                        <option value="7">7- Flood</option>
-                                        <option value="8">8- Volcanic activity</option> 
-                                        <option value="9" selected >9- Routine Sample</option>
-                                        <option value="A" >A- Spring breakup</option>
-                                        <option value="B" >B- Under ice cover</option>
-                                        <option value="C" >C- Glacial lake outbreak</option>
-                                        <option value="D" >D- Mudflow</option>
-                                        <option value="E" >E- Tidal action</option>
-                                        <option value="F" >F- Fire, affected by fire prior sampling</option>
-                                        <option value="H" >H- Dambreak</option>
-                                        <option value="J" >J- Storm</option>
-                                        <option value="K" >K- Backwater</option>
-                                        <option value="X" >X- Not applicable</option>
-                                        
-                              </select>
-           <label for="STYPE">Sample type:</label>  <select name="STYPE" id="STYPE" onChange="storeData(this.name,this.value)">
-                                        <option value="1">1- Spike</option> 
-                                        <option value="2">2- Black</option>
-                                        <option value="3">3- Reference</option>
-                                        <option value="4">4- Blind</option>
-                                        <option value="5">5- Duplicate</option>
-                                        <option value="6">6- Reference Material</option>
-                                        <option value="7">7- Replicate</option>
-                                        <option value="8">8- Spike solution</option>
-                                        <option value="9" selected>9- Regular</option>
-                                        <option value="A">A- Not determined</option>
-                                        <option value="B">B- Other QA</option>
-                                        <option value="H">H- Composite</option>  
-                              </select>    
-          <label for="ASTAT">Analysis status:</label> <select name="ASTAT" id="ASTAT" onChange="storeData(this.name,this.value)">
-                                        <option value="U">U- Unrestricted</option> 
-                                        <option value="I">I- Internal use only</option>
-                                        <option value="P">P- Propietary</option>
-                                        
-                              </select>  
-           <label for="P71999">Sample Purpose:</label> <select name="P71999" id="P71999" onChange="storeData(this.name,this.value)">
-                                        <option value="10">10- Routine</option> 
-                                        <option value="15">15- NAWQA, National Quality Assesment</option>
-                                        <option value="20">20- NASQAN</option>
-                                        <option value="25">25- NMN, National Monitoring Network</option>
-                                        <option value="30">30- Benchmark</option>
-                                        <option value="35">35- RASA, Regional System Aquifier Analysis</option>
-                                        <option value="40">40- SW Network</option>
-                                        <option value="55">55- GW Network</option>
-                                        <option value="60">60- Lowflow network</option>
-                                        <option value="70">70- Highflow network</option>
-                                        <option value="80">80- Sampling protocol(Time)(SP)</option>
-                                        <option value="90">09- Snow survey</option>
-                                        <option value="100">100- Mt. St. Helen</option>
-                                        <option value="110">110- Seepage Study</option>
-                                        <option value="120">120- Irrigation effects</option> 
-                                        <option value="130">130- Recharge</option>
-                                        <option value="140">140- Injection</option>
-                                        <option value="150">150- Bank erodibility</option>
-                                        <option value="160">160- National Blank and spike program</option>
-                                        <option value="170">170- Quality assurance</option>
-                                        <option value="180">180- Cross-section variation</option>
-                                        <option value="190">190- Gorund-water/Surface-water interaction study</option>  
-                                         
-                              </select>
-            <label>Sampling Method:</label> <select name="P82398" id="P82398"onChange="storeData(this.name,this.value)">
-                                        <option value="1">1 Example</option> 
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>  
-                              </select>  
-            <label>Sampler type:</label> <select name="P84164" id="P84164" onChange="storeData(this.name,this.value)">
-                                        <option value="1">1 Example</option> 
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>  
-                              </select>   
-            <label> Location in cross section looking downstream :</label><input type="number" name="leftBank" id="leftBank"value="P00009" 
-            placeholder="Feet from Left Bank "onChange="storeData(this.name,this.value)"/><input type="text" name="remarkLeft" id="remarkLeft" onChange="storeData(this.name,this.value)"/>
-            <input type="number" name="rightBank" id="rightBank" value="P72103"
-            placeholder="Right Bank" onChange="storeData(this.name,this.value)"/><input type="text" name="remarkRight" id="remarkRight" onChange="storeData(this.name,this.value)"/>                              
-          <br/>
-          <label>Sampling Depth:</label> <input type="number" name="P00003" id="P00003" placeholder="in feet" onChange="storeData(this.name,this.value)">
-          <label>Stream width:</label> <input type="number" name="P00004" id="P00004" placeholder="in feet" onChange="storeData(this.name,this.value)">
-          <label>Mean depth of stream:</label> <input type="number" name="P00064"id="P00064" placeholder="in feet" onChange="storeData(this.name,this.value)">
-          <label>Field sample comment:</label><input type="text" placeholder="Message to laboratory" name="messageToLab" id="messageToLab" onChange="storeData(this.name,this.value)" />               
-          </form>
-        <!-- Form Ends -->
-  </div>
-    <div data-role="content">
-    	<form>
-  <label for="P00061">Instantaneous discharge:</label> <input type="number" name="P00061" id="P00061" required onChange="storeData(this.name,this.value)"/>
-  												<select name="P00061R" id="P00061R" onChange="storeData(this.name,this.value)"/>
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P00061M" id="P00061M" onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-  </p>
-   <p>Water Tempeture: <input type="number" name="P00010" id="P00010"  onChange="storeData(this.name,this.value)" required/>
-  												<select name="P00010R" id="P00010R" onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P00010M" id="P00010M"onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-                         <input type="radio" value="null">Null Value qualifier</input>
-  </p>
-    <p>Number of sampling point: <input type="number" name="P00063" id="P00063"  onChange="storeData(this.name,this.value)" required/>
-  												<select name="P00063R" id="P00063" onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P00063M" id="P00063M" onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-    </p>
-      <p>Air Tempeture: <input type="number" name="P00020" id="P00020" onChange="storeData(this.name,this.value)"/>
-  												<select name="P00020R" id="P00020R" onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P00020M" ID="P00020M"onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-                         <input type="radio" value="null">Null Value qualifier</input>
-       </p>
-       
-        <p>Gage height: <input type="number" name="P00065" id="P00065" onChange="storeData(this.name,this.value)"required/>
-  												<select name="P00065R" id="P00065R"onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P00065M"id="P00065M"onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-    </p>      
-      <p>Specific conductance: <input type="number" name="P00095" id="P00095"onChange="storeData(this.name,this.value)" />
-  												<select name="P00095R" id="P00095R"onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P00095M" id="P00095M"onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-                         <input type="radio" value="null">Null Value qualifier</input>
-       </p>      
-         <p>Turbidity NTU : <input type="number" name="P63675" id="P63675"onChange="storeData(this.name,this.value)" placeholder="90 +/- 30deg" />
-  												<select name="P63675R"id="P63675R">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P63675M"id="P63675M"onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-                         <input type="radio" value="null">Null Value qualifier</input>
-       </p>       
-       <p>Turbidity NTRU : <input type="number" name="P63676"id="P63676"onChange="storeData(this.name,this.value)" placeholder="multiple angles" />
-  												<select name="P63676R"id="P63676R"onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P63676M"id="P63676M"onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-                         <input type="radio" value="null">Null Value qualifier</input>
-       </p>              
-       <p>Turbidity FNU(780-900nm) : <input type="number" name="P63680"id="P63680"onChange="storeData(this.name,this.value)" placeholder="90 +/- 2.5deg" />
-  												<select name="P63680R"id="P63680R"onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P63680M"id="P63680R"onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-                         <input type="radio" value="null">Null Value qualifier</input>
-       </p>    
-       <p>Transparency : <input type="number" name="P65225" id="P65225" onChange="storeData(this.name,this.value)" placeholder="90 +/- 30deg" />
-  												<select name="P65225R"id="P65225R" onChange="storeData(this.name,this.value)">
-  													<option value="<">&lt;</option>
-                                                    <option value=">">&gt;</option>
-                                                    <option value="E">E</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="A">A</option>
-                                                    <option value="V">V</option>
-                                                    <option value="S">S</option>
-                                                    <option value="U">U</option>
-                                                    </select>
-                                                  <select name="P65225M"id="P65225M" onChange="storeData(this.name,this.value)">
-  													<option value="1">method</option>
-                                                    <option value="2">method 2</option>
-                                                    <option value="3">method 3</option>
-                                                    <option value="4">method 4</option>
-                                                    <option value="5">method 5</option>
-                                                    <option value="6">method 6</option>
-                                                    </select>
-                         <input type="radio" value="null">Null Value qualifier</input>
-       </p>                        
-  </form>
+            <div data-role="fieldcontain" id="containerStatus" class="hide">
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>
+                        <h4>Is this container broken?</h4>
+                    </legend>
+                    <input type="radio" name="containerBroken" id="containerBroken0" value="Yes" onChange="storeData(this.name,this.value)" />
+                    <label for="containerBroken0">Yes</label>
+                    <input type="radio" name="containerBroken" id="containerBroken1" value="No" onChange="storeData(this.name,this.value)" />
+                    <label for="containerBroken1">No</label>
+                </fieldset>
+            </div>
+            <div class="hide">
+            <label for="collectingAgency">Collecting Agency:</label>
+            <select name="collectingAgency" id="collectingAgency" onChange="storeData(this.name,this.value)">
+                <option value="USGS-WRD" selected>USGS-WRD</option>
+                <option value="USGS-GD">USGS-GD</option>
+                <option value="observer">Observer</option>
+                <option value="other">Other</option>
+            </select>
+            
+             <label for="collectorInitials">Initial of the person(s) who collected sample:</label>
+            <input type="text" name="collectorInitials" id="collectorInitials" onChange="storeData(this.name,this.value)" placeholder="Max of 15 characters" />
+            
+            <label for="containerNum">Container Number:</label>
+            <input type="number" min="00000000" max="99999999" name="containerNum" id="containerNum" onChange="storeData(this.name,this.value)" placeholder="Must be 8 digits" />
+            <label>Hydrologic Condition:</label>
+            <select name="HSTAT" id="HSTAT" onChange="storeData(this.name,this.value)">
+                <option value="4">4- stable, low stage</option>
+                <option value="5">5- falling stage</option>
+                <option value="6">6- stable, high stage</option>
+                <option value="7">7- peakstage</option>
+                <option value="8">8- rising state</option>
+                <option value="9" selected>9- stable, normal stage</option>
+                <option value="A">A- Not Determined</option>
+                <option value="X">X- Not applicable</option>
+            </select>
+            <label for='EVENT'>Hydrologic event:</label>
+            <select name="EVENT" id="EVENT" onChange="storeData(this.name,this.value)">
+                <option value="1">1- Drought</option>
+                <option value="2">2- Spill</option>
+                <option value="3">3- Regulated Flow</option>
+                <option value="4">4- Snowmelt</option>
+                <option value="5">5- Earthquake</option>
+                <option value="6">6- Hurricane</option>
+                <option value="7">7- Flood</option>
+                <option value="8">8- Volcanic activity</option>
+                <option value="9" selected>9- Routine Sample</option>
+                <option value="A">A- Spring breakup</option>
+                <option value="B">B- Under ice cover</option>
+                <option value="C">C- Glacial lake outbreak</option>
+                <option value="D">D- Mudflow</option>
+                <option value="E">E- Tidal action</option>
+                <option value="F">F- Fire, affected by fire prior sampling</option>
+                <option value="H">H- Dambreak</option>
+                <option value="J">J- Storm</option>
+                <option value="K">K- Backwater</option>
+                <option value="X">X- Not applicable</option>
+            </select>
+            </div>
+            <label for="STYPE">Sample type:</label>
+            <select name="STYPE" id="STYPE" onChange="storeData(this.name,this.value)">
+                <option value="1">1- Spike</option>
+                <option value="2">2- Black</option>
+                <option value="3">3- Reference</option>
+                <option value="4">4- Blind</option>
+                <option value="5">5- Duplicate</option>
+                <option value="6">6- Reference Material</option>
+                <option value="7">7- Replicate</option>
+                <option value="8">8- Spike solution</option>
+                <option value="9" selected>9- Regular</option>
+                <option value="A">A- Not determined</option>
+                <option value="B">B- Other QA</option>
+                <option value="H">H- Composite</option>
+            </select>
+            <div class="hide">
+            <label for="ASTAT">Analysis status:</label>
+            <select name="ASTAT" id="ASTAT" onChange="storeData(this.name,this.value)">
+                <option value="U">U- Unrestricted</option>
+                <option value="I">I- Internal use only</option>
+                <option value="P">P- Propietary</option>
+            </select>
+            <label for="P71999">Sample Purpose:</label>
+            <select name="P71999" id="P71999" onChange="storeData(this.name,this.value)">
+                <option value="10">10- Routine</option>
+                <option value="15">15- NAWQA, National Quality Assesment</option>
+                <option value="20">20- NASQAN</option>
+                <option value="25">25- NMN, National Monitoring Network</option>
+                <option value="30">30- Benchmark</option>
+                <option value="35">35- RASA, Regional System Aquifier Analysis</option>
+                <option value="40">40- SW Network</option>
+                <option value="55">55- GW Network</option>
+                <option value="60">60- Lowflow network</option>
+                <option value="70">70- Highflow network</option>
+                <option value="80">80- Sampling protocol(Time)(SP)</option>
+                <option value="90">09- Snow survey</option>
+                <option value="100">100- Mt. St. Helen</option>
+                <option value="110">110- Seepage Study</option>
+                <option value="120">120- Irrigation effects</option>
+                <option value="130">130- Recharge</option>
+                <option value="140">140- Injection</option>
+                <option value="150">150- Bank erodibility</option>
+                <option value="160">160- National Blank and spike program</option>
+                <option value="170">170- Quality assurance</option>
+                <option value="180">180- Cross-section variation</option>
+                <option value="190">190- Gorund-water/Surface-water interaction study</option>
+            </select>
+            </div>
+            <div class="suspendedAdditionalFields">
+            <label for="P82398">Sampling Method:</label>
+            <select name="P82398" id="P82398susp" onChange="storeData(this.name,this.value)">
+                <option value="10">10 EQUAL WIDTH INCREMENT (EWI)</option>
+                <option value="15">15 EQUAL WIDTH INCREMENT, NON-ISOKINETIC</option>
+                <option value="20">20 EQUAL DISCHARGE INCREMENT (EDI)</option>
+                <option value="25">25 TIMED SAMPLING INTERVAL</option>
+                <option value="30">30 SINGLE VERTICAL</option>
+                <option value="40">40 MULTIPLE VERTICALS</option>
+                <option value="50">50 POINT SAMPLE</option>
+                <option value="55">55 COMPOSITE - MULTIPLE POINT SAMPLES</option>
+                <option value="60">60 WEIGHTED BOTTLE</option>
+                <option value="70">70 GRAB SAMPLE (DIP)</option>
+                <option value="80">80 DISCHARGE INTEGRATED, EQUAL TRANSIT RATE (ETR)</option>
+                <option value="90">90 DISCHARGE INTEGRATED, CENTROID</option>
+                <option value="100">100 VAN DORN SAMPLER</option>
+                <option value="110">110 SEWAGE SAMPLER</option>
+                <option value="120">120 VELOCITY INTEGRATED</option>
+                <option value="900">900 SUSPSED; PUMPING - stream sample using a pumping mechanism</option>
+                <option value="910">910 SUSPSED;SINGLE-STAGE,nozzle at fixed stage,passively fillng</option>
+                <option value="920">920 SUSPSED; BOX-SINGLE VER, DEPTH-INT, Attached To Structure</option>
+                <option value="930">930 SUSPSED;PARTIAL DEPTH,DEPTH integrated,part of single vert</option>
+                <option value="940">940 SUSPSED; PARTIAL WIDTH - DEP/WIDTH INT, part of X-section</option>
+                <option value="4010">4010 THIEF SAMPLE</option>
+                <option value="4020">4020 OPEN-TOP BAILER</option>
+                <option value="4025">4025 DOUBLE-VALVE BAILER</option>
+                <option value="8010">8010 OTHER</option>
+                <option value="8030">8030 GRAB SAMPLE AT WATER-SUPPLY TAP</option>
+                <option value="8040">8040 SPIGOT (NON-WATER-SUPPLY)</option>
+                <option value="8050">8050 GRAB SAMPLE AT TAP(S) ON A DAM</option>
+            </select>
+            </div>
+            <div class='bottomAdditionalFields'>
+             <label for="P82398">Sampling Method:</label>
+            <select name="P82398" id="P82398botm" onChange="storeData(this.name,this.value)">
+            	<option value="50">50 POINT SAMPLE</option>
+                <option value="55">55 COMPOSITE - MULTIPLE POINT SAMPLES</option>
+                <option value="5010">5010 SEDIMENT CORE</option>
+                <option value="8010">8010 OTHER</option>
+            </select>
+            </div>
+            
+             
+            <div class='bedloadAdditionalFields'>
+             <label for="P82398">Sampling Method:</label>
+            <select name="P82398" id="P82398bedload" onChange="storeData(this.name,this.value)">
+            	<option value="50">50 POINT SAMPLE</option>
+                <option value="55">55 COMPOSITE - MULTIPLE POINT SAMPLES</option>
+                <option value="1000">1000 BEDLOAD, SINGLE EQUAL WIDTH INCREMENT (SEWI)</option>
+                <option value="1010">1010 BEDLOAD, MULTIPLE EQUAL WIDTH INCREMENT (MEWI)</option>
+                <option value="1020">1020 BEDLOAD, UNEQUAL WIDTH INCREMENT (UWI)</option>
+                <option value="8010">8010 OTHER</option>
+            </select>
+            </div>
+            
+            <div class="suspendedAdditionalFields">
+            <label for="P84164">Sampler type:</label>
+            <select name="P84164" id="P84164" onChange="storeData(this.name,this.value)">
+                <option value="100">100 VAN DORN SAMPLER</option>
+                <option value="110">110 SEWAGE SAMPLE</option>
+                <option value="120">120 VELOCITY INTEGRATED SAMPLE</option>
+                <option value="125">125 KEMMERER BOTTLE</option>
+                <option value="3001">3001 SAMPLER, US DH-48</option>
+                <option value="3002">3002 SAMPLER, US DH-59</option>
+                <option value="3003">3003 SAMPLER, US DH-75P</option>
+                <option value="3004">3004 SAMPLER, US DH-75Q</option>
+                <option value="3005">3005 SAMPLER, US DH-76</option>
+                <option value="3006">3006 SAMPLER, US D-43</option>
+                <option value="3007">3007 SAMPLER, US D-49</option>
+                <option value="3008">3008 SAMPLER, US D-49AL</option>
+                <option value="3009">3009 SAMPLER, US D-74</option>
+                <option value="3010">3010 SAMPLER, US D-74AL</option>
+                <option value="3011">3011 SAMPLER, US D-77</option>
+                <option value="3012">3012 SAMPLER, US P-46</option>
+                <option value="3013">3013 SAMPLER, US P-50</option>
+                <option value="3014">3014 SAMPLER, US P-61-A1</option>
+                <option value="3015">3015 SAMPLER, US P-63</option>
+                <option value="3016">3016 SAMPLER, US P-72</option>
+                <option value="3017">3017 SAMPLER, US U-59</option>
+                <option value="3018">3018 SAMPLER, US U-73</option>
+                <option value="3019">3019 SAMPLER, US PS-69</option>
+                <option value="3020">3020 SAMPLER, US PS-69TM</option>
+                <option value="3021">3021 SAMPLER, US CS-77</option>
+                <option value="3022">3022 SAMPLER, US PS-82</option>
+                <option value="3030">3030 US DH-48 TM</option>
+                <option value="3031">3031 US DH-48 TM WITH TEFLON GASKET AND NOZZLE</option>
+                <option value="3032">3032 US DH-59 TM</option>
+                <option value="3033">3033 US DH-59 TM WITH TEFLON GASKET AND NOZZLE</option>
+                <option value="3034">3034 US DH-76 TM</option>
+                <option value="3035">3035 US DH-76 TM WITH TEFLON GASKET AND NOZZLE</option>
+                <option value="3036">3036 US D-74 TM</option>
+                <option value="3037">3037 US D-74 AL-TM</option>
+                <option value="3038">3038 US D-74 AL-TM WITH TEFLON GASKET AND NOZZLE</option>
+                <option value="3039">3039 US D-77 TM</option>
+                <option value="3040">3040 US D-77 TM MODIFIED TEFLON BAG SAMPLER</option>
+                <option value="3041">3041 US P-61 AL-TM</option>
+                <option value="3042">3042 US P-61</option>
+                <option value="3043">3043 US P-61 TM</option>
+                <option value="3044">3044 US DH-81</option>
+                <option value="3045">3045 US DH-81 WITH TEFLON CAP AND NOZZLE</option>
+                <option value="3046">3046 SAMPLER, D-77 TM, WITH REYNOLDS OVEN COLLAPSIBLE BAG</option>
+                <option value="3047">3047 SAMPLER, FRAME-TYPE, PLASTIC BOTTLE WITH REYNOLDS OVEN BAG</option>
+                <option value="3048">3048 SAMPLER, FRAME-TYPE, TEFLON BOTTLE</option>
+                <option value="3049">3049 SAMPLER, FRAME-TYPE, PLASTIC BOTTLE</option>
+                <option value="3050">3050 SAMPLER, FRAME-TYPE, PLASTIC BOTTLE W/TEFLON COLLAPS. BAG</option>
+                <option value="3051">3051 US DH-95 TEFLON BOTTLE</option>
+                <option value="3052">3052 US DH-95 PLASTIC BOTTLE</option>
+                <option value="3053">3053 US D-95 TEFLON BOTTLE</option>
+                <option value="3054">3054 US D-95 PLASTIC BOTTLE</option>
+                <option value="3055">3055 US D-96 BAG SAMPLER</option>
+                <option value="3056">3056 US D-96-A1 BAG SAMPLER</option>
+                <option value="3057">3057 US D-99 BAG SAMPLER</option>
+                <option value="3058">3058 US DH-2 BAG SAMPLER</option>
+                <option value="3060">3060 WEIGHTED-BOTTLE SAMPLER</option>
+                <option value="3061">3061 US WBH-96 WEIGHTED-BOTTLE SAMPLER</option>
+                <option value="3070">3070 GRAB SAMPLE</option>
+                <option value="3071">3071 OPEN-MOUTH BOTTLE</option>
+                <option value="3080">3080 VOC HAND SAMPLER</option>
+                <option value="4010">4010 THIEF SAMPLER</option>
+                <option value="4020">4020 OPEN-TOP BAILER</option>
+                <option value="4115">4115 SAMPLER, POINT, AUTOMATIC</option>
+                <option value="8010">8010 OTHER</option>
+            </select>
+            </div>
+            <div class="bottomAdditionalFields">
+            <label for="P84164">Sampler type:</label>
+            <select name="P84164" id="P84164bottom" onChange="storeData(this.name,this.value)">
+            	<option value="3023">3023 SAMPLER, US BMH-53</option>
+                <option value="3024">3024 SAMPLER, US BMH-53TM</option>
+                <option value="3025">3025 SAMPLER, US BM-54</option>
+                <option value="3026">3026 SAMPLER, US BM-54TM</option>
+                <option value="3027">3027 SAMPLER, US BMH-60</option>
+                <option value="3028">3028 SAMPLER, US BMH-60TM</option>
+                <option value="3029">3029 SAMPLER, US RBM-80</option>
+                <option value="5010">5010 BOX CORE, LONG</option>
+                <option value="5020">5020 BOX CORE, SHORT</option>
+                <option value="5030">5030 GRAVITY CORE</option>
+                <option value="5040">5040 PISTON CORE</option>
+                <option value="5050">5050 PUSH CORE</option>
+                <option value="6000">6000 Bed Material -- Scoop Shovel</option>
+                <option value="6010">6010 Bed Material -- Scoop TM (Epoxy coated metal sampler)</option>
+                <option value="6020">6020 Bed Material -- Scoop Teflon</option>
+                <option value="6030">6030 Bed Material -- Pipe Dredge</option>
+                <option value="6040">6040 Bed Material -- Dredge-Cooper Scooper</option>
+                <option value="6050">6050 Bed Material -- Ponar Grab</option>
+                <option value="6060">6060 Bed Material -- Ekman Grab</option>
+                <option value="6070">6070 Bed Material -- Box Core Grab</option>
+                <option value="6080">6080 Bed Material -- Peterson Grab</option>
+                <option value="6090">6090 Bed Material -- Van Veen Grab</option>
+                <option value="8010">8010 OTHER</option>
+            </select>
+            </div>
+            <div class="bedloadAdditionalFields">
+            <label for="P84164">Sampler type:</label>
+            <select name="P84164" id="P84164bedload" onChange="storeData(this.name,this.value)">
+           		<option value="1050">1050 BL-6X12 in, Toutle R. Type 2, Exp. Ratio 1.40, Cable Susp</option>
+                <option value="1055">1055 BL-6X12 in, Toutle R. Type 2, Exp. Ratio 1.40, Wading</option>
+                <option value="1060">1060 BL-3X3 in, BL-84, Exp. Ratio 1.40, Cable Susp</option>
+                <option value="1100">1100 BL-3X3 in, H-S, 50-100 lb, Exp. Ratio 3.22, Cable Susp</option>
+                <option value="1110">1110 BL-3X3 in, H-S, 100-200 lb,   Exp. Ratio 3.22, Cable Susp</option>
+                <option value="1120">1120 BL-3X3 in, H-S, 1/4-in thick nozzle,  Exp. Ratio 3.22, Wading</option>
+                <option value="1150">1150 BL-3X3 in, BLH-84, 1/4-in thick nozzle,  Exp. Ratio 1.4, Wading</option>
+                <option value="1170">1170 BL-6X6 in H-S, 1/4-in nozzle, 150-200 lb, Exp. Ratio 3.22, Cable Susp</option>
+                <option value="1180">1180 BL-4X8 in, Elwha R., Exp. Ratio 1.40, Wading</option>
+                <option value="1190">1190 BL-4X8 in, Elwha R., Exp. Ratio 1.40, Cable Susp</option>
+                <option value="1200">1200 BL-Net-Frame Trap</option>
+                <option value="8020">8020 Mulitple samplers used</option>
+            </select>
+            </div>
+            <div class="hide">
+            <label for="leftBank">Location in cross section looking downstream :</label>
+            <div class="ui-grid-a">
+            <div class="ui-block-a">
+            <input type="number" name="P00009" id="P00009" placeholder="Feet from left bank " onChange="storeData(this.name,this.value)" />
+            </div>
+            <div class="ui-block-b">
+            <select name="P00009R" id="P00009R" onChange="storeData(this.name,this.value)">
+            			<option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+              </div>
+             
+            <div class="ui-block-a">
+             <input type="number" name="P72103" id="P72103" placeholder="Feet from right bank" onChange="storeData(this.name,this.value)" /></div>
+            <div class="ui-block-b">
+             <select name="P72103R" id="P72103R" onChange="storeData(this.name,this.value)">
+             			<option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+            </div>
+            </div>
+            <div class="ui-grid-c">
+            	<div class="ui-block-a"></div>
+                <div class="ui-block-b">Remark</div>
+                <div class="ui-block-c"></div>
+            </div>
+              <div class="ui-grid-c">
+            	
+            		<label for="P00003">Sampling Depth:</label>
+            	<div class="ui-block-a">
+                    <input type="number" name="P00003" id="P00003" placeholder="in feet" onChange="storeData(this.name,this.value)">
+            	</div>
+                <div class="ui-block-b">
+                <select name="P00003R" id="P00003R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                 
+                </div>
+                <div class="ui-block-d"></div>
+               </div>
+             <div class="ui-grid-c">
+             	<label for="P00004">Stream width:</label>
+           		<div class="ui-block-a">
+            		<input type="number" name="P00004" id="P00004" placeholder="in feet" onChange="storeData(this.name,this.value)">
+            	</div>
+                <div class="ui-block-b">
+                	<select name="P00004R" id="P00004R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+               </div>
+                
+            <label for="P00064">Mean depth of stream:</label>
+            <div class="ui-grid-c">
+            	<div class="ui-block-a">
+                	<input type="number" name="P00064" id="P00064" placeholder="in feet" onChange="storeData(this.name,this.value)">
+            	</div>
+                <div class="ui-block-b">
+                	<select name="P00064R" id="P00064R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <label for="messageToLab">Field sample comment:</label>
+            <input type="text" placeholder="Message to laboratory" name="messageToLab" id="messageToLab" onChange="storeData(this.name,this.value)" />
+        </form>
+        <!--#####################################################################
+            ########################      Form Ends      ########################
+            #####################################################################
+            -->
     </div>
-
-  
-  
-  
-  <div data-role="footer">
-    <h4>Footer</h4>
-  </div>
-</div>
-   
-   
-<div data-role="page" id="multiSet">
-		<div data-role="header" data-add-back-btn="true">
-			<h1>Select a sample set</h1>
-                      
-		</div>
-		<div data-role="content" id="sampleSets">    
-          
+    <div data-role="content">
+        <form id="sampleParameters2">
+        <div class="hide">
+        <div class="ui-grid-c">
+        	<div class="ui-block-a"> </div>
+        	<div class="ui-block-b">Remark</div>
+            <div class="ui-block-c">Method</div>
+            <div class="ui-block-d">Null value qualifier</div>
         </div>
+        </div>
+        
+        <div class="hide">
+            
+                <label for="P00061">Instantaneous discharge:</label>
+                <div class="ui-grid-c">
+                <div class="ui-block-a">
+                    <input type="number" name="P00061" id="P00061" required onChange="storeData(this.name,this.value)" />
+                </div>
+                <div class="ui-block-b">
+                    <select name="P00061R" id="P00061R" onChange="storeData(this.name,this.value)">
+                   	 <option value=" "> </option>
+                     <option value="<">&lt;</option>
+                     <option value=">">&gt;</option>
+                     <option value="E">E</option>
+                     <option value="M">M</option>
+                     <option value="N">N</option>
+                     <option value="A">A</option>
+                     <option value="V">V</option>
+                     <option value="S">S</option>
+                     <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                    <select name="P00061M" id="P00061M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="QEST">Q-EST</option>
+                        <option value="QADCP">QADCP</option>
+                        <option value="QFLUM">QFLUM</option>
+                        <option value="QIDIR">QIDIR</option>
+                        <option value="QSCMM">QSCMM</option>
+                        <option value="QSLPQ">QSLPQ</option>
+                        <option value="QSTGQ">QSTGQ</option>
+                        <option value="QTRAC">QTRAC</option>
+                        <option value="QUNSP">QUNSP</option>
+                        <option value="QVELO">QVELO</option>
+                        <option value="QVOLM">QVOLM</option>
+                        <option value="QWEIR">QWEIR</option>
+                    </select>
+                </div>
+            </div>
+            <!-- /grid-c -->
+           </div><!--hide class-->
+                <label for="P00010">Water Tempeture:</label>
+                <div class="ui-grid-c">
+                <div class="ui-block-a">
+                    <input type="number" name="P00010" id="P00010" onChange="storeData(this.name,this.value)" required/>
+                </div>
+                
+                <div class="ui-block-b">
+                   <div class="hide">
+                    <select name="P00010R" id="P00010R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="ui-block-c">
+                <div class="hide">
+                    <select name="P00010M" id="P00010M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="TMH01">THM01</option>
+                        <option value="TMH02">THM02</option>
+                        <option value="TMH03">THM03</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="ui-block-d">
+                 <select name="P00010N" id="P00010N" onChange="storeData(this.name,this.value)">
+                 	<option value=" "> </option>
+                    <option value="a">a- Planned measurement was not made</option>
+                    <option value="b">b- Sample broken/spilled in shipment </option>
+                    <option value="e">e- Required equipment not functional or available </option>
+                    <option value="f">f- Sample discarded: improper filter used </option>
+                    <option value="x">x- Result failed, quality assurance review </option>
+                  </select>
+                </div>
+            </div>
+            <!-- /grid c-->
+           <div class="hide">
+                <label for="P00063">Number of sampling point:</label>
+                 <div class="ui-grid-c">
+                 <div class="ui-block-a">
+                    <input type="number" name="P00063" id="P00063" onChange="storeData(this.name,this.value)" required/>
+                </div>
+                <div class="ui-block-b">
+                    <select name="P00063R" id="P00063R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                </div>
+            </div>
+            <!-- /grid c-->
+            
+                <label for="P00020">Air Tempeture:</label>
+                <div class="ui-grid-c">
+                <div class="ui-block-a">
+                    <input type="number" name="P00020" id="P00020" onChange="storeData(this.name,this.value)" />
+                </div>
+                <div class="ui-block-b">
+                    <select name="P00020R" id="P00020R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                    <select name="P00020M" ID="P00020M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="THM04">THM04</option>
+                        <option value="THM05">THM05</option>
+                     </select>
+                </div>
+                <div class="ui-block-d">
+                    <select name="P00020N" id="P00020N" onChange="storeData(this.name,this.value)">
+                 	<option value=" "> </option>
+                    <option value="a">a- Planned measurement was not made</option>
+                    <option value="b">b- Sample broken/spilled in shipment </option>
+                    <option value="e">e- Required equipment not functional or available </option>
+                    <option value="f">f- Sample discarded: improper filter used </option>
+                    <option value="x">x- Result failed, quality assurance review </option>
+                  </select>
+                </div>
+            </div>
+            </div><!--hide class ends-->
+                <label for="P00065">Gage height:</label>
+                <div class="ui-grid-c">
+                <div class="ui-block-a">
+                    <input type="number" name="P00065" id="P00065" onChange="storeData(this.name,this.value)" required/>
+                </div>
+                
+                <div class="ui-block-b">
+                   <div class="hide"> 
+                   <select name="P00065R" id="P00065R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="ui-block-c">
+                <div class="hide">
+                    <select name="P00065M" id="P00065M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="ACOUS">ACOUS</option>
+                        <option value="CLIP">CLIP</option>
+                        <option value="CSG">CSG</option>
+                        <option value="ETG">ETG</option>
+                        <option value="FLOAT">FLOAT</option>
+                        <option value="INSD">INSD</option>
+                        <option value="MANO">MANO</option>
+                        <option value="NCAC">NCAC</option>
+                        <option value="NCLZ">NCLZ</option>
+                        <option value="NCRD">NCRD</option>
+                        <option value="NTRAN">NTRAN</option>
+                        <option value="OTSD">OTSD</option>
+                        <option value="RP">RP</option>
+                        <option value="STAFF">STAFF</option>
+                        <option value="STRAN">STRAN</option>
+                        <option value="WWG">WWG</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <!--/grid c-->
+           <div class="hide">
+                <label for="P00095">Specific conductance:</label>
+                 <div class="ui-grid-c">
+                 <div class="ui-block-a">
+                    <input type="number" name="P00095" id="P00095" onChange="storeData(this.name,this.value)" />
+                </div>
+                <div class="ui-block-b">
+                    <select name="P00095R" id="P00095R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                    <select name="P00095M" id="P00095M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="SC001">SC001</option>
+                    </select>
+                </div>
+                <div class="ui-block-d">
+                   <select name="P00095N" id="P00095N" onChange="storeData(this.name,this.value)">
+                 	<option value=" "> </option>
+                    <option value="a">a- Planned measurement was not made</option>
+                    <option value="b">b- Sample broken/spilled in shipment </option>
+                    <option value="e">e- Required equipment not functional or available </option>
+                    <option value="f">f- Sample discarded: improper filter used </option>
+                    <option value="x">x- Result failed, quality assurance review </option>
+                  </select>
+                </div>
+            </div>
+            <!--/grid c-->
+            
+                <label for="P63675">Turbidity NTU:</label>
+                <div class="ui-grid-c">
+                <div class="ui-block-a">
+                    <input type="number" name="P63675" id="P63675" onChange="storeData(this.name,this.value)" placeholder="90 +/- 30deg" />
+                </div>
+                <div class="ui-block-b">
+                    <select name="P63675R" id="P63675R">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                    <select name="P63675M" id="P63675M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="1">TS028</option>
+                        <option value="2">TS088</option>
+                        <option value="3">TS089</option>
+                        <option value="4">TS093</option>
+                        <option value="1">TS094</option>
+                        <option value="2">TS095</option>
+                        <option value="1">TS096</option>
+                        <option value="2">TS097</option>
+                        <option value="3">TS099</option>
+                        <option value="3">TS102</option>
+                        <option value="1">TS103</option>
+                        <option value="2">TS104</option>
+                        <option value="3">TS105</option>
+                        <option value="4">TS106</option>
+                        <option value="1">TS108</option>
+                        <option value="2">TS109</option>
+                        <option value="3">TS110</option>
+                        <option value="4">TS111</option>
+                        <option value="1">TS112</option>
+                        <option value="2">TS113</option>
+                        <option value="3">TS114</option>
+                        <option value="4">TS118</option>
+                        <option value="1">TS120</option>
+                        <option value="2">TS121</option>
+                        <option value="3">TS122</option>
+                        <option value="4">TS124</option>
+                        <option value="1">TS126</option>
+                        <option value="2">TS127</option>
+                        <option value="3">TS128</option>
+                        <option value="4">TS130</option>
+                        <option value="1">TS131</option>
+                        <option value="2">TS132</option>
+                        <option value="3">TS133</option>
+                        <option value="4">TS134</option>
+                        <option value="1">TS135</option>
+                        <option value="2">TS136</option>
+                        <option value="3">TS137</option>
+                        <option value="4">TS138</option>
+                    </select>
+                </div>
+                <div class="ui-block-d">
+                    <select name="P63675N" id="P63675N" onChange="storeData(this.name,this.value)">
+                 	<option value=" "> </option>
+                    <option value="a">a- Planned measurement was not made</option>
+                    <option value="b">b- Sample broken/spilled in shipment </option>
+                    <option value="e">e- Required equipment not functional or available </option>
+                    <option value="f">f- Sample discarded: improper filter used </option>
+                    <option value="x">x- Result failed, quality assurance review </option>
+                  </select>
+                </div>
+            </div>
+           
+                <label for="P63676">Turbidity NTRU:</label>
+                 <div class="ui-grid-c">
+                 <div class="ui-block-a">
+                    <input type="number" name="P63676" id="P63676" onChange="storeData(this.name,this.value)" placeholder="multiple angles" />
+                </div>
+                <div class="ui-block-b">
+                    <select name="P63676R" id="P63676R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                    <select name="P63676M" id="P63676M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="TS027">TS027</option>
+                        <option value="TS090">TS090</option>
+                        <option value="TS091">TS091</option>
+                        <option value="TS092">TS092</option>
+                        <option value="TS098">TS098</option>
+                        <option value="TS100">TS100</option>
+                        <option value="TS101">TS101</option>
+                        <option value="TS107">TS107</option>
+                        <option value="TS115">TS115</option>
+                        <option value="TS116">TS116</option>
+                        <option value="TS117">TS117</option>
+                        <option value="TS119">TS119</option>
+                        <option value="TS123">TS123</option>
+                        <option value="TS125">TS125</option>
+                        <option value="TS129">TS129</option>
+                        <option value="TS141">TS141</option>
+                    </select>
+                </div>
+                <div class="ui-block-d">
+                    <select name="P63676N" id="P63676N" onChange="storeData(this.name,this.value)">
+                 	<option value=" "> </option>
+                    <option value="a">a- Planned measurement was not made</option>
+                    <option value="b">b- Sample broken/spilled in shipment </option>
+                    <option value="e">e- Required equipment not functional or available </option>
+                    <option value="f">f- Sample discarded: improper filter used </option>
+                    <option value="x">x- Result failed, quality assurance review </option>
+                  </select>
+                </div>
+            </div>
+           
+                <label for="P63680">Turbidity FNU(780-900nm):</label>
+                 <div class="ui-grid-c">
+                 <div class="ui-block-a">
+                    <input type="number" name="P63680" id="P63680" onChange="storeData(this.name,this.value)" placeholder="90 +/- 2.5deg" />
+                </div>
+                <div class="ui-block-b">
+                    <select name="P63680R" id="P63680R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                    <select name="P63680M" id="P63680R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="1">method</option>
+                        <option value="TS031">TS031</option>
+                        <option value="TS032">TS032</option>
+                        <option value="TS034">TS034</option>
+                        <option value="TS035">TS035</option>
+                        <option value="TS036">TS036</option>
+                        <option value="TS037">TS037</option>
+                        <option value="TS038">TS038</option>
+                        <option value="TS040">TS040</option>
+                        <option value="TS041">TS041</option>
+                        <option value="TS042">TS042</option>
+                        <option value="TS043">TS043</option>
+                        <option value="TS044">TS044</option>
+                        <option value="TS047">TS047</option>
+                        <option value="TS048">TS048</option>
+                        <option value="TS049">TS049</option>
+                        <option value="TS050">TS050</option>
+                        <option value="TS053">TS053</option>
+                        <option value="TS054">TS054</option>
+                        <option value="TS055">TS055</option>
+                        <option value="TS056">TS056</option>
+                        <option value="TS059">TS059</option>
+                        <option value="TS060">TS060</option>
+                        <option value="TS061">TS061</option>
+                        <option value="TS062">TS062</option>
+                        <option value="TS063">TS063</option>
+                        <option value="TS064">TS064</option>
+                        <option value="TS066">TS066</option>
+                        <option value="TS067">TS067</option>
+                        <option value="TS068">TS068</option>
+                        <option value="TS069">TS069</option>
+                        <option value="TS070">TS070</option>
+                        <option value="TS071">TS071</option>
+                        <option value="TS074">TS074</option>
+                        <option value="TS075">TS075</option>
+                        <option value="TS076">TS076</option>
+                        <option value="TS078">TS078</option>
+                        <option value="TS080">TS080</option>
+                        <option value="TS081">TS081</option>
+                        <option value="TS082">TS082</option>
+                        <option value="TS084">TS084</option>
+                        <option value="TS085">TS085</option>
+                        <option value="TS086">TS086</option>
+                        <option value="TS087">TS087</option>
+                        <option value="TS145">TS145</option>
+                        <option value="TS146">TS146</option>
+                        <option value="TS147">TS147</option>
+                        <option value="TS148">TS148</option>
+                        <option value="TS149">TS149</option>
+                        <option value="TS150">TS150</option>
+                        <option value="TS151">TS151</option>
+                        <option value="TS156">TS156</option>
+                    </select>
+                </div>
+                <div class="ui-block-d">
+                   <select name="P63680N" id="P63680N" onChange="storeData(this.name,this.value)">
+                 	<option value=" "> </option>
+                    <option value="a">a- Planned measurement was not made</option>
+                    <option value="b">b- Sample broken/spilled in shipment </option>
+                    <option value="e">e- Required equipment not functional or available </option>
+                    <option value="f">f- Sample discarded: improper filter used </option>
+                    <option value="x">x- Result failed, quality assurance review </option>
+                  </select>
+                </div>
+            </div>
+            
+                <label for="P65225">Transparency:</label>
+                <div class="ui-grid-c">
+                <div class="ui-block-a">
+                    <input type="number" name="P65225" id="P65225" onChange="storeData(this.name,this.value)" placeholder="90 +/- 30deg" />
+                </div>
+                <div class="ui-block-b">
+                    <select name="P65225R" id="P65225R" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="E">E</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="A">A</option>
+                        <option value="V">V</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                    </select>
+                </div>
+                <div class="ui-block-c">
+                    <select name="P65225M" id="P65225M" onChange="storeData(this.name,this.value)">
+                        <option value=" "> </option>
+                        <option value="TTUBE">TTUBE</option>
+                    </select>
+                </div>
+                <div class="ui-block-d">
+                    <select name="P65225N" id="P65225N" onChange="storeData(this.name,this.value)">
+                 	<option value=" "> </option>
+                    <option value="a">a- Planned measurement was not made</option>
+                    <option value="b">b- Sample broken/spilled in shipment </option>
+                    <option value="e">e- Required equipment not functional or available </option>
+                    <option value="f">f- Sample discarded: improper filter used </option>
+                    <option value="x">x- Result failed, quality assurance review </option>
+                  </select>
+                </div>
+            </div>
+            </div><!--hide class ends-->
+            <div id="bedloadAdditionalFields">
+            	<label for="P30333">Bag mesh size:</label>
+            	 <input type="number" name="P30333" id="P30333" onChange="storeData(this.name,this.value)"/>
+                <label for="P82073">Starting time:</label>
+            	 <input type="time" name="P82073" id="P82073" onChange="storeData(this.name,this.value)"/>
+                <label for="P82074">Ending time:</label>
+            	 <input type="time" name="P82074" id="P82074" onChange="storeData(this.name,this.value)"/>
+                <label for="P04117">Tether line used:</label>
+            	 <input type="number" name="P04117" id="P04117" onChange="storeData(this.name,this.value)"/>
+                <label for="P04118">Composite samples in cross-sectional bedload measurement:</label>
+            	 <input type="number" name="P04118" id="P04118" onChange="storeData(this.name,this.value)"/>
+                <label for="P04119">Verticals in composite samples:</label>
+            	 <input type="number" name="P04119" id="P04119" onChange="storeData(this.name,this.value)"/>
+                <label for="P04120">Rest time on bed for bedload samples:</label>
+            	 <input type="number" name="P04120" id="P04120" onChange="storeData(this.name,this.value)"/>
+                <label for="P04121">Horizontal width of vertical:</label>
+            	 <input type="number" name="P04121" id="P04121" onChange="storeData(this.name,this.value)"/>
+            </div>
+        </form>
+    </div>
+    <div data-role="footer">
+        <button data-icon="arrow-r" id="xmlNext" data-iconpos="right">Next</button>
+    </div>
+</div>
+<div data-role="page" id="multiSet">
+    <div data-role="header" data-add-back-btn="true">
+        	<h1>Select a sample set</h1>
+
+    </div>
+    <div data-role="content" id="sampleSets"></div>
     <div data-role="footer" data-position="fixed">
-		<button data-icon="plus" data-iconpos="right" id="addSampleSet" data-theme="i">Add Sample</button>  
-	</div>
-    
-    
-    
-   
+        <button data-icon="plus" data-iconpos="right" id="addSampleSet" data-mini="false" data-theme="i">Add Sample</button>
+    </div>
 </div>
 
+
+<div data-role="page" id="setProperties" data-add-back-btn="true">
+  <div data-role="header">
+  	<h1 id='setHeader'></h1>
+  </div>
+  <div data-role="content">
+	  <div id="multiAtributes">
+      		<form id='setAtributesForm'>
+                <label for="method">Select Methods:</label>
+                <select name="method" onBlur="storeData(this.name,this.value)">
+                    <option value="EDI">EDI</option>
+                    <option value="EWI">EWI</option>
+                </select>
+                <label for="containersCuantity">Add containers to set:</label>
+                <input type="number" name="containersCuantity" id="containersCuantity" onBlur="storeData(this.name,this.value)" min="1" max="20" value="1"/>
+                <div class="hide">
+                <select name="compositeOrIndividual" id="compositeOrIndividual" onBlur="storeData(this.name,this.value)">
+                    <option value="compsite">Composite the containers</option>
+                    <option value="individual">Individual analysis of containers</option>
+                </select>
+                </form>
+                </div>
+            </div>
+   <!--div class="hide"-->
+             <h4>Analyses Requested:(Applies to all samples)</h4>
+			<form id='analysesForm'>
+                <label for="analysesC">Concentration</label>
+                <input type="checkbox" name="analysis" id="analysesC" value="C" onClick="chkBox(this.id,this.value)" />
+                <label for="analysesSF">Sand-Fine break**</label>
+                <input type="checkbox" name="analysis" id="analysesSF" value="SF" onClick="chkBox(this.id,this.value)" />
+                <label for="analysesSA">Sand Analysis**</label>
+                <input type="checkbox" name="analysis" id="analysesSA" value="SA" onClick="chkBox(this.id,this.value)" />
+                <label for="analysesT">Turbidity</label>
+                <input type="checkbox" name="analysis" id="analysesT" value="T" onClick="chkBox(this.id,this.value)" />
+                <label for="analysesLOI">Loss-on-ignition**</label>
+                <input type="checkbox" name="analysis" id="analysesLOI" value="LOI" onClick="chkBox(this.id,this.value)" />
+                <label for="analysesDS">Dissolved Solids</label>
+                <input type="checkbox" name="analysis" id="analysesDS" value="DS" onClick="chkBox(this.id,this.value)" />
+                <label for="analysesSC">Specific Conductance</label>
+                <input type="checkbox" name="analysis" id="analysesSC" value="SC" onClick="chkBox(this.id,this.value)" />
+                <label for="analysesZ">Full-size fractions**</label>
+                <input type="checkbox" name="analysis" id="analysesZ" value="Z" onClick="chkBox(this.id,this.value)" />
+           	</form>
+           </div>
+  <!--/div-->
+  
+  <span>(**)Possible add-on analysis for individual containers.</span>
+  <div data-role="footer" data-position="fixed">
+      <div class="ui-grid-b">
+       <div class="ui-block-a"></div>
+       <div class="ui-block-b"></div>
+       <div class="ui-block-c"><a id="linkToContainers" data-icon="arrow-r" data-iconpos="right" data-role="button" data-theme="e" >Next</a>
+    </div>
+    </div>
+   </div>
+</div>
 
 </body>
 </html>
