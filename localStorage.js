@@ -22,11 +22,10 @@ function initialize() {
                 $(ls.key(i)).prop('checked', true);
                 
             }
-            console.log('Got'+' ' +this.key+' '+'from local storage');
+            console.log('Got'+' ' +ls.key(i)+' '+'from local storage');
         }
     }
 	$('#page2').on('pageinit', function(){
-	
 
 			$('#sampleProperties').validate({
 					rules:{
@@ -93,7 +92,7 @@ function initialize() {
 			if(ls.getItem('#singleMultiContainer')== 'single'){
 			$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);	
 			}
-			$.mobile.changePage('sampleParametersPage');
+			$.mobile.changePage('#sampleParametersPage');
 		}
 		});
 	});
@@ -110,6 +109,14 @@ function initialize() {
 				P00010:'required',
 				P00063:'required',
 				P00065:'required'
+			},
+			submitHandler: function (form) {
+				   // serialize and join data for all forms
+				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize()
+				   // ajax submit
+				   storeData(ls.getItem('#set'),data);
+				   alert(data);
+				   return false;
 			}
 			});
 		$('#xmlNext').click(function () {
@@ -124,8 +131,9 @@ function initialize() {
 					containerCounter++;	
 				}
 				$('html, body').animate({ scrollTop: 0 }, 0);
-			
+				
 				loopTroughContainers();
+				
 			}
 				
 		});
@@ -137,23 +145,7 @@ function initialize() {
     });
 
 	
-    $('#xmlNext').click(function () {
-		
-		if(ls.getItem('#singleMultiContainer') == 'multi'){
-			
-			$('#sampleParametersPageHeader').text('Set'+' '+ ls.getItem('#set')+', '+'container'+' '+ containerCounter);
-			containerCounter++;	
-		}else if(ls.getItem('#singleMultiContainer')=='single'){
-			
-			$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
-			containerCounter++;	
-		}
-		$('html, body').animate({ scrollTop: 0 }, 0);
-	
-        loopTroughContainers();
-		
-		
-    });
+    
 	//$('#beginDate').change(function(){
 	//	beginDate.val(this.value);
 	//});
@@ -238,23 +230,15 @@ function setButtons(cuantity) {
     createButton(String.fromCharCode(setLetter));
 }
 
-//Save all samples parameters
-function saveSamples(station,setId, containerId) {
-    for (i = 0; i < ls.length; i++) {
-        if (!setRegex.test(ls.key(i))) {
-            storeData(station+'_'+setId + '_' + containerId + '_' + ls.key(i), ls.getItem(ls.key(i)));
-        }
-    }
-}
 //loop trought the desired amount of container
 function loopTroughContainers(){
 	 
 	if(containerCounter<=ls.getItem('#containersCuantity')){
-				saveSamples(ls.getItem('#station'),ls.getItem('#set'), containerCounter);
+				$('#sampleParameters2').submit();
 				$.mobile.changePage('#sampleParametersPage');
 	}
 				if(containerCounter > ls.getItem('#containersCuantity')){
-					saveSamples(ls.getItem('#station'),ls.getItem('#set'), containerCounter);
+					$('#sampleParameters2').submit();;
 					if(ls.getItem('#singleMultiContainer') == 'multi'){
 					$.mobile.changePage('#multiSet');
 					}else if(ls.getItem('#singleMultiContainer') == 'single'){
