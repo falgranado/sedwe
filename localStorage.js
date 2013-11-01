@@ -14,10 +14,10 @@ function initialize() {
     } else if (Modernizr.localstorage) {
         alert("This application may store data on your device");
     }
-    if (ls.length != 0) {
+    if (ls.length !== 0) {
         for (i = 0; i < ls.length; i++) {
             getData(ls.key(i));
-            if ($(ls.key(i)).is(':checkbox') == true) {
+            if ($(ls.key(i)).is(':checkbox') === true) {
                 
                 $(ls.key(i)).prop('checked', true);
                 
@@ -54,7 +54,7 @@ function initialize() {
 					//Calls setButtons Function to add content to on SampleSet page
 					for(i=0;i<ls.getItem('#containerCuantity');i++){
 						setButtons(setLetter);
-						setLetter++
+						setLetter++;
 					}
 				}
 			});
@@ -112,7 +112,7 @@ function initialize() {
 			},
 			submitHandler: function (form) {
 				   // serialize and join data for all forms
-				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize()
+				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize();
 				   // ajax submit
 				   storeData(ls.getItem('#set'),data);
 				   alert(data);
@@ -167,9 +167,9 @@ function rmvData(id) {
 }
 //Validates Check boxes
 function chkBox(id, value) {
-    if (document.getElementById(id).checked == true) {
+    if (document.getElementById(id).checked === true) {
         storeData(id, value);
-    } else if (document.getElementById(id).checked == false) {
+    } else if (document.getElementById(id).checked === false) {
         rmvData('#' + id);
     }
 }
@@ -204,7 +204,7 @@ function getSample(set) {
     for (i = 0; i < ls.length; i++) {
         if (setRegex.test(ls.key(i))) {
             var param = getData(ls.key(i));
-            if ($(ls.key(i)).is(':checkbox') == true) {
+            if ($(ls.key(i)).is(':checkbox') === true) {
                 $(ls.key(i)).prop('checked', true);
             }
         }
@@ -238,7 +238,7 @@ function loopTroughContainers(){
 				$.mobile.changePage('#sampleParametersPage');
 	}
 				if(containerCounter > ls.getItem('#containersCuantity')){
-					$('#sampleParameters2').submit();;
+					$('#sampleParameters2').submit();
 					if(ls.getItem('#singleMultiContainer') == 'multi'){
 					$.mobile.changePage('#multiSet');
 					}else if(ls.getItem('#singleMultiContainer') == 'single'){
@@ -249,7 +249,7 @@ function loopTroughContainers(){
 	rmvData(ls.getItem('#beginTime'));
 }
 function addOnLogic(){
-	if($('#analysesZ:checked') == true){
+	if($('#analysesZ:checked') === true){
 		$('#fullSizeFraction').hide();	
 	}
 }
