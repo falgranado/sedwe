@@ -3,6 +3,7 @@ var setLetter = 65;
 var setRegex = /#[0123456789]*_[A-Z]*_[0123456789]*_#|set/;
 var containerCounter=1;
 var beginDate = $('#beginDate1');
+var appCache = window.applicationCache;
 
 
 function initialize() {
@@ -154,8 +155,15 @@ function initialize() {
 
 //Store the data as a key|value pair in localStorage
 function storeData(id, value) {
-    ls.setItem('#' + id, value);
+   
+   try{ ls.setItem('#' + id, value);
 	console.log('Saved '+id+':'+value);
+   }catch (exception) {
+        if ((exception != QUOTA_EXCEEDED_ERR) && 
+            (exception != NS_ERROR_DOM_QUOTA_REACHED)) {
+        throw exception;
+        }
+      }
 }
 //get the data from localStorage
 function getData(id) {
@@ -272,6 +280,7 @@ function login(text){
 $(document).ready(function (e) {
  	//login(ls.getItem('#userType'));
 	//ls.clear();
+	console.log(appCache.status);
 	initialize();
 	
 	
