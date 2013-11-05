@@ -94,6 +94,13 @@ function initialize() {
 		});
 	});
 	$('#sampleParametersPage').on('pageinit',function(){
+		if(ls.getItem('#singleMultiContainer') == 'multi'){
+				$('#sampleParametersPageHeader').text(ls.getItem('#set')+', '+'container'+' '+ containerCounter);
+				//containerCounter++;	
+			}else if(ls.getItem('#singleMultiContainer')=='single'){	
+				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
+				//containerCounter++;	
+			}
 		$('#sampleParameters').validate({
 			rules:{
 				beginDate:'required',
@@ -101,6 +108,7 @@ function initialize() {
 			}
 			});	
 		$('#sampleParameters2').validate({
+			
 			rules:{
 				P00061:'required',
 				P00010:'required',
@@ -111,7 +119,7 @@ function initialize() {
 				   // serialize and join data for all forms
 				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize();
 				   // ajax submit
-				   storeData(ls.getItem('#set'),data);
+				   storeData(ls.getItem('#set')+containerCounter,data);
 				   alert(data);
 				   return false;
 			}
@@ -119,11 +127,11 @@ function initialize() {
 	$('#xmlNext').click(function () {
 		if($('#sampleParameters').valid() && $('#sampleParameters2').valid()){
 			if(ls.getItem('#singleMultiContainer') == 'multi'){
-				$('#sampleParametersPageHeader').text('Set'+' '+ ls.getItem('#set')+', '+'container'+' '+ containerCounter);
-				containerCounter++;	
+				$('#sampleParametersPageHeader').text(ls.getItem('#set')+', '+'container'+' '+ containerCounter);
+				//containerCounter++;	
 			}else if(ls.getItem('#singleMultiContainer')=='single'){	
 				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
-				containerCounter++;	
+				//containerCounter++;	
 			}
 			$('html, body').animate({ scrollTop: 0 }, 0);
 			loopTroughContainers();		
@@ -161,7 +169,7 @@ function storeData(id, value) {
         }
       }
 }
-//get the data from localStorage
+//get the data from localStorage and send it to the form
 function getData(id) {
     $(id).val(ls.getItem(id));
 }
@@ -231,10 +239,10 @@ function changeSet(id) {
 
 //loop trought the desired amount of container
 function loopTroughContainers(){
-	 
+	 console.log('Container counter = '+containerCounter);
 	if(containerCounter<=ls.getItem('#containersCuantity')){
-				$('#sampleParameters2').submit();//Submit handler takes care of storing data
-				$.mobile.changePage('#sampleParametersPage');
+				$('#sampleParameters2').submit();
+				containerCounter++;//Submit handler takes care of storing data
 	}
 				if(containerCounter > ls.getItem('#containersCuantity')){
 					$('#sampleParameters2').submit();
@@ -264,13 +272,14 @@ function login(text){
 	}
 }
 function getJsonFromUrl() {
-  var query = location.search.substr(1);
+  var query = ls.getItem('#SNGL1');
   var data = query.split("&");
   var result = {};
   for(var i=0; i<data.length; i++) {
     var item = data[i].split("=");
     result[item[0]] = item[1];
   }
+  console.log(result);
   return result;
 }
 
@@ -282,6 +291,7 @@ $(document).ready(function (e) {
 	//ls.clear();
 	console.log(appCache.status);
 	initialize();
+	getJsonFromUrl();
 	
 	
   });
