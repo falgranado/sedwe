@@ -52,11 +52,7 @@ function initialize() {
 						changeSet(ls.getItem('#set'));
 						$('#multiAtributes').hide();
 					}
-					//Calls setButtons Function to add content to on SampleSet page
-					for(i=0;i<ls.getItem('#containerCuantity');i++){
-						setButtons(setLetter);
-						setLetter++;
-					}
+					
 				}
 			});
 	});
@@ -120,32 +116,32 @@ function initialize() {
 				   return false;
 			}
 			});
-		$('#xmlNext').click(function () {
-			if($('#sampleParameters').valid() && $('#sampleParameters2').valid()){
-				if(ls.getItem('#singleMultiContainer') == 'multi'){
-					
-					$('#sampleParametersPageHeader').text('Set'+' '+ ls.getItem('#set')+', '+'container'+' '+ containerCounter);
-					containerCounter++;	
-				}else if(ls.getItem('#singleMultiContainer')=='single'){
-					
-					$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
-					containerCounter++;	
-				}
-				$('html, body').animate({ scrollTop: 0 }, 0);
-				
-				loopTroughContainers();
-				
+	$('#xmlNext').click(function () {
+		if($('#sampleParameters').valid() && $('#sampleParameters2').valid()){
+			if(ls.getItem('#singleMultiContainer') == 'multi'){
+				$('#sampleParametersPageHeader').text('Set'+' '+ ls.getItem('#set')+', '+'container'+' '+ containerCounter);
+				containerCounter++;	
+			}else if(ls.getItem('#singleMultiContainer')=='single'){	
+				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
+				containerCounter++;	
 			}
+			$('html, body').animate({ scrollTop: 0 }, 0);
+			loopTroughContainers();		
+		}
 				
+	     });
+     });
+	$('#multiSet').on('pageinit', function(){
+		for(i=0;i<ls.getItem('#containerCuantity');i++){
+						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter)));
+						setLetter++;
+					}
+		$('#addSampleSet').click(function (e) {
+			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter)));
+			setLetter++;
 		});
+
 	});
-    $('#addSampleSet').click(function (e) {
-
-        setButtons(setLetter);
-        setLetter++;
-    });
-
-	
     
 	//$('#beginDate').change(function(){
 	//	beginDate.val(this.value);
@@ -197,10 +193,10 @@ function setTitle(id, value) {
 function createButton(buttonName) {
     var button = '<a href="#setProperties" onClick="changeSet(this.id)" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + buttonName + '"' + '>' +
         '<span class="ui-btn-inner ui-btn-corner-all">' +
-        '<span class="ui-btn-text">' + 'Set' + ' ' + buttonName + '</span>' +
+        '<span class="ui-btn-text">' + buttonName + '</span>' +
         '</span>' +
         '</a>';
-    $('#sampleSets').append(button);
+    return button;
 }
 
 function removeButton(buttonName) {
@@ -222,7 +218,7 @@ function getSample(set) {
 function changeSet(id) {
 	if(ls.getItem('#singleMultiContainer') == 'multi'){
     storeData('set', id);
-	$('#setHeader').text('Set'+' '+id);
+	$('#setHeader').text(id);
 	}
 	else if(ls.getItem('#singleMultiContainer') == 'single'){
 	storeData('set','SNGL');
@@ -233,16 +229,11 @@ function changeSet(id) {
 	}
 }
 
-//Creates buttons depending on the number entered by the user
-function setButtons(cuantity) {
-    createButton(String.fromCharCode(setLetter));
-}
-
 //loop trought the desired amount of container
 function loopTroughContainers(){
 	 
 	if(containerCounter<=ls.getItem('#containersCuantity')){
-				$('#sampleParameters2').submit();
+				$('#sampleParameters2').submit();//Submit handler takes care of storing data
 				$.mobile.changePage('#sampleParametersPage');
 	}
 				if(containerCounter > ls.getItem('#containersCuantity')){
@@ -265,14 +256,23 @@ function addOnLogic(){
 function login(text){
 	storeData('userType',text);
 	//alert(text);
-	if(ls.getItem('#userType') == 'Observer'){
+	if(text == 'Observer'){
 		//alert(text);
 		$(' .hide,.div div select ui-block-c,.ui-block-d').hide();
 		
 		$('#messageToLab').attr('placeholder','Remarks');
 	}
 }
-
+function getJsonFromUrl() {
+  var query = location.search.substr(1);
+  var data = query.split("&");
+  var result = {};
+  for(var i=0; i<data.length; i++) {
+    var item = data[i].split("=");
+    result[item[0]] = item[1];
+  }
+  return result;
+}
 
 
 
@@ -285,24 +285,3 @@ $(document).ready(function (e) {
 	
 	
   });
-$('#page2').bind('pageinit', function(){
-	
-});
-/*$('#page2').bind('pageinit',function(){
-  $('#sampleProperties').validate({
-	rules:{
-		station: 'required',
-		date: 'required',
-		singleMultiContainer: 'required',
-		containerCuantity:{
-			required:'true',
-			minlength:1,
-			maxlength:40
-		}
-	},
-	 submitHandler: function(form) {
-   					alert('Success!');
-  					}
-			
-  });
- });*/
