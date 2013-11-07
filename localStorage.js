@@ -52,10 +52,16 @@ function initialize() {
 						changeSet(ls.getItem('#set'));
 						$('#multiAtributes').hide();
 					}
-					
 				}
+				
 			});
 	});
+	
+	$('#currentSamplePage').on('pageinit',function(){
+		$('#currentSamples').append(createButton(ls.getItem('#station'),'#multiSet'));
+		
+	});
+	
 	$('#setProperties').on('pageinit',function(){
 		
 		$('#setAtributesForm').validate({
@@ -119,8 +125,9 @@ function initialize() {
 				   // serialize and join data for all forms
 				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize();
 				   // ajax submit
-				   storeData(ls.getItem('#set')+containerCounter,data);
-				   alert(data);
+				   console.log($('form select[name=station] option:selected').val());
+				   storeData($('form select[name=station] option:selected').val()+ls.getItem('#set')+containerCounter,data);
+				   //alert(data);
 				   return false;
 			}
 			});
@@ -133,19 +140,20 @@ function initialize() {
 				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
 				//containerCounter++;	
 			}
-			$('html, body').animate({ scrollTop: 0 }, 0);
-			loopTroughContainers();		
+			loopTroughContainers();	
+			 $("html, body").animate({ scrollTop: 0 }, "slow");
+				
 		}
 				
 	     });
      });
 	$('#multiSet').on('pageinit', function(){
 		for(i=0;i<ls.getItem('#containerCuantity');i++){
-						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter)));
+						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter),'#setProperties'));
 						setLetter++;
 					}
 		$('#addSampleSet').click(function (e) {
-			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter)));
+			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter),'#setProperties'));
 			setLetter++;
 		});
 
@@ -168,11 +176,13 @@ function storeData(id, value) {
         throw exception;
         }
       }
+	  
 }
 //get the data from localStorage and send it to the form
 function getData(id) {
     $(id).val(ls.getItem(id));
 }
+//
 //Eliminates the data of the local Storage
 function rmvData(id) {
     ls.removeItem(id);
@@ -198,8 +208,8 @@ function setTitle(id, value) {
 	}
 }
 //Create button elements and appends it to the div block
-function createButton(buttonName) {
-    var button = '<a href="#setProperties" onClick="changeSet(this.id)" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + buttonName + '"' + '>' +
+function createButton(buttonName,hrefLink) {
+    var button = '<a href="'+hrefLink+'" onClick="changeSet(this.id)" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + buttonName + '"' + '>' +
         '<span class="ui-btn-inner ui-btn-corner-all">' +
         '<span class="ui-btn-text">' + buttonName + '</span>' +
         '</span>' +
@@ -240,9 +250,10 @@ function changeSet(id) {
 //loop trought the desired amount of container
 function loopTroughContainers(){
 	 console.log('Container counter = '+containerCounter);
+	 containerCounter++;
 	if(containerCounter<=ls.getItem('#containersCuantity')){
-				$('#sampleParameters2').submit();
-				containerCounter++;//Submit handler takes care of storing data
+				$('#sampleParameters2').submit();//Submit handler takes care of storing data
+				
 	}
 				if(containerCounter > ls.getItem('#containersCuantity')){
 					$('#sampleParameters2').submit();
@@ -271,15 +282,18 @@ function login(text){
 		$('#messageToLab').attr('placeholder','Remarks');
 	}
 }
-function getJsonFromUrl() {
-  var query = ls.getItem('#SNGL1');
+function getJsonFromUrl(station,set,container) {
+  var query = ls.getItem('#SNGL1'); 
   var data = query.split("&");
   var result = {};
   for(var i=0; i<data.length; i++) {
-    var item = data[i].split("=");
+    var item = data[i].split("="); 
+	$('#'+item[0]).val(item[1]);
     result[item[0]] = item[1];
+	//setDataInForm(result[item[0]],item[1]);
+	//console.log('Array index ' + i + ' ' + result[item[0]]+ item[1]);
   }
-  console.log(result);
+  
   return result;
 }
 

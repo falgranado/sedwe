@@ -23,6 +23,9 @@
     color:red;
 	block;
 }
+button{
+	margin: 0 auto;
+}
 </style>
 </head> 
 
@@ -66,7 +69,7 @@
         <div data-role="listview">
         <li><a href="#newSample" data-transition="slide">Add sets or groups</a>
         </li>
-        <li><a href="#" data-transition="slide">Current</a>
+        <li><a href="#currentSamplePage" data-transition="slide">Current</a>
         </li>
         <li><a href="#" data-transition="slide">History</a>
         </li>
@@ -83,7 +86,18 @@
     <div data-role="footer">
         
 	</div>
-    <!--
+    <div data-role="page" id="currentSamplePage" data-add-back-btn="true">
+      <div data-role="header" data-position="fixed">
+        <h1>Current Samples</h1>
+      </div>
+      <div data-role="content">
+      	<div id='currentSamples'></div>
+      </div>
+      <div data-role="footer">
+        <h4>Footer</h4>
+      </div>
+    </div>
+<!--
     ###################################################
 	##########         New Sample Page       ##########
     ###################################################
@@ -108,6 +122,11 @@
 
     </div>
 </div>
+<!--
+#######################################################
+###########   Sample Information Page     #############
+#######################################################
+-->
 <div data-role="page" id="page2" data-add-back-btn="true">
     <div data-role="header" data-position="fixed">
         	<h1 id="page2Header"></h1>
@@ -181,7 +200,7 @@
                	 	<option value="single">Single container sample</option>
                	 	<option value="multi">Multiple sets container</option>
            		</select>
-            	</div>
+           	  </div>
             </div>
         </form>
         
@@ -191,8 +210,12 @@
       -->
     </div>
     <div data-role="footer" data-position="fixed">
-        <div data-inline="true" data-type="horizontal"><a href="#" data-icon="bars" data-iconpos="notext" data-inline="true" data-role="button">Menu</a><a id="addSampleParameters" data-icon="arrow-r" data-iconpos="right" data-inline="true" data-role="button" data-theme="e">Next</a>
-        </div>
+         <div class="ui-grid-b">
+           <div class="ui-block-a"></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-iconpos="notext" data-inline="true" data-role="button">Menu</a></div>
+           <div class="ui-block-c"><a id="addSampleParameters" data-icon="arrow-r" data-iconpos="right" data-inline="true" data-role="button" data-theme="e">Next</a>
+       	   </div>
+         </div>
     </div>
 </div>
 
@@ -536,7 +559,7 @@
                         <option value="V">V</option>
                         <option value="S">S</option>
                         <option value="U">U</option>
-                    </select>
+              </select>
               </div>
              
             <div class="ui-block-a">
@@ -553,7 +576,7 @@
                         <option value="V">V</option>
                         <option value="S">S</option>
                         <option value="U">U</option>
-                    </select>
+              </select>
             </div>
             </div>
             <div class="ui-grid-c">
@@ -579,13 +602,13 @@
                         <option value="V">V</option>
                         <option value="S">S</option>
                         <option value="U">U</option>
-                    </select>
+                  </select>
                 </div>
                 <div class="ui-block-c">
                  
                 </div>
                 <div class="ui-block-d"></div>
-               </div>
+              </div>
              <div class="ui-grid-c">
              	<label for="P00004">Stream width:</label>
            		<div class="ui-block-a">
@@ -605,7 +628,7 @@
                         <option value="U">U</option>
                     </select>
                 </div>
-               </div>
+              </div>
                 
             <label for="P00064">Mean depth of stream:</label>
             <div class="ui-grid-c">
@@ -625,8 +648,8 @@
                         <option value="S">S</option>
                         <option value="U">U</option>
                     </select>
-                    </div>
-                </div>
+              </div>
+              </div>
             </div>
             <label for="messageToLab">Field sample comment:</label>
             <input type="text" placeholder="Message to laboratory" name="messageToLab" id="messageToLab" onChange="storeData(this.name,this.value)" />
@@ -687,7 +710,7 @@
                 </div>
             </div>
             <!-- /grid-c -->
-           </div><!--hide class-->
+          </div><!--hide class-->
                 <label for="P00010">Water Tempeture:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
@@ -708,7 +731,7 @@
                         <option value="S">S</option>
                         <option value="U">U</option>
                     </select>
-                    </div>
+                  </div>
                 </div>
                 <div class="ui-block-c">
                 <div class="hide">
@@ -718,7 +741,7 @@
                         <option value="TMH02">THM02</option>
                         <option value="TMH03">THM03</option>
                     </select>
-                    </div>
+                  </div>
                 </div>
                 <div class="ui-block-d">
                  <select name="P00010N" id="P00010N" onChange="storeData(this.name,this.value)">
@@ -781,7 +804,7 @@
                         <option value=" "> </option>
                         <option value="THM04">THM04</option>
                         <option value="THM05">THM05</option>
-                     </select>
+                  </select>
                 </div>
                 <div class="ui-block-d">
                     <select name="P00020N" id="P00020N" onChange="storeData(this.name,this.value)">
@@ -794,7 +817,7 @@
                   </select>
                 </div>
             </div>
-            </div><!--hide class ends-->
+          </div><!--hide class ends-->
                 <label for="P00065">Gage height:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
@@ -815,7 +838,7 @@
                         <option value="S">S</option>
                         <option value="U">U</option>
                     </select>
-                    </div>
+                  </div>
                 </div>
                 <div class="ui-block-c">
                 <div class="hide">
@@ -838,7 +861,7 @@
                         <option value="STRAN">STRAN</option>
                         <option value="WWG">WWG</option>
                     </select>
-                    </div>
+                  </div>
                 </div>
             </div>
             <!--/grid c-->
@@ -1131,7 +1154,7 @@
                   </select>
                 </div>
             </div>
-            </div><!--hide class ends-->
+          </div><!--hide class ends-->
             <div id="bedloadAdditionalFields">
             	<label for="P30333">Bag mesh size:</label>
             	 <input type="number" name="P30333" id="P30333" onChange="storeData(this.name,this.value)"/>
@@ -1152,8 +1175,14 @@
             </div>
         </form>
     </div>
-    <div data-role="footer">
+    <div data-role="footer" data-position="fixed">
+     <div class="ui-grid-b">
+       <div class="ui-block-a"></div>
+       <div class="ui-block-b"></div>
+       <div class="ui-block-c">
         <button data-icon="arrow-r" id="xmlNext" data-iconpos="right">Next</button>
+       </div>
+     </div>
     </div>
 </div>
 <div data-role="page" id="multiSet" data-add-back-btn="true">
@@ -1186,9 +1215,9 @@
                     <option value="compsite">Composite the containers</option>
                     <option value="individual">Individual analysis of containers</option>
                 </select>
-                </form>
-                </div>
-            </div>
+        </form>
+    </div>
+  </div>
    <!--div class="hide"-->
              <h4>Analyses Requested:(Applies to all samples)</h4>
 			<form id='analysesForm'>
@@ -1209,7 +1238,7 @@
                 <label for="analysesZ">Full-size fractions**</label>
                 <input type="checkbox" name="analysis" id="analysesZ" value="Z" onClick="chkBox(this.id,this.value)" />
            	</form>
-           </div>
+</div>
   <!--/div-->
   
   <span>(**)Possible add-on analysis for individual containers.</span>
@@ -1220,8 +1249,8 @@
        <div class="ui-block-c"><a id="linkToContainers" data-icon="arrow-r" data-iconpos="right" data-role="button" data-theme="e" >Next</a>
     </div>
     </div>
-   </div>
 </div>
-
+</div>
+</div>
 </body>
 </html>
