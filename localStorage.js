@@ -17,7 +17,7 @@ function initialize() {
     }
     if (ls.length !== 0) {
         for (i = 0; i < ls.length; i++) {
-            getData(ls.key(i));
+            load_data(ls.key(i));
             if ($(ls.key(i)).is(':checkbox') === true) {
                 
                 $(ls.key(i)).prop('checked', true);
@@ -126,7 +126,7 @@ function initialize() {
 				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize();
 				   // ajax submit
 				   console.log($('form select[name=station] option:selected').val());
-				   storeData($('form select[name=station] option:selected').val()+ls.getItem('#set')+containerCounter,data);
+				   save_data($('form select[name=station] option:selected').val()+ls.getItem('#set')+containerCounter,data);
 				   //alert(data);
 				   return false;
 			}
@@ -166,7 +166,7 @@ function initialize() {
 }
 
 //Store the data as a key|value pair in localStorage
-function storeData(id, value) {
+function save_data(id, value) {
    
    try{ ls.setItem('#' + id, value);
 	console.log('Saved '+id+':'+value);
@@ -179,7 +179,7 @@ function storeData(id, value) {
 	  
 }
 //get the data from localStorage and send it to the form
-function getData(id) {
+function load_data(id) {
     $(id).val(ls.getItem(id));
 }
 //
@@ -190,14 +190,14 @@ function rmvData(id) {
 //Validates Check boxes
 function chkBox(id, value) {
     if (document.getElementById(id).checked === true) {
-        storeData(id, value);
+        save_data(id, value);
     } else if (document.getElementById(id).checked === false) {
         rmvData('#' + id);
     }
 }
 //Sets the title of the header page
 function setTitle(id, value) {
-	storeData(id,value);
+	save_data(id,value);
 	$('#page2Header').text(ls.getItem('#'+id));
 	if(ls.getItem('#'+id) == 'Bedload'){
 		$('.suspendedAdditionalFields, .bottomAdditionalFields').hide();
@@ -225,7 +225,7 @@ function removeButton(buttonName) {
 function getSample(set) {
     for (i = 0; i < ls.length; i++) {
         if (setRegex.test(ls.key(i))) {
-            var param = getData(ls.key(i));
+            var param = load_data(ls.key(i));
             if ($(ls.key(i)).is(':checkbox') === true) {
                 $(ls.key(i)).prop('checked', true);
             }
@@ -235,11 +235,11 @@ function getSample(set) {
 //Changes the set and the header
 function changeSet(id) {
 	if(ls.getItem('#singleMultiContainer') == 'multi'){
-    storeData('set', id);
+    save_data('set', id);
 	$('#setHeader').text(id);
 	}
 	else if(ls.getItem('#singleMultiContainer') == 'single'){
-	storeData('set','SNGL');
+	save_data('set','SNGL');
 	ls.setItem('#containersCuantity',ls.getItem('#containerCuantity'));
 	$('#setHeader').text(ls.getItem('#containerCuantity')+' '+'single container(s)');
 	
@@ -273,7 +273,7 @@ function addOnLogic(){
 }
 //Determines User type
 function login(text){
-	storeData('userType',text);
+	save_data('userType',text);
 	//alert(text);
 	if(text == 'Observer'){
 		//alert(text);

@@ -23,9 +23,12 @@
     color:red;
 	block;
 }
-button{
+.ui-button{
 	margin: 0 auto;
+}.ui-header .ui-title, .ui-footer .ui-title {
+margin: 0.6em 10% 0.8em !important;
 }
+
 </style>
 </head> 
 
@@ -36,7 +39,7 @@ button{
     -->
 <div data-role="page" id="userPage">
  <div data-role="header" data-position="fixed">
-        	<h1>SED_WE</h1>            
+        	<h3>SED_WE</h3>            
     </div>
   <div data-role="content"><h3>Select your role:</h3>
     <div data-role="listview">
@@ -51,7 +54,7 @@ button{
     </div>
   </div>
    <div data-role="footer" data-position="fixed">
-   		<h1> </h1>
+   		<h3> </h3>
     </div>
 </div>
 
@@ -61,7 +64,7 @@ button{
     -->
 <div data-role="page" id="HomePage" data-add-back-btn="true">
     <div data-role="header" data-position="fixed">
-        	<h1>Welcome [Name]</h1>
+        	<h3>Welcome [Name]</h3>
     </div>
     <div data-role="content">
         <div data-collapsed="false" data-content-theme="c" data-iconpos="right" data-role="collapsible" data-theme="a" data-collapsed-icon="plus" data-expanded-icon="minus" >
@@ -88,7 +91,7 @@ button{
 	</div>
     <div data-role="page" id="currentSamplePage" data-add-back-btn="true">
       <div data-role="header" data-position="fixed">
-        <h1>Current Samples</h1>
+        <h3>Current Samples</h3>
       </div>
       <div data-role="content">
       	<div id='currentSamples'></div>
@@ -104,7 +107,7 @@ button{
     -->
 <div data-role="page" id="newSample" data-add-back-btn="true">
     <div data-role="header"  data-position="fixed"> 
-        	<h1>Add new sample</h1>
+        	<h3>Add new sample</h3>
 
     </div>
     <div data-role="content">
@@ -140,7 +143,7 @@ button{
         -->
         <form id="sampleProperties">
             <label for="station">Select Station:</label>
-            <select  name="station" id="station" onBlur="storeData(this.id,this.value)" required="true">
+            <select  name="station" id="station" onBlur="save_data(this.id,this.value)" required="true">
                 <option value="50028000">Tanama River</option>
                 <option value="50010500">Rio Guajataca, Lares</option>
                 <option value="60008002">Example River2</option>
@@ -150,25 +153,25 @@ button{
             <div class="hide">
             <div class='suspendedAdditionalFields'>
             <label for="sampleMediumDropdown">Select sample medium:</label>
-            <select name="sampleMediumDropdown" id="sampleMediumDropdown" onBlur="storeData(this.name,this.value)">
+            <select name="sampleMediumDropdown" id="sampleMediumDropdown" onBlur="save_data(this.name,this.value)">
                 <option value="WS">WS(Surface Water)</option>
                 <option value="WSQ">WSQ(Surface Water QC)</option>
             </select>
             </div>
             <div class='bottomAdditionalFields'>
             <label for="sampleMediumDropdownBottom">Select sample medium</label>
-            <select name="sampleMediumDropdown" id="sampleMediumDropdownBottom" onBlur="storeData(this.name,this.value)">
+            <select name="sampleMediumDropdown" id="sampleMediumDropdownBottom" onBlur="save_data(this.name,this.value)">
                 <option value="SB">SB (bottom material)</option>
                 <option value="SBQ">SBQ (bottom material QC)</option>
             </select>
             </div>
             </div>
             <label for="date">Begin Date:</label>
-            <input name="date" id="beginDate" type="date" onChange="storeData(this.id,this.value)" />
+            <input name="date" id="beginDate" type="date" onChange="save_data(this.id,this.value)" />
 
             <div class="hide">
             <label for='EVENT'>Hydrologic event:</label>
-            <select name="EVENT" id="EVENT" onBlur="storeData(this.name,this.value)">
+            <select name="EVENT" id="EVENT" onBlur="save_data(this.name,this.value)">
                 <option value="1">1- Drought</option>
                 <option value="2">2- Spill</option>
                 <option value="3">3- Regulated Flow</option>
@@ -193,9 +196,9 @@ button{
             <div class="ui-grid-a">
            	 <label for="containerCuantity">Add a group of single container or sets of multiple samples: </label> 	 
              <div class="ui-block-a">
-             	<input type="number" min="1" value="1" max="40" id="containerCuantity" name="containerCuantity" onBlur="storeData(this.id,this.value)"/></div>
+             	<input type="number" min="1" value="1" max="40" id="containerCuantity" name="containerCuantity" onBlur="save_data(this.id,this.value)"/></div>
              <div class="ui-block-b">
-            	<select id="singleMultiContainer" name="singleMultiContainer"  onChange="storeData(this.id,this.value)">
+            	<select id="singleMultiContainer" name="singleMultiContainer"  onChange="save_data(this.id,this.value)">
                 	<option value="" selected>--Select Container or Set--</option>
                	 	<option value="single">Single container sample</option>
                	 	<option value="multi">Multiple sets container</option>
@@ -211,9 +214,9 @@ button{
     </div>
     <div data-role="footer" data-position="fixed">
          <div class="ui-grid-b">
-           <div class="ui-block-a"></div>
-           <div class="ui-block-b"><a href="#" data-icon="bars" data-iconpos="notext" data-inline="true" data-role="button">Menu</a></div>
-           <div class="ui-block-c"><a id="addSampleParameters" data-icon="arrow-r" data-iconpos="right" data-inline="true" data-role="button" data-theme="e">Next</a>
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-role="button">Menu</a></div>
+           <div class="ui-block-c"><a id="addSampleParameters" data-icon="arrow-r" data-iconpos="right" data-role="button" data-theme="e" >Next</a>
        	   </div>
          </div>
     </div>
@@ -232,13 +235,13 @@ button{
         <form id="sampleParameters">
             
             <label for="beginDate1">Begin Date:</label>
-            <input type="date" name="beginDate" id="beginDate1" onChange="storeData(this.name,this.value)" required/>
+            <input type="date" name="beginDate" id="beginDate1" onChange="save_data(this.name,this.value)" required/>
             <label for="beginTime">Begin Time:</label>
-            <input type="time" name="time" id="time" onChange="storeData(this.name,this.value)" required/>
+            <input type="time" name="time" id="time" onChange="save_data(this.name,this.value)" required/>
            
            <div class="hide">
             <label>Time Datum:</label>
-            <select name="timeDatum" id="timeDatum" onChange="storeData(this.name,this.value)">
+            <select name="timeDatum" id="timeDatum" onChange="save_data(this.name,this.value)">
                 <option value="SITEFILE">use default from SITEFILE</option>
                 <option value="AST">AST</option>
                 <option value="ADT">ADT</option>
@@ -270,15 +273,15 @@ button{
                     <legend>
                         <h4>Is this container broken?</h4>
                     </legend>
-                    <input type="radio" name="containerBroken" id="containerBroken0" value="Yes" onChange="storeData(this.name,this.value)" />
+                    <input type="radio" name="containerBroken" id="containerBroken0" value="Yes" onChange="save_data(this.name,this.value)" />
                     <label for="containerBroken0">Yes</label>
-                    <input type="radio" name="containerBroken" id="containerBroken1" value="No" onChange="storeData(this.name,this.value)" />
+                    <input type="radio" name="containerBroken" id="containerBroken1" value="No" onChange="save_data(this.name,this.value)" />
                     <label for="containerBroken1">No</label>
                 </fieldset>
             </div>
             <div class="hide">
             <label for="collectingAgency">Collecting Agency:</label>
-            <select name="collectingAgency" id="collectingAgency" onChange="storeData(this.name,this.value)">
+            <select name="collectingAgency" id="collectingAgency" onChange="save_data(this.name,this.value)">
                 <option value="USGS-WRD" selected>USGS-WRD</option>
                 <option value="USGS-GD">USGS-GD</option>
                 <option value="observer">Observer</option>
@@ -286,12 +289,12 @@ button{
             </select>
             
              <label for="collectorInitials">Initial of the person(s) who collected sample:</label>
-            <input type="text" name="collectorInitials" id="collectorInitials" onChange="storeData(this.name,this.value)" placeholder="Max of 15 characters" />
+            <input type="text" name="collectorInitials" id="collectorInitials" onChange="save_data(this.name,this.value)" placeholder="Max of 15 characters" />
             
             <label for="containerNum">Container Number:</label>
-            <input type="number" min="00000000" max="99999999" name="containerNum" id="containerNum" onChange="storeData(this.name,this.value)" placeholder="Must be 8 digits" />
+            <input type="number" min="00000000" max="99999999" name="containerNum" id="containerNum" onChange="save_data(this.name,this.value)" placeholder="Must be 8 digits" />
             <label>Hydrologic Condition:</label>
-            <select name="HSTAT" id="HSTAT" onChange="storeData(this.name,this.value)">
+            <select name="HSTAT" id="HSTAT" onChange="save_data(this.name,this.value)">
                 <option value="4">4- stable, low stage</option>
                 <option value="5">5- falling stage</option>
                 <option value="6">6- stable, high stage</option>
@@ -302,7 +305,7 @@ button{
                 <option value="X">X- Not applicable</option>
             </select>
             <label for='EVENT'>Hydrologic event:</label>
-            <select name="EVENT" id="EVENT" onChange="storeData(this.name,this.value)">
+            <select name="EVENT" id="EVENT" onChange="save_data(this.name,this.value)">
                 <option value="1">1- Drought</option>
                 <option value="2">2- Spill</option>
                 <option value="3">3- Regulated Flow</option>
@@ -325,7 +328,7 @@ button{
             </select>
             </div>
             <label for="STYPE">Sample type:</label>
-            <select name="STYPE" id="STYPE" onChange="storeData(this.name,this.value)">
+            <select name="STYPE" id="STYPE" onChange="save_data(this.name,this.value)">
                 <option value="1">1- Spike</option>
                 <option value="2">2- Black</option>
                 <option value="3">3- Reference</option>
@@ -341,13 +344,13 @@ button{
             </select>
             <div class="hide">
             <label for="ASTAT">Analysis status:</label>
-            <select name="ASTAT" id="ASTAT" onChange="storeData(this.name,this.value)">
+            <select name="ASTAT" id="ASTAT" onChange="save_data(this.name,this.value)">
                 <option value="U">U- Unrestricted</option>
                 <option value="I">I- Internal use only</option>
                 <option value="P">P- Propietary</option>
             </select>
             <label for="P71999">Sample Purpose:</label>
-            <select name="P71999" id="P71999" onChange="storeData(this.name,this.value)">
+            <select name="P71999" id="P71999" onChange="save_data(this.name,this.value)">
                 <option value="10">10- Routine</option>
                 <option value="15">15- NAWQA, National Quality Assesment</option>
                 <option value="20">20- NASQAN</option>
@@ -374,7 +377,7 @@ button{
             </div>
             <div class="suspendedAdditionalFields">
             <label for="P82398">Sampling Method:</label>
-            <select name="P82398" id="P82398susp" onChange="storeData(this.name,this.value)">
+            <select name="P82398" id="P82398susp" onChange="save_data(this.name,this.value)">
                 <option value="10">10 EQUAL WIDTH INCREMENT (EWI)</option>
                 <option value="15">15 EQUAL WIDTH INCREMENT, NON-ISOKINETIC</option>
                 <option value="20">20 EQUAL DISCHARGE INCREMENT (EDI)</option>
@@ -406,7 +409,7 @@ button{
             </div>
             <div class='bottomAdditionalFields'>
              <label for="P82398">Sampling Method:</label>
-            <select name="P82398" id="P82398botm" onChange="storeData(this.name,this.value)">
+            <select name="P82398" id="P82398botm" onChange="save_data(this.name,this.value)">
             	<option value="50">50 POINT SAMPLE</option>
                 <option value="55">55 COMPOSITE - MULTIPLE POINT SAMPLES</option>
                 <option value="5010">5010 SEDIMENT CORE</option>
@@ -417,7 +420,7 @@ button{
              
             <div class='bedloadAdditionalFields'>
              <label for="P82398">Sampling Method:</label>
-            <select name="P82398" id="P82398bedload" onChange="storeData(this.name,this.value)">
+            <select name="P82398" id="P82398bedload" onChange="save_data(this.name,this.value)">
             	<option value="50">50 POINT SAMPLE</option>
                 <option value="55">55 COMPOSITE - MULTIPLE POINT SAMPLES</option>
                 <option value="1000">1000 BEDLOAD, SINGLE EQUAL WIDTH INCREMENT (SEWI)</option>
@@ -429,7 +432,7 @@ button{
             
             <div class="suspendedAdditionalFields">
             <label for="P84164">Sampler type:</label>
-            <select name="P84164" id="P84164" onChange="storeData(this.name,this.value)">
+            <select name="P84164" id="P84164" onChange="save_data(this.name,this.value)">
                 <option value="100">100 VAN DORN SAMPLER</option>
                 <option value="110">110 SEWAGE SAMPLE</option>
                 <option value="120">120 VELOCITY INTEGRATED SAMPLE</option>
@@ -498,7 +501,7 @@ button{
             </div>
             <div class="bottomAdditionalFields">
             <label for="P84164">Sampler type:</label>
-            <select name="P84164" id="P84164bottom" onChange="storeData(this.name,this.value)">
+            <select name="P84164" id="P84164bottom" onChange="save_data(this.name,this.value)">
             	<option value="3023">3023 SAMPLER, US BMH-53</option>
                 <option value="3024">3024 SAMPLER, US BMH-53TM</option>
                 <option value="3025">3025 SAMPLER, US BM-54</option>
@@ -526,7 +529,7 @@ button{
             </div>
             <div class="bedloadAdditionalFields">
             <label for="P84164">Sampler type:</label>
-            <select name="P84164" id="P84164bedload" onChange="storeData(this.name,this.value)">
+            <select name="P84164" id="P84164bedload" onChange="save_data(this.name,this.value)">
            		<option value="1050">1050 BL-6X12 in, Toutle R. Type 2, Exp. Ratio 1.40, Cable Susp</option>
                 <option value="1055">1055 BL-6X12 in, Toutle R. Type 2, Exp. Ratio 1.40, Wading</option>
                 <option value="1060">1060 BL-3X3 in, BL-84, Exp. Ratio 1.40, Cable Susp</option>
@@ -545,10 +548,10 @@ button{
             <label for="leftBank">Location in cross section looking downstream :</label>
             <div class="ui-grid-a">
             <div class="ui-block-a">
-            <input type="number" name="P00009" id="P00009" placeholder="Feet from left bank " onChange="storeData(this.name,this.value)" />
+            <input type="number" name="P00009" id="P00009" placeholder="Feet from left bank " onChange="save_data(this.name,this.value)" />
             </div>
             <div class="ui-block-b">
-            <select name="P00009R" id="P00009R" onChange="storeData(this.name,this.value)">
+            <select name="P00009R" id="P00009R" onChange="save_data(this.name,this.value)">
             			<option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -563,9 +566,9 @@ button{
               </div>
              
             <div class="ui-block-a">
-             <input type="number" name="P72103" id="P72103" placeholder="Feet from right bank" onChange="storeData(this.name,this.value)" /></div>
+             <input type="number" name="P72103" id="P72103" placeholder="Feet from right bank" onChange="save_data(this.name,this.value)" /></div>
             <div class="ui-block-b">
-             <select name="P72103R" id="P72103R" onChange="storeData(this.name,this.value)">
+             <select name="P72103R" id="P72103R" onChange="save_data(this.name,this.value)">
              			<option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -588,10 +591,10 @@ button{
             	
             		<label for="P00003">Sampling Depth:</label>
             	<div class="ui-block-a">
-                    <input type="number" name="P00003" id="P00003" placeholder="in feet" onChange="storeData(this.name,this.value)">
+                    <input type="number" name="P00003" id="P00003" placeholder="in feet" onChange="save_data(this.name,this.value)">
             	</div>
                 <div class="ui-block-b">
-                <select name="P00003R" id="P00003R" onChange="storeData(this.name,this.value)">
+                <select name="P00003R" id="P00003R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -612,10 +615,10 @@ button{
              <div class="ui-grid-c">
              	<label for="P00004">Stream width:</label>
            		<div class="ui-block-a">
-            		<input type="number" name="P00004" id="P00004" placeholder="in feet" onChange="storeData(this.name,this.value)">
+            		<input type="number" name="P00004" id="P00004" placeholder="in feet" onChange="save_data(this.name,this.value)">
             	</div>
                 <div class="ui-block-b">
-                	<select name="P00004R" id="P00004R" onChange="storeData(this.name,this.value)">
+                	<select name="P00004R" id="P00004R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -633,10 +636,10 @@ button{
             <label for="P00064">Mean depth of stream:</label>
             <div class="ui-grid-c">
             	<div class="ui-block-a">
-                	<input type="number" name="P00064" id="P00064" placeholder="in feet" onChange="storeData(this.name,this.value)">
+                	<input type="number" name="P00064" id="P00064" placeholder="in feet" onChange="save_data(this.name,this.value)">
             	</div>
                 <div class="ui-block-b">
-                	<select name="P00064R" id="P00064R" onChange="storeData(this.name,this.value)">
+                	<select name="P00064R" id="P00064R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -652,7 +655,7 @@ button{
               </div>
             </div>
             <label for="messageToLab">Field sample comment:</label>
-            <input type="text" placeholder="Message to laboratory" name="messageToLab" id="messageToLab" onChange="storeData(this.name,this.value)" />
+            <input type="text" placeholder="Message to laboratory" name="messageToLab" id="messageToLab" onChange="save_data(this.name,this.value)" />
         </form>
         <!--#####################################################################
             ########################      Form Ends      ########################
@@ -675,10 +678,10 @@ button{
                 <label for="P00061">Instantaneous discharge:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P00061" id="P00061" required onChange="storeData(this.name,this.value)" />
+                    <input type="number" name="P00061" id="P00061" required onChange="save_data(this.name,this.value)" />
                 </div>
                 <div class="ui-block-b">
-                    <select name="P00061R" id="P00061R" onChange="storeData(this.name,this.value)">
+                    <select name="P00061R" id="P00061R" onChange="save_data(this.name,this.value)">
                    	 <option value=" "> </option>
                      <option value="<">&lt;</option>
                      <option value=">">&gt;</option>
@@ -692,7 +695,7 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-c">
-                    <select name="P00061M" id="P00061M" onChange="storeData(this.name,this.value)">
+                    <select name="P00061M" id="P00061M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="QEST">Q-EST</option>
                         <option value="QADCP">QADCP</option>
@@ -714,12 +717,12 @@ button{
                 <label for="P00010">Water Tempeture:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P00010" id="P00010" onChange="storeData(this.name,this.value)" required/>
+                    <input type="number" name="P00010" id="P00010" onChange="save_data(this.name,this.value)" required/>
                 </div>
                 
                 <div class="ui-block-b">
                    <div class="hide">
-                    <select name="P00010R" id="P00010R" onChange="storeData(this.name,this.value)">
+                    <select name="P00010R" id="P00010R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -735,7 +738,7 @@ button{
                 </div>
                 <div class="ui-block-c">
                 <div class="hide">
-                    <select name="P00010M" id="P00010M" onChange="storeData(this.name,this.value)">
+                    <select name="P00010M" id="P00010M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="TMH01">THM01</option>
                         <option value="TMH02">THM02</option>
@@ -744,7 +747,7 @@ button{
                   </div>
                 </div>
                 <div class="ui-block-d">
-                 <select name="P00010N" id="P00010N" onChange="storeData(this.name,this.value)">
+                 <select name="P00010N" id="P00010N" onChange="save_data(this.name,this.value)">
                  	<option value=" "> </option>
                     <option value="a">a- Planned measurement was not made</option>
                     <option value="b">b- Sample broken/spilled in shipment </option>
@@ -759,10 +762,10 @@ button{
                 <label for="P00063">Number of sampling point:</label>
                  <div class="ui-grid-c">
                  <div class="ui-block-a">
-                    <input type="number" name="P00063" id="P00063" onChange="storeData(this.name,this.value)" required/>
+                    <input type="number" name="P00063" id="P00063" onChange="save_data(this.name,this.value)" required/>
                 </div>
                 <div class="ui-block-b">
-                    <select name="P00063R" id="P00063R" onChange="storeData(this.name,this.value)">
+                    <select name="P00063R" id="P00063R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -783,10 +786,10 @@ button{
                 <label for="P00020">Air Tempeture:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P00020" id="P00020" onChange="storeData(this.name,this.value)" />
+                    <input type="number" name="P00020" id="P00020" onChange="save_data(this.name,this.value)" />
                 </div>
                 <div class="ui-block-b">
-                    <select name="P00020R" id="P00020R" onChange="storeData(this.name,this.value)">
+                    <select name="P00020R" id="P00020R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -800,14 +803,14 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-c">
-                    <select name="P00020M" ID="P00020M" onChange="storeData(this.name,this.value)">
+                    <select name="P00020M" ID="P00020M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="THM04">THM04</option>
                         <option value="THM05">THM05</option>
                   </select>
                 </div>
                 <div class="ui-block-d">
-                    <select name="P00020N" id="P00020N" onChange="storeData(this.name,this.value)">
+                    <select name="P00020N" id="P00020N" onChange="save_data(this.name,this.value)">
                  	<option value=" "> </option>
                     <option value="a">a- Planned measurement was not made</option>
                     <option value="b">b- Sample broken/spilled in shipment </option>
@@ -821,12 +824,12 @@ button{
                 <label for="P00065">Gage height:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P00065" id="P00065" onChange="storeData(this.name,this.value)" required/>
+                    <input type="number" name="P00065" id="P00065" onChange="save_data(this.name,this.value)" required/>
                 </div>
                 
                 <div class="ui-block-b">
                    <div class="hide"> 
-                   <select name="P00065R" id="P00065R" onChange="storeData(this.name,this.value)">
+                   <select name="P00065R" id="P00065R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -842,7 +845,7 @@ button{
                 </div>
                 <div class="ui-block-c">
                 <div class="hide">
-                    <select name="P00065M" id="P00065M" onChange="storeData(this.name,this.value)">
+                    <select name="P00065M" id="P00065M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="ACOUS">ACOUS</option>
                         <option value="CLIP">CLIP</option>
@@ -869,10 +872,10 @@ button{
                 <label for="P00095">Specific conductance:</label>
                  <div class="ui-grid-c">
                  <div class="ui-block-a">
-                    <input type="number" name="P00095" id="P00095" onChange="storeData(this.name,this.value)" />
+                    <input type="number" name="P00095" id="P00095" onChange="save_data(this.name,this.value)" />
                 </div>
                 <div class="ui-block-b">
-                    <select name="P00095R" id="P00095R" onChange="storeData(this.name,this.value)">
+                    <select name="P00095R" id="P00095R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -886,13 +889,13 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-c">
-                    <select name="P00095M" id="P00095M" onChange="storeData(this.name,this.value)">
+                    <select name="P00095M" id="P00095M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="SC001">SC001</option>
                     </select>
                 </div>
                 <div class="ui-block-d">
-                   <select name="P00095N" id="P00095N" onChange="storeData(this.name,this.value)">
+                   <select name="P00095N" id="P00095N" onChange="save_data(this.name,this.value)">
                  	<option value=" "> </option>
                     <option value="a">a- Planned measurement was not made</option>
                     <option value="b">b- Sample broken/spilled in shipment </option>
@@ -907,7 +910,7 @@ button{
                 <label for="P63675">Turbidity NTU:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P63675" id="P63675" onChange="storeData(this.name,this.value)" placeholder="90 +/- 30deg" />
+                    <input type="number" name="P63675" id="P63675" onChange="save_data(this.name,this.value)" placeholder="90 +/- 30deg" />
                 </div>
                 <div class="ui-block-b">
                     <select name="P63675R" id="P63675R">
@@ -924,7 +927,7 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-c">
-                    <select name="P63675M" id="P63675M" onChange="storeData(this.name,this.value)">
+                    <select name="P63675M" id="P63675M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="1">TS028</option>
                         <option value="2">TS088</option>
@@ -967,7 +970,7 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-d">
-                    <select name="P63675N" id="P63675N" onChange="storeData(this.name,this.value)">
+                    <select name="P63675N" id="P63675N" onChange="save_data(this.name,this.value)">
                  	<option value=" "> </option>
                     <option value="a">a- Planned measurement was not made</option>
                     <option value="b">b- Sample broken/spilled in shipment </option>
@@ -981,10 +984,10 @@ button{
                 <label for="P63676">Turbidity NTRU:</label>
                  <div class="ui-grid-c">
                  <div class="ui-block-a">
-                    <input type="number" name="P63676" id="P63676" onChange="storeData(this.name,this.value)" placeholder="multiple angles" />
+                    <input type="number" name="P63676" id="P63676" onChange="save_data(this.name,this.value)" placeholder="multiple angles" />
                 </div>
                 <div class="ui-block-b">
-                    <select name="P63676R" id="P63676R" onChange="storeData(this.name,this.value)">
+                    <select name="P63676R" id="P63676R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -998,7 +1001,7 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-c">
-                    <select name="P63676M" id="P63676M" onChange="storeData(this.name,this.value)">
+                    <select name="P63676M" id="P63676M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="TS027">TS027</option>
                         <option value="TS090">TS090</option>
@@ -1019,7 +1022,7 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-d">
-                    <select name="P63676N" id="P63676N" onChange="storeData(this.name,this.value)">
+                    <select name="P63676N" id="P63676N" onChange="save_data(this.name,this.value)">
                  	<option value=" "> </option>
                     <option value="a">a- Planned measurement was not made</option>
                     <option value="b">b- Sample broken/spilled in shipment </option>
@@ -1033,10 +1036,10 @@ button{
                 <label for="P63680">Turbidity FNU(780-900nm):</label>
                  <div class="ui-grid-c">
                  <div class="ui-block-a">
-                    <input type="number" name="P63680" id="P63680" onChange="storeData(this.name,this.value)" placeholder="90 +/- 2.5deg" />
+                    <input type="number" name="P63680" id="P63680" onChange="save_data(this.name,this.value)" placeholder="90 +/- 2.5deg" />
                 </div>
                 <div class="ui-block-b">
-                    <select name="P63680R" id="P63680R" onChange="storeData(this.name,this.value)">
+                    <select name="P63680R" id="P63680R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -1050,7 +1053,7 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-c">
-                    <select name="P63680M" id="P63680R" onChange="storeData(this.name,this.value)">
+                    <select name="P63680M" id="P63680R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="1">method</option>
                         <option value="TS031">TS031</option>
@@ -1107,7 +1110,7 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-d">
-                   <select name="P63680N" id="P63680N" onChange="storeData(this.name,this.value)">
+                   <select name="P63680N" id="P63680N" onChange="save_data(this.name,this.value)">
                  	<option value=" "> </option>
                     <option value="a">a- Planned measurement was not made</option>
                     <option value="b">b- Sample broken/spilled in shipment </option>
@@ -1121,10 +1124,10 @@ button{
                 <label for="P65225">Transparency:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P65225" id="P65225" onChange="storeData(this.name,this.value)" placeholder="90 +/- 30deg" />
+                    <input type="number" name="P65225" id="P65225" onChange="save_data(this.name,this.value)" placeholder="90 +/- 30deg" />
                 </div>
                 <div class="ui-block-b">
-                    <select name="P65225R" id="P65225R" onChange="storeData(this.name,this.value)">
+                    <select name="P65225R" id="P65225R" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="<">&lt;</option>
                         <option value=">">&gt;</option>
@@ -1138,13 +1141,13 @@ button{
                     </select>
                 </div>
                 <div class="ui-block-c">
-                    <select name="P65225M" id="P65225M" onChange="storeData(this.name,this.value)">
+                    <select name="P65225M" id="P65225M" onChange="save_data(this.name,this.value)">
                         <option value=" "> </option>
                         <option value="TTUBE">TTUBE</option>
                     </select>
                 </div>
                 <div class="ui-block-d">
-                    <select name="P65225N" id="P65225N" onChange="storeData(this.name,this.value)">
+                    <select name="P65225N" id="P65225N" onChange="save_data(this.name,this.value)">
                  	<option value=" "> </option>
                     <option value="a">a- Planned measurement was not made</option>
                     <option value="b">b- Sample broken/spilled in shipment </option>
@@ -1157,46 +1160,49 @@ button{
           </div><!--hide class ends-->
             <div id="bedloadAdditionalFields">
             	<label for="P30333">Bag mesh size:</label>
-            	 <input type="number" name="P30333" id="P30333" onChange="storeData(this.name,this.value)"/>
+            	 <input type="number" name="P30333" id="P30333" onChange="save_data(this.name,this.value)"/>
                 <label for="P82073">Starting time:</label>
-            	 <input type="time" name="P82073" id="P82073" onChange="storeData(this.name,this.value)"/>
+            	 <input type="time" name="P82073" id="P82073" onChange="save_data(this.name,this.value)"/>
                 <label for="P82074">Ending time:</label>
-            	 <input type="time" name="P82074" id="P82074" onChange="storeData(this.name,this.value)"/>
+            	 <input type="time" name="P82074" id="P82074" onChange="save_data(this.name,this.value)"/>
                 <label for="P04117">Tether line used:</label>
-            	 <input type="number" name="P04117" id="P04117" onChange="storeData(this.name,this.value)"/>
+            	 <input type="number" name="P04117" id="P04117" onChange="save_data(this.name,this.value)"/>
                 <label for="P04118">Composite samples in cross-sectional bedload measurement:</label>
-            	 <input type="number" name="P04118" id="P04118" onChange="storeData(this.name,this.value)"/>
+            	 <input type="number" name="P04118" id="P04118" onChange="save_data(this.name,this.value)"/>
                 <label for="P04119">Verticals in composite samples:</label>
-            	 <input type="number" name="P04119" id="P04119" onChange="storeData(this.name,this.value)"/>
+            	 <input type="number" name="P04119" id="P04119" onChange="save_data(this.name,this.value)"/>
                 <label for="P04120">Rest time on bed for bedload samples:</label>
-            	 <input type="number" name="P04120" id="P04120" onChange="storeData(this.name,this.value)"/>
+            	 <input type="number" name="P04120" id="P04120" onChange="save_data(this.name,this.value)"/>
                 <label for="P04121">Horizontal width of vertical:</label>
-            	 <input type="number" name="P04121" id="P04121" onChange="storeData(this.name,this.value)"/>
+            	 <input type="number" name="P04121" id="P04121" onChange="save_data(this.name,this.value)"/>
             </div>
         </form>
     </div>
     <div data-role="footer" data-position="fixed">
      <div class="ui-grid-b">
-       <div class="ui-block-a"></div>
-       <div class="ui-block-b"></div>
-       <div class="ui-block-c">
-        <button data-icon="arrow-r" id="xmlNext" data-iconpos="right">Next</button>
-       </div>
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-role="button">Menu</a></div>
+           <div class="ui-block-c"><a data-icon="arrow-r" id="xmlNext" data-iconpos="right" data-role="button" data-theme="e">Next</a>
+           </div>
      </div>
     </div>
 </div>
-<div data-role="page" id="multiSet" data-add-back-btn="true">
+<div data-role="page" id="multiSet" >
     <div data-role="header" data-position="fixed">
-        	<h1>Select a sample set</h1>
+    	<h3>Select a sample set</h3>
     </div>
     <div data-role="content" id="sampleSets"></div>
-    <div data-role="footer" data-position="fixed">
-        <button data-icon="plus" data-iconpos="right" id="addSampleSet" data-mini="false" data-theme="i">Add Sample</button>
+	<div data-role="footer" data-position="fixed">
+         <div class="ui-grid-b">
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-role="button">Menu</a></div>
+           <div class="ui-block-c"><button data-icon="plus" data-iconpos="right" id="addSampleSet" data-theme="a">Add Sample</button></div>
+         </div>
     </div>
 </div>
 
 
-<div data-role="page" id="setProperties" data-add-back-btn="true">
+<div data-role="page" id="setProperties" >
   <div data-role="header" data-position="fixed">
   	<h1 id='setHeader'></h1>
   </div>
@@ -1204,14 +1210,14 @@ button{
 	  <div id="multiAtributes">
       		<form id='setAtributesForm'>
                 <label for="method">Select Methods:</label>
-                <select name="method" onBlur="storeData(this.name,this.value)">
+                <select name="method" onBlur="save_data(this.name,this.value)">
                     <option value="EDI">EDI</option>
                     <option value="EWI">EWI</option>
                 </select>
                 <label for="containersCuantity">Add containers to set:</label>
-                <input type="number" name="containersCuantity" id="containersCuantity" onBlur="storeData(this.name,this.value)" min="1" max="20" value="1"/>
+                <input type="number" name="containersCuantity" id="containersCuantity" onBlur="save_data(this.name,this.value)" min="1" max="20" value="1"/>
                 <div class="hide">
-                <select name="compositeOrIndividual" id="compositeOrIndividual" onBlur="storeData(this.name,this.value)">
+                <select name="compositeOrIndividual" id="compositeOrIndividual" onBlur="save_data(this.name,this.value)">
                     <option value="compsite">Composite the containers</option>
                     <option value="individual">Individual analysis of containers</option>
                 </select>
@@ -1243,14 +1249,12 @@ button{
   
   <span>(**)Possible add-on analysis for individual containers.</span>
   <div data-role="footer" data-position="fixed">
-      <div class="ui-grid-b">
-       <div class="ui-block-a"></div>
-       <div class="ui-block-b"></div>
-       <div class="ui-block-c"><a id="linkToContainers" data-icon="arrow-r" data-iconpos="right" data-role="button" data-theme="e" >Next</a>
+           <div class="ui-grid-b">
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-role="button">Menu</a></div>
+           <div class="ui-block-c"><a id="linkToContainers" data-icon="arrow-r" data-iconpos="right" data-role="button" data-theme="e" >Next</a>
     </div>
     </div>
-</div>
-</div>
 </div>
 </body>
 </html>
