@@ -1,9 +1,10 @@
 var ls = window.localStorage;
 var setLetter = 65;
-var setRegex = /#[0123456789]*_[A-Z]*_[0123456789]*_#|set/;
+var stationSetContainerRegex = /#[0123456789]*&[A-Z]*&[0123456789]/;
 var containerCounter=1;
 var beginDate = $('#beginDate1');
 var appCache = window.applicationCache;
+var prevPage = 
 
 
 function initialize() {
@@ -17,14 +18,17 @@ function initialize() {
     }
     if (ls.length !== 0) {
         for (i = 0; i < ls.length; i++) {
-            load_data(ls.key(i));
+			console.log(ls.key(i).match(stationSetContainerRegex));
+            if(!ls.key(i).match(stationSetContainerRegex)){
+			load_data(ls.key(i));
+			
             if ($(ls.key(i)).is(':checkbox') === true) {
-                
                 $(ls.key(i)).prop('checked', true);
                 
             }
             console.log('Got'+' ' +ls.key(i)+' '+'from local storage');
         }
+		}
     }
 	$('#page2').on('pageinit', function(){
 
@@ -57,8 +61,21 @@ function initialize() {
 			});
 	});
 	
-	$('#currentSamplePage').on('pageinit',function(){
-		$('#currentSamples').append(createButton(ls.getItem('#station'),'#multiSet'));
+	$('#currentSamplePage').on('pagebeforecreate',function(){
+		var station = 0;
+		for(i=0;i<ls.length;i++){
+			if(ls.key(i).match(stationSetContainerRegex)){
+				var query = ls.key(i);
+				var data = query.split('&');
+				if(data[0] !== station){
+				station = data[0];
+				$('#currentSamples').append(createButton(data[0],'#multiSet',data[0]));
+				console.log(station);
+				}else{}
+				
+			
+			}
+		}
 		
 	});
 	
@@ -101,7 +118,7 @@ function initialize() {
 	});
 	$('#sampleParametersPage').on('pageinit',function(){
 		if(ls.getItem('#singleMultiContainer') == 'multi'){
-				$('#sampleParametersPageHeader').text(ls.getItem('#set')+', '+'container'+' '+ containerCounter);
+				$('#sampleParametersPageHeader').text('Set '+ls.getItem('#set')+', '+'container'+' '+ containerCounter);
 				//containerCounter++;	
 			}else if(ls.getItem('#singleMultiContainer')=='single'){	
 				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
@@ -126,22 +143,25 @@ function initialize() {
 				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize();
 				   // ajax submit
 				   console.log($('form select[name=station] option:selected').val());
-				   save_data($('form select[name=station] option:selected').val()+ls.getItem('#set')+containerCounter,data);
+				   save_data($('form select[name=station] option:selected').val()+'&'+ls.getItem('#set')+'&'+containerCounter,data);
 				   //alert(data);
 				   return false;
 			}
 			});
 	$('#xmlNext').click(function () {
 		if($('#sampleParameters').valid() && $('#sampleParameters2').valid()){
+			loopTroughContainers();
+			containerCounter++;
+			
 			if(ls.getItem('#singleMultiContainer') == 'multi'){
-				$('#sampleParametersPageHeader').text(ls.getItem('#set')+', '+'container'+' '+ containerCounter);
+				$('#sampleParametersPageHeader').text('Set '+ls.getItem('#set')+', '+'container'+' '+ containerCounter);
 				//containerCounter++;	
 			}else if(ls.getItem('#singleMultiContainer')=='single'){	
 				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
 				//containerCounter++;	
 			}
-			loopTroughContainers();	
-			 $("html, body").animate({ scrollTop: 0 }, "slow");
+
+			$("html, body").animate({ scrollTop: 0 }, "slow");
 				
 		}
 				
@@ -149,11 +169,11 @@ function initialize() {
      });
 	$('#multiSet').on('pageinit', function(){
 		for(i=0;i<ls.getItem('#containerCuantity');i++){
-						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter),'#setProperties'));
+						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter),'#setProperties',String.fromCharCode(setLetter)));
 						setLetter++;
 					}
 		$('#addSampleSet').click(function (e) {
-			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter),'#setProperties'));
+			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter),'#setProperties',String.fromCharCode(setLetter)));
 			setLetter++;
 		});
 
@@ -208,10 +228,10 @@ function setTitle(id, value) {
 	}
 }
 //Create button elements and appends it to the div block
-function createButton(buttonName,hrefLink) {
-    var button = '<a href="'+hrefLink+'" onClick="changeSet(this.id)" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + buttonName + '"' + '>' +
+function createButton(buttonText,hrefLink,id) {
+    var button = '<a href="'+hrefLink+'" onClick="changeSet(this.id)" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + id + '"' + '>' +
         '<span class="ui-btn-inner ui-btn-corner-all">' +
-        '<span class="ui-btn-text">' + buttonName + '</span>' +
+        '<span class="ui-btn-text">' + buttonText + '</span>' +
         '</span>' +
         '</a>';
     return button;
@@ -222,21 +242,11 @@ function removeButton(buttonName) {
 
 }
 
-function getSample(set) {
-    for (i = 0; i < ls.length; i++) {
-        if (setRegex.test(ls.key(i))) {
-            var param = load_data(ls.key(i));
-            if ($(ls.key(i)).is(':checkbox') === true) {
-                $(ls.key(i)).prop('checked', true);
-            }
-        }
-    }
-}
 //Changes the set and the header
 function changeSet(id) {
 	if(ls.getItem('#singleMultiContainer') == 'multi'){
     save_data('set', id);
-	$('#setHeader').text(id);
+	$('#setHeader').text('Set '+id);
 	}
 	else if(ls.getItem('#singleMultiContainer') == 'single'){
 	save_data('set','SNGL');
@@ -250,13 +260,14 @@ function changeSet(id) {
 //loop trought the desired amount of container
 function loopTroughContainers(){
 	 console.log('Container counter = '+containerCounter);
-	 containerCounter++;
+	 //containerCounter++;
 	if(containerCounter<=ls.getItem('#containersCuantity')){
 				$('#sampleParameters2').submit();//Submit handler takes care of storing data
 				
 	}
 				if(containerCounter > ls.getItem('#containersCuantity')){
 					$('#sampleParameters2').submit();
+					//$('#currentSamples').append(createButton($('form select[name=station] option:selected').text(),'#setProperties',$('form select[name=station] option:selected').val()+ls.getItem('#set')));
 					if(ls.getItem('#singleMultiContainer') == 'multi'){
 					$.mobile.changePage('#multiSet');
 					}else if(ls.getItem('#singleMultiContainer') == 'single'){
@@ -282,8 +293,8 @@ function login(text){
 		$('#messageToLab').attr('placeholder','Remarks');
 	}
 }
-function getJsonFromUrl(station,set,container) {
-  var query = ls.getItem('#SNGL1'); 
+function getJsonFromUrl(id,container) {
+  var query = ls.getItem(id); 
   var data = query.split("&");
   var result = {};
   for(var i=0; i<data.length; i++) {
@@ -305,7 +316,7 @@ $(document).ready(function (e) {
 	//ls.clear();
 	console.log(appCache.status);
 	initialize();
-	getJsonFromUrl();
+	//getJsonFromUrl();
 	
 	
   });

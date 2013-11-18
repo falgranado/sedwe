@@ -62,7 +62,7 @@ margin: 0.6em 10% 0.8em !important;
 	##########            HOME Page          ##########
     ###################################################
     -->
-<div data-role="page" id="HomePage" data-add-back-btn="true">
+<div data-role="page" id="HomePage" >
     <div data-role="header" data-position="fixed">
         	<h3>Welcome [Name]</h3>
     </div>
@@ -85,19 +85,26 @@ margin: 0.6em 10% 0.8em !important;
         <h1>Tutorials</h1>
         </div>
         </div>
-    </div>
-    <div data-role="footer">
-        
+   
+    <div data-role="footer" data-position="fixed">
+        <div class="ui-grid-b">
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-role="button">Menu</a></div>
+        </div>
 	</div>
-    <div data-role="page" id="currentSamplePage" data-add-back-btn="true">
+    </div>
+    <div data-role="page" id="currentSamplePage" >
       <div data-role="header" data-position="fixed">
         <h3>Current Samples</h3>
       </div>
       <div data-role="content">
       	<div id='currentSamples'></div>
       </div>
-      <div data-role="footer">
-        <h4>Footer</h4>
+      <div data-role="footer" data-position="fixed">
+        <div class="ui-grid-b">
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-role="button">Menu</a></div>
+        </div>
       </div>
     </div>
 <!--
@@ -105,7 +112,7 @@ margin: 0.6em 10% 0.8em !important;
 	##########         New Sample Page       ##########
     ###################################################
     -->
-<div data-role="page" id="newSample" data-add-back-btn="true">
+<div data-role="page" id="newSample" >
     <div data-role="header"  data-position="fixed"> 
         	<h3>Add new sample</h3>
 
@@ -121,8 +128,10 @@ margin: 0.6em 10% 0.8em !important;
         </ul>
     </div>
     <div data-role="footer" data-position="fixed">
-        	<h4> </h4>
-
+        <div class="ui-grid-b">
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#" data-icon="bars" data-role="button">Menu</a></div>
+        </div>
     </div>
 </div>
 <!--
@@ -130,7 +139,7 @@ margin: 0.6em 10% 0.8em !important;
 ###########   Sample Information Page     #############
 #######################################################
 -->
-<div data-role="page" id="page2" data-add-back-btn="true">
+<div data-role="page" id="page2" >
     <div data-role="header" data-position="fixed">
         	<h1 id="page2Header"></h1>
 
@@ -222,7 +231,7 @@ margin: 0.6em 10% 0.8em !important;
     </div>
 </div>
 
-<div data-role="page" id="sampleParametersPage" data-add-back-btn="true">
+<div data-role="page" id="sampleParametersPage">
     <div data-role="header" data-position="fixed">
          <h1 id="sampleParametersPageHeader"> </h1>
 
@@ -267,6 +276,8 @@ margin: 0.6em 10% 0.8em !important;
             <input type="checkbox" name="sandFineBreak" id="sandFineBreak" value="SF" onChange="chkBox(this.name,this.value)" />
             <label for="sand">Sand</label>
             <input type="checkbox" name="sand" id="sand" value="SA" onChange="chkBox(this.name,this.value)" />
+            <label for="lossOnIgnition">Loss On Ignition</label>
+            <input type="checkbox" name="lossOnIgnition" id="lossOnIgnition" value="LOI" onChange="chkBox(this.name,this.value)" />
             </div>
             <div data-role="fieldcontain" id="containerStatus" class="hide">
                 <fieldset data-role="controlgroup" data-type="horizontal">
