@@ -4,7 +4,7 @@ var stationSetContainerRegex = /#[0123456789]*&[A-Z]*&[0123456789]/;
 var containerCounter=1;
 var beginDate = $('#beginDate1');
 var appCache = window.applicationCache;
-var prevPage = 
+
 
 
 function initialize() {
@@ -46,8 +46,16 @@ function initialize() {
 				});
 		
 			$('#addSampleParameters').click(function (e) {
-				if($('#sampleProperties').valid()){
 				
+				if($('#sampleProperties').valid()){
+					
+					$('#sampleSets').empty();
+					setLetter=65;
+					for(i=0;i<ls.getItem('#containerCuantity');i++){
+						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter),'#setProperties',String.fromCharCode(setLetter)));
+						setLetter++;
+					}
+					
 					if (ls.getItem('#singleMultiContainer') == 'multi') {
 						window.location = 'newSample.html#multiSet';
 			
@@ -60,8 +68,8 @@ function initialize() {
 				
 			});
 	});
-	
-	$('#currentSamplePage').on('pagebeforecreate',function(){
+	$('#currentButton').click(function(e){
+		$('#currentSamples').empty();
 		var station = 0;
 		for(i=0;i<ls.length;i++){
 			if(ls.key(i).match(stationSetContainerRegex)){
@@ -70,12 +78,16 @@ function initialize() {
 				if(data[0] !== station){
 				station = data[0];
 				$('#currentSamples').append(createButton(data[0],'#multiSet',data[0]));
+				$(data[0]).attr('onClick',function(){getJsonFromLocalStorage(query)});
 				console.log(station);
 				}else{}
 				
 			
 			}
 		}
+	});
+	$('#currentSamplePage').on('pageinit',function(){
+		
 		
 	});
 	
@@ -168,10 +180,7 @@ function initialize() {
 	     });
      });
 	$('#multiSet').on('pageinit', function(){
-		for(i=0;i<ls.getItem('#containerCuantity');i++){
-						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter),'#setProperties',String.fromCharCode(setLetter)));
-						setLetter++;
-					}
+		
 		$('#addSampleSet').click(function (e) {
 			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter),'#setProperties',String.fromCharCode(setLetter)));
 			setLetter++;
@@ -293,8 +302,8 @@ function login(text){
 		$('#messageToLab').attr('placeholder','Remarks');
 	}
 }
-function getJsonFromUrl(id,container) {
-  var query = ls.getItem(id); 
+function getJsonFromLocalStorage(key) {
+  var query = ls.getItem(key); 
   var data = query.split("&");
   var result = {};
   for(var i=0; i<data.length; i++) {
@@ -305,7 +314,7 @@ function getJsonFromUrl(id,container) {
 	//console.log('Array index ' + i + ' ' + result[item[0]]+ item[1]);
   }
   
-  return result;
+  //return result;
 }
 
 
@@ -314,7 +323,7 @@ function getJsonFromUrl(id,container) {
 $(document).ready(function (e) {
  	//login(ls.getItem('#userType'));
 	//ls.clear();
-	console.log(appCache.status);
+	//console.log(appCache.status);
 	initialize();
 	//getJsonFromUrl();
 	
