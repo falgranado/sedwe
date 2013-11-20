@@ -52,7 +52,7 @@ function initialize() {
 					$('#sampleSets').empty();
 					setLetter=65;
 					for(i=0;i<ls.getItem('#containerCuantity');i++){
-						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter),'#setProperties',String.fromCharCode(setLetter)));
+						$('#sampleSets').append(createButton('Set'+ ' ' + String.fromCharCode(setLetter),'#setProperties','changeSet(this.id)',String.fromCharCode(setLetter)));
 						setLetter++;
 					}
 					
@@ -74,13 +74,16 @@ function initialize() {
 		for(i=0;i<ls.length;i++){
 			if(ls.key(i).match(stationSetContainerRegex)){
 				var query = ls.key(i);
+				console.log('1f');
 				var data = query.split('&');
+				console.log(data[1]);
 				if(data[0] !== station){
 				station = data[0];
-				$('#currentSamples').append(createButton(data[0],'#multiSet',data[0]));
-				$(data[0]).attr('onClick',function(){getJsonFromLocalStorage(query)});
+				console.log('"getJsonFromLocalStorage('+query+')"');
+				$('#currentSamples').append(createButton(data[0].substring(1),'#multiSet',"getJsonFromLocalStorage('"+query+"')",data[0]));
+				//$(data[0]).attr('onClick',function(){});
 				console.log(station);
-				}else{}
+				}else if(!ls.key(i).match(stationSetContainerRegex)){$('#currentSamples').append('<span> There are no samples </span>')}
 				
 			
 			}
@@ -129,10 +132,11 @@ function initialize() {
 		});
 	});
 	$('#sampleParametersPage').on('pageinit',function(){
+		//console.log($('form select[name=singleMultiContainer] option:selected').val());
 		if(ls.getItem('#singleMultiContainer') == 'multi'){
 				$('#sampleParametersPageHeader').text('Set '+ls.getItem('#set')+', '+'container'+' '+ containerCounter);
 				//containerCounter++;	
-			}else if(ls.getItem('#singleMultiContainer')=='single'){	
+			}else if(ls.getItem('#singleMultiContainer') =='single'){	
 				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
 				//containerCounter++;	
 			}
@@ -168,7 +172,7 @@ function initialize() {
 			if(ls.getItem('#singleMultiContainer') == 'multi'){
 				$('#sampleParametersPageHeader').text('Set '+ls.getItem('#set')+', '+'container'+' '+ containerCounter);
 				//containerCounter++;	
-			}else if(ls.getItem('#singleMultiContainer')=='single'){	
+			}else if(ls.getItem('#singleMultiContainer') =='single'){	
 				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
 				//containerCounter++;	
 			}
@@ -182,8 +186,13 @@ function initialize() {
 	$('#multiSet').on('pageinit', function(){
 		
 		$('#addSampleSet').click(function (e) {
-			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter),'#setProperties',String.fromCharCode(setLetter)));
+			var containerCuantity = $('#containerCuantity').val();
+			console.log(containerCuantity);
+			$('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter),'#setProperties','changeSet(this.id)',String.fromCharCode(setLetter)));
 			setLetter++;
+			containerCuantity++;
+			$('#containerCuantity').val(containerCuantity);
+			save_data('containerCuantity',$('#containerCuantity').val());
 		});
 
 	});
@@ -209,7 +218,9 @@ function save_data(id, value) {
 }
 //get the data from localStorage and send it to the form
 function load_data(id) {
+	if(id !== null){
     $(id).val(ls.getItem(id));
+	}
 }
 //
 //Eliminates the data of the local Storage
@@ -237,8 +248,9 @@ function setTitle(id, value) {
 	}
 }
 //Create button elements and appends it to the div block
-function createButton(buttonText,hrefLink,id) {
-    var button = '<a href="'+hrefLink+'" onClick="changeSet(this.id)" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + id + '"' + '>' +
+function createButton(buttonText,hrefLink,onclk,id) {
+	console.log('=>'+onclk);
+    var button = '<a href="'+hrefLink+'" onClick="'+onclk+'" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + id + '"' + '>' +
         '<span class="ui-btn-inner ui-btn-corner-all">' +
         '<span class="ui-btn-text">' + buttonText + '</span>' +
         '</span>' +
@@ -303,13 +315,19 @@ function login(text){
 	}
 }
 function getJsonFromLocalStorage(key) {
+	//console.log(key);
+	//console.log(1);
   var query = ls.getItem(key); 
+  //console.log(2);
   var data = query.split("&");
+ // console.log(3);
   var result = {};
+ // console.log(4);
   for(var i=0; i<data.length; i++) {
     var item = data[i].split("="); 
 	$('#'+item[0]).val(item[1]);
     result[item[0]] = item[1];
+	//console.log(result);
 	//setDataInForm(result[item[0]],item[1]);
 	//console.log('Array index ' + i + ' ' + result[item[0]]+ item[1]);
   }
