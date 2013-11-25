@@ -18,7 +18,7 @@ function initialize() {
     }
     if (ls.length !== 0) {
         for (i = 0; i < ls.length; i++) {
-			console.log(ls.key(i).match(stationSetContainerRegex));
+			console.log(!!ls.key(i).match(stationSetContainerRegex));
             if(!ls.key(i).match(stationSetContainerRegex)){
 			load_data(ls.key(i));
 			
@@ -69,20 +69,18 @@ function initialize() {
 			});
 	});
 	$('#currentButton').click(function(e){
-		$('#currentSamples').empty();
+		$('#currentSamples').empty();//getJsonFromLocalStorage('"+query+"')
 		var station = 0;
 		for(i=0;i<ls.length;i++){
 			if(ls.key(i).match(stationSetContainerRegex)){
 				var query = ls.key(i);
 				console.log('1f');
 				var data = query.split('&');
-				console.log(data[1]);
 				if(data[0] !== station){
 				station = data[0];
-				console.log('"getJsonFromLocalStorage('+query+')"');
-				$('#currentSamples').append(createButton(data[0].substring(1),'#multiSet',"getJsonFromLocalStorage('"+query+"')",data[0]));
-				//$(data[0]).attr('onClick',function(){});
-				console.log(station);
+
+				$('#currentSamples').append(createButton(data[0].substring(1),'#multiSet',"createCurrentSets('"+data[0]+"','"+data[1]+"','"+data[2]+"')",data[0]));
+				console.log($(data[0]).length);
 				}else if(!ls.key(i).match(stationSetContainerRegex)){$('#currentSamples').append('<span> There are no samples </span>')}
 				
 			
@@ -120,6 +118,7 @@ function initialize() {
 		});
 		$('#linkToContainers').click(function (){
 		if($('#setAtributesForm').valid() && $('#analysesForm').valid()){
+			containerCounter=1;
 			console.log('Forms multiAttributes and analysesForm were valid');
 			if(ls.getItem('#singleMultiContainer') == 'multi'){
 			$('#sampleParametersPageHeader').text('Set'+' '+ ls.getItem('#set')+', '+'container'+' '+ containerCounter);
@@ -132,13 +131,14 @@ function initialize() {
 		});
 	});
 	$('#sampleParametersPage').on('pageinit',function(){
+		
 		//console.log($('form select[name=singleMultiContainer] option:selected').val());
 		if(ls.getItem('#singleMultiContainer') == 'multi'){
 				$('#sampleParametersPageHeader').text('Set '+ls.getItem('#set')+', '+'container'+' '+ containerCounter);
-				//containerCounter++;	
+					
 			}else if(ls.getItem('#singleMultiContainer') =='single'){	
 				$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);
-				//containerCounter++;	
+				
 			}
 		$('#sampleParameters').validate({
 			rules:{
@@ -156,9 +156,9 @@ function initialize() {
 			},
 			submitHandler: function (form) {
 				   // serialize and join data for all forms
-				   var data = $('#sampleProperties').serialize() + '&' + $('#setAtributesForm').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$(form).serialize();
+				   var data = $('#setAtributesForm').serialize()+ '&' + $('#sampleProperties').serialize() + '&' + $('#analysesForm').serialize() + '&' + $('#sampleParameters').serialize()+ '&' +$('#sampleParameters2 ').serialize();
 				   // ajax submit
-				   console.log($('form select[name=station] option:selected').val());
+				   console.log(data);
 				   save_data($('form select[name=station] option:selected').val()+'&'+ls.getItem('#set')+'&'+containerCounter,data);
 				   //alert(data);
 				   return false;
@@ -247,6 +247,7 @@ function setTitle(id, value) {
 		$('.bedloadAdditionalFields, #bedloadAdditionalFields, .bottomAdditionalFields').hide();	
 	}
 }
+
 //Create button elements and appends it to the div block
 function createButton(buttonText,hrefLink,onclk,id) {
 	console.log('=>'+onclk);
@@ -257,10 +258,28 @@ function createButton(buttonText,hrefLink,onclk,id) {
         '</a>';
     return button;
 }
+function createCollapsible(collapsibleText,id){
+	
+        var collapsible = "<div data-role='collapsible' id='set" + id + "'><h3>" + collapsibleText + "</h3><p>I am the collapsible content in a set so this feels like an accordion. I am hidden by default because I have the 'collapsed' state; you need to expand the header to see me.</p></div>";
+	return collapsible;
+}
 
-function removeButton(buttonName) {
-
-
+function createCurrentSets(station,set,container){
+	$('#sampleSets').empty();
+		console.log(station+'||'+set+'||'+container);
+		console.log('Click action started');
+		if(set === 'SNGL'){
+			save_data('singleMultiContainer','single');
+			save_data('set',set);
+			$('#multiAtributes').hide();
+			$('#sampleSets').append(createCollapsible('Single',set));
+			$('#'+set).append(createButton(container,'#sampleParameters',"getJsonFromLocalStorage('"+station+'&'+set+'&'+container+"')",container));//createButton(set,'#setProperties',"changeSet(this.id)",set));
+			//getJsonFromLocalStorage(station+'&'+set+'&'+container);
+			console.log('Append succes');
+			save_data('containerCuantity',parseInt(container));
+			console.log('Data saved');
+		}
+				
 }
 
 //Changes the set and the header
@@ -287,14 +306,18 @@ function loopTroughContainers(){
 				
 	}
 				if(containerCounter > ls.getItem('#containersCuantity')){
+					//containerCounter=1;
 					$('#sampleParameters2').submit();
 					//$('#currentSamples').append(createButton($('form select[name=station] option:selected').text(),'#setProperties',$('form select[name=station] option:selected').val()+ls.getItem('#set')));
 					if(ls.getItem('#singleMultiContainer') == 'multi'){
 					$.mobile.changePage('#multiSet');
+					//containerCounter=1;
 					}else if(ls.getItem('#singleMultiContainer') == 'single'){
+						//containerCounter=1;
 						$.mobile.changePage('#HomePage');
+						
 					}
-					containerCounter= 1;
+					
 				}	
 	rmvData(ls.getItem('#beginTime'));
 }
@@ -315,21 +338,18 @@ function login(text){
 	}
 }
 function getJsonFromLocalStorage(key) {
-	//console.log(key);
-	//console.log(1);
+	console.log(key);
   var query = ls.getItem(key); 
-  //console.log(2);
   var data = query.split("&");
- // console.log(3);
   var result = {};
- // console.log(4);
   for(var i=0; i<data.length; i++) {
     var item = data[i].split("="); 
-	$('#'+item[0]).val(item[1]);
-    result[item[0]] = item[1];
-	//console.log(result);
+	console.log($("#"+String(item[0])).val()+'==>'+item[1]);
+	$("#"+String(item[0])).val(String(item[1]));
+   // result[item[0]] = item[1];
+	//console.log(item[0]+'='+item[1]);
 	//setDataInForm(result[item[0]],item[1]);
-	//console.log('Array index ' + i + ' ' + result[item[0]]+ item[1]);
+	console.log('Array index ' + i + ' ' +$("#"+String(item[0])).val() );
   }
   
   //return result;
