@@ -30,21 +30,28 @@ function initialize() {
         }
 		}
     }
+	$.validator.addMethod("custom_number", function(value, element) {
+       return value.match(/^[0-9,\+-]+$/);
+    }, "Please enter a valid number");
+	$.validator.addMethod("custom_float",function(value, element){
+	return value.match(/[0-9]+(?:\.[0-9]*)?/);
+	},"Please enter a valid number");
+	
 	$('#page2').on('pageinit', function(){
-
 			$('#sampleProperties').validate({
-					rules:{
-						station: 'required',
-						date: 'required',
-						singleMultiContainer: 'required',
-						containerCuantity: {
-							required: 'true',
-							minlength: 1,
-							maxlength: 40
-						}
-					}
-				});
-		
+								rules:{
+									station: 'required',
+									date: 'required',
+									singleMultiContainer: 'required',
+									containerCuantity: {
+										required: 'true',
+										custom_number: true, //for strings
+										range: [1,40],
+										digits: true
+									}
+								}
+							});
+					
 			$('#addSampleParameters').click(function (e) {
 				
 				if($('#sampleProperties').valid()){
@@ -74,13 +81,10 @@ function initialize() {
 		for(i=0;i<ls.length;i++){
 			if(ls.key(i).match(stationSetContainerRegex)){
 				var query = ls.key(i);
-				console.log('1f');
 				var data = query.split('&');
 				if(data[0] !== station){
-				station = data[0];
-
-				$('#currentSamples').append(createButton(data[0].substring(1),'#multiSet',"createCurrentSets('"+data[0]+"','"+data[1]+"','"+data[2]+"')",data[0]));
-				console.log($(data[0]).length);
+					station = data[0];
+					$('#currentSamples').append(createButton(data[0].substring(1),'#multiSet',"createCurrentSets('"+data[0]+"','"+data[1]+"','"+data[2]+"')",data[0]));
 				}else if(!ls.key(i).match(stationSetContainerRegex)){$('#currentSamples').append('<span> There are no samples </span>')}
 				
 			
@@ -97,11 +101,12 @@ function initialize() {
 		$('#setAtributesForm').validate({
 			rules:{
 					method:'required',
-					containersCuantity:{ 
-						required:true,
-						minlength:1,
-						maxlength:40
-					}
+					containersCuantity:{
+								required: 'true',
+								custom_number: true, //for strings
+								range: [1,40],
+								digits: true
+									}
 			}
 		});
 		$('#analysesForm').validate({
@@ -121,7 +126,7 @@ function initialize() {
 			containerCounter=1;
 			console.log('Forms multiAttributes and analysesForm were valid');
 			if(ls.getItem('#singleMultiContainer') == 'multi'){
-			$('#sampleParametersPageHeader').text('Set'+' '+ ls.getItem('#set')+', '+'container'+' '+ containerCounter);
+			$('#sampleParametersPageHeader').text('Set'+' '+ ls.getItem('#set')+', '+'Container'+' '+ containerCounter);
 			}
 			if(ls.getItem('#singleMultiContainer')== 'single'){
 			$('#sampleParametersPageHeader').text('Single'+' '+'container'+' '+containerCounter);	
@@ -149,10 +154,97 @@ function initialize() {
 		$('#sampleParameters2').validate({
 			
 			rules:{
-				P00061:'required',
-				P00010:'required',
-				P00063:'required',
-				P00065:'required'
+				
+				//P82073:{
+					//custom_float:true,
+				//},
+				P04121:{
+					required:false,
+					custom_float:true,
+				},
+				P04120:{
+					required:false,
+					custom_float:true,
+				},
+				P04119:{
+					required:false,
+					custom_float:true,
+				},
+				P04118:{
+					required:false,
+					custom_float:true,
+				},
+				P04117:{
+					required:false,
+					custom_float:true,
+				},
+				P30333:{
+					required:false,
+					custom_float:true,
+				},
+				P65225:{
+					required:false,
+					custom_float:true,
+				},
+				P63680:{
+					required:false,
+					custom_float:true,
+				},
+				P63676:{
+					required:false,
+					custom_float:true,	
+				},
+				P63675:{
+					required:false,
+					custom_float:true,	
+				},
+				P00095:{
+					required:false,
+					custom_float:true,	
+				},
+				P00020:{
+					required:false,
+					custom_float:true,	
+				},
+				P00061:{
+					required:false,
+					custom_float:true,
+				},
+				M2LAB:{
+						
+				},
+				P00064:{
+					required:false,
+					custom_float:true,	
+				},
+				P00003:{
+					required:false,
+					custom_float:true,	
+				},
+				P72103:{
+					required:false,
+					custom_float:true,
+				},
+				P00009:{
+					required:false,
+					custom_float:true,
+				},
+				P00061:{
+					required:true,
+					custom_float:true,
+				},
+				P00010:{
+					required:true,
+					custom_float:true,
+				},
+				P00063:{
+					required:true,
+					custom_float:true,
+				},
+				P00065:{
+					required:true,
+					custom_float:true,
+				}
 			},
 			submitHandler: function (form) {
 				   // serialize and join data for all forms
@@ -260,26 +352,47 @@ function createButton(buttonText,hrefLink,onclk,id) {
 }
 function createCollapsible(collapsibleText,id){
 	
-        var collapsible = "<div data-role='collapsible' id='set" + id + "'><h3>" + collapsibleText + "</h3><p>I am the collapsible content in a set so this feels like an accordion. I am hidden by default because I have the 'collapsed' state; you need to expand the header to see me.</p></div>";
+        var collapsible = "<div data-role='collapsible' data-theme='a' id='set" + id + "'><h3>" + collapsibleText + "</h3></div>";
 	return collapsible;
 }
 
 function createCurrentSets(station,set,container){
 	$('#sampleSets').empty();
-		console.log(station+'||'+set+'||'+container);
-		console.log('Click action started');
 		if(set === 'SNGL'){
 			save_data('singleMultiContainer','single');
 			save_data('set',set);
-			$('#multiAtributes').hide();
+			//$('#multiAtributes').hide();
 			$('#sampleSets').append(createCollapsible('Single',set));
-			$('#'+set).append(createButton(container,'#sampleParameters',"getJsonFromLocalStorage('"+station+'&'+set+'&'+container+"')",container));//createButton(set,'#setProperties',"changeSet(this.id)",set));
+			for(i=0;i<ls.length;i++){
+				if(ls.key(i).match(stationSetContainerRegex)){
+				var query = ls.key(i);
+				var data = query.split('&');
+				if(data[0]===station && data[1] === set){
+				$('#set'+set).append(createButton(data[2],'#sampleParametersPage',"getJsonFromLocalStorage('"+station+'&'+set+'&'+data[2]+"')",data[2])).trigger('create');//createButton(set,'#setProperties',"changeSet(this.id)",set));
+				}
+				}
+			}
 			//getJsonFromLocalStorage(station+'&'+set+'&'+container);
-			console.log('Append succes');
 			save_data('containerCuantity',parseInt(container));
-			console.log('Data saved');
+		}else if ( set!== 'SNGL'){
+			$('#sampleSets').append(createCollapsible('Set ' + set, set));
+			for(i=0;i<ls.length;i++){
+				if(ls.key(i).match(stationSetContainerRegex)){
+				var query = ls.key(i);
+				var data = query.split('&');
+				if(data[0]===station && data[1] === set){
+				$('#set'+set).append(createButton(data[2],'#sampleParametersPage',"getJsonFromLocalStorage('"+station+'&'+set+'&'+data[2]+"')",data[2])).trigger('create');//createButton(set,'#setProperties',"changeSet(this.id)",set));
+				}
+				}
+			}
+		
+
 		}
-				
+			/*for(i=0;i<ls.length;i++){
+			if(ls.key(i).match(stationSetContainerRegex)){
+				var query = ls.key(i);
+				var data = query.split('&');*/
+					
 }
 
 //Changes the set and the header
@@ -305,7 +418,7 @@ function loopTroughContainers(){
 				$('#sampleParameters2').submit();//Submit handler takes care of storing data
 				
 	}
-				if(containerCounter > ls.getItem('#containersCuantity')){
+				if(containerCounter >= ls.getItem('#containersCuantity')){
 					//containerCounter=1;
 					$('#sampleParameters2').submit();
 					//$('#currentSamples').append(createButton($('form select[name=station] option:selected').text(),'#setProperties',$('form select[name=station] option:selected').val()+ls.getItem('#set')));
@@ -330,6 +443,7 @@ function addOnLogic(){
 function login(text){
 	save_data('userType',text);
 	//alert(text);
+	$('#HomePageHeader').text(text);
 	if(text == 'Observer'){
 		//alert(text);
 		$(' .hide,.div div select ui-block-c,.ui-block-d').hide();
