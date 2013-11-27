@@ -358,6 +358,7 @@ function createCollapsible(collapsibleText,id){
 
 function createCurrentSets(station,set,container){
 	$('#sampleSets').empty();
+	$('#addSampleSet').hide();
 		if(set === 'SNGL'){
 			save_data('singleMultiContainer','single');
 			save_data('set',set);
@@ -368,12 +369,12 @@ function createCurrentSets(station,set,container){
 				var query = ls.key(i);
 				var data = query.split('&');
 				if(data[0]===station && data[1] === set){
-				$('#set'+set).append(createButton(data[2],'#sampleParametersPage',"getJsonFromLocalStorage('"+station+'&'+set+'&'+data[2]+"')",data[2])).trigger('create');//createButton(set,'#setProperties',"changeSet(this.id)",set));
+				$('#set'+set).append(createButton(data[2],'#sampleParametersPage',"getJsonFromLocalStorage('"+station+'&'+set+'&'+data[2]+"');",data[2])).trigger('create');//createButton(set,'#setProperties',"changeSet(this.id)",set));
 				}
 				}
 			}
 			//getJsonFromLocalStorage(station+'&'+set+'&'+container);
-			save_data('containerCuantity',parseInt(container));
+			//save_data('containerCuantity',parseInt(container));
 		}else if ( set!== 'SNGL'){
 			$('#sampleSets').append(createCollapsible('Set ' + set, set));
 			for(i=0;i<ls.length;i++){
