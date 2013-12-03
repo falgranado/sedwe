@@ -31,11 +31,11 @@ function initialize() {
 		}
     }
 	$.validator.addMethod("custom_number", function(value, element) {
-       return value.match(/^[0-9,\+-]+$/);
-    }, "Please enter a valid number");
+       return value.match(/^([0-9,\+-]+|)$/);
+    }, "Please enter a valid custom number");
 	$.validator.addMethod("custom_float",function(value, element){
-	return value.match(/[0-9]+(?:\.[0-9]*)?/);
-	},"Please enter a valid number");
+	return value.match(/^([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*)|)$/);
+	},"Please enter a valid float number");
 	
 	$('#page2').on('pageinit', function(){
 			$('#sampleProperties').validate({
@@ -155,96 +155,105 @@ function initialize() {
 			
 			rules:{
 				
-				//P82073:{
-					//custom_float:true,
-				//},
+				P82073:{
+					custom_float:true,
+				},
+				
 				P04121:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P04120:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P04119:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P04118:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P04117:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P30333:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P65225:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P63680:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P63676:{
-					required:false,
+					
 					custom_float:true,	
 				},
 				P63675:{
-					required:false,
+					
 					custom_float:true,	
 				},
 				P00095:{
-					required:false,
+					
 					custom_float:true,	
 				},
 				P00020:{
-					required:false,
+					
 					custom_float:true,	
 				},
 				P00061:{
-					required:false,
+					
 					custom_float:true,
 				},
 				M2LAB:{
 						
 				},
 				P00064:{
-					required:false,
+					
 					custom_float:true,	
 				},
 				P00003:{
-					required:false,
+					
 					custom_float:true,	
 				},
 				P72103:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P00009:{
-					required:false,
+					
 					custom_float:true,
 				},
 				P00061:{
-					required:true,
 					custom_float:true,
 				},
 				P00010:{
-					required:true,
-					custom_float:true,
+					custom_float: true
 				},
 				P00063:{
-					required:true,
 					custom_float:true,
 				},
 				P00065:{
-					required:true,
 					custom_float:true,
-				}
+				},
+				P71999:{
+					required:true,
+				
+				},
+				P82398:{
+					required:true
+				},
+				P84164:{
+					required:true
+				},
+				
+				
 			},
 			submitHandler: function (form) {
 				   // serialize and join data for all forms
