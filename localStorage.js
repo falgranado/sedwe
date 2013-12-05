@@ -2,7 +2,6 @@ var ls = window.localStorage;
 var setLetter = 65;
 var stationSetContainerRegex = /#[0123456789]*&[A-Z]*&[0123456789]/;
 var containerCounter=1;
-var beginDate = $('#beginDate1');
 var appCache = window.applicationCache;
 
 
@@ -135,8 +134,15 @@ function initialize() {
 		}
 		});
 	});
-	$('#sampleParametersPage').on('pageinit',function(){
+	$('#beginDate').on('change',function(){
 		
+		var value = $('#beginDate').val();
+		console.log(value);
+		$('#beginDate1').val(value);
+		});
+		
+	$('#sampleParametersPage').on('pageinit',function(){
+		$('#beginDate1').val($('#beginDate').val());
 		//console.log($('form select[name=singleMultiContainer] option:selected').val());
 		if(ls.getItem('#singleMultiContainer') == 'multi'){
 				$('#sampleParametersPageHeader').text('Set '+ls.getItem('#set')+', '+'container'+' '+ containerCounter);
@@ -298,9 +304,6 @@ function initialize() {
 
 	});
     
-	//$('#beginDate').change(function(){
-	//	beginDate.val(this.value);
-	//});
 	
 }
 
@@ -420,7 +423,7 @@ function changeSet(id) {
 	}
 }
 
-//loop trought the desired amount of container
+//loop trought the desired amount of containers
 function loopTroughContainers(){
 	 console.log('Container counter = '+containerCounter);
 	 //containerCounter++;
@@ -449,7 +452,7 @@ function addOnLogic(){
 		$('#fullSizeFraction').hide();	
 	}
 }
-//Determines User type
+//Determines User type and style the form.
 function login(text){
 	save_data('userType',text);
 	//alert(text);
@@ -459,8 +462,12 @@ function login(text){
 		$(' .hide,.div div select ui-block-c,.ui-block-d').hide();
 		
 		$('#messageToLab').attr('placeholder','Remarks');
+	}else if(text !== 'Observer'){
+		$(' .hide,.div div select ui-block-c,.ui-block-d').show();
+		$('#messageToLab').attr('placeholder','Message to lab');
 	}
 }
+//Get the form data of past unfinished forms(i.e Current Samples).
 function getJsonFromLocalStorage(key) {
 	console.log(key);
   var query = ls.getItem(key); 
