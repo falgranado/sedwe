@@ -29,12 +29,14 @@ function initialize() {
         }
 		}
     }
+	//Add custom rules for validation
 	$.validator.addMethod("custom_number", function(value, element) {
        return value.match(/^([0-9,\+-]+|)$/);
     }, "Please enter a valid custom number");
 	$.validator.addMethod("custom_float",function(value, element){
 	return value.match(/^([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*)|)$/);
 	},"Please enter a valid float number");
+	
 	
 	$('#page2').on('pageinit', function(){
 			$('#sampleProperties').validate({
@@ -285,7 +287,7 @@ function initialize() {
 			}
 
 			$("html, body").animate({ scrollTop: 0 }, "slow");
-				
+			$.mobile.showToast(containerCounter +'/'+ $('#containersCuantity').val()+' '+ 'containers',2000);	
 		}
 				
 	     });
@@ -417,7 +419,7 @@ function changeSet(id) {
 	else if(ls.getItem('#singleMultiContainer') == 'single'){
 	save_data('set','SNGL');
 	ls.setItem('#containersCuantity',ls.getItem('#containerCuantity'));
-	$('#setHeader').text(ls.getItem('#containerCuantity')+' '+'single container(s)');
+	$('#setHeader').text($('#containerCuantity').val()+' '+'single container(s)');
 	
 		
 	}
