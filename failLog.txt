@@ -1,0 +1,17 @@
+﻿Started: 8/28/2013 1:11 PM
+
+Connected to usgsTEST.
+icon.png - same - not transferred
+.htaccess - Transferring
+.htaccess - Put operation successful
+Operation timed out. Cancelling...
+/diannelopez.com/granado/jquery-mobile/demos/css/themes/default/images - error occurred - Unable to create server folder /diannelopez.com/granado/jquery-mobile/demos/css/themes/default/images.  Dreamweaver could not connect to the server. This may be due to one or more of the following reasons:  	- The network cable is unplugged or the network is down. Please verify that the network cable is connected and that the network is up. 	- The FTP server is down. Please verify that you can connect to the FTP server using another FTP program. 	- The FTP host name is incorrect. Please verify that the host name is correct in the Site definition dialog box. 	- Accessing the server requires proxy settings that aren't properly set. Please verify that the proxy settings in the Site category of the Preferences dialog box are properly set, and that the Use Proxy option in the Site definition dialog box is selected.  	- You may need to connect to the server using a different port than the one provided. Please specify the correct port in the box provided.
+
+File activity incomplete. 1 file(s) or folder(s) were not completed.
+Files updated: 1
+Files skipped: 1
+
+Files with errors: 1
+/diannelopez.com/granado/jquery-mobile/demos/css/themes/default/images
+
+Finished: 8/28/2013 1:12 PM

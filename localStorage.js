@@ -67,7 +67,7 @@ function initialize() {
                 if ($('#singleMultiContainer').val() == 'multi') {
                     //window.location.href = '#multiSet';
 					$.mobile.changePage('#multiSet');
-
+					$('#multiAtributes').show();
                 } else if ($('#singleMultiContainer').val() == 'single') {
                     //window.location.href = '#setProperties';
 					$.mobile.changePage('#setProperties');
@@ -467,20 +467,16 @@ function loopTroughContainers() {
 
     }
     if (containerCounter >= ls.getItem('#containersQuantity')) {
-        //containerCounter=1;
-        $('#sampleParameters2').submit();
-        //$('#currentSamples').append(createButton($('form select[name=station] option:selected').text(),'#setProperties',$('form select[name=station] option:selected').val()+ls.getItem('#set')));
-        if ($('#singleMultiContainer').val() == 'multi') {
-            $.mobile.changePage('#multiSet');
-            //containerCounter=1;
-        } else if ($('#singleMultiContainer').val() == 'single') {
-            //containerCounter=1;
-            $.mobile.changePage('#HomePage');
-
-        }
+        $('#sampleParameters2').submit();//Submit handler takes care of storing data
+		
+                if ($('#singleMultiContainer').val() == 'multi') {
+           			$.mobile.changePage('#multiSet');//Redirects the page to #multiSet
+        		} else if ($('#singleMultiContainer').val() == 'single') {
+           			$.mobile.changePage('#HomePage');//Redirects the page to #HomePage
+       			}
 
     }
-    rmvData(ls.getItem('#beginTime'));
+    //rmvData(ls.key('#beginTime'));
 }
 
 function addOnLogic() {
@@ -488,41 +484,41 @@ function addOnLogic() {
         $('#fullSizeFraction').hide();
     }
 }
-//Determines User type and style the form.
+//Determines User type and style the form depending of the type of user.
 function login(text) {
     save_data('userType', text);
     //alert(text);
-    $('#HomePageHeader').text(text);
+    $('#HomePageHeader').text(text);//change text of header to the type of user selected
     if (text == 'Observer') {
-        //alert(text);
-        $(' .hide,.div div select ui-block-c,.ui-block-d').hide();
-
-        $('#messageToLab').attr('placeholder', 'Remarks');
+        $(' .hide,.div div select ui-block-c,.ui-block-d').hide(); // hides every div containing hide, .div div select ui-block-c and .ui-block-d class
+		$('#messageToLab').attr('placeholder', 'Remarks');//Sets the placeholder of the messageToLab text area
+		
     } else if (text !== 'Observer') {
-        $(' .hide,.div div select ui-block-c,.ui-block-d').show();
-        $('#messageToLab').attr('placeholder', 'Message to lab');
+        $(' .hide,.div div select ui-block-c,.ui-block-d').show();// In case of user type change it makes sure the elemnts hidden shows up again
+        $('#messageToLab').attr('placeholder', 'Message to lab');//Sets the placeholder of the messageToLab text area
     }
 }
 //Get the form data of past unfinished forms(i.e Current Samples).
 function getJsonFromLocalStorage(key) {
-
-    console.log(key);
-    var query = ls.getItem(key);
-    var data = query.split("&");
-    var result = {};
+	keysplit = key.split('&');
+	console.log(keysplit[2]);
+	containerCounter = parseInt(String(keysplit[2]));
+	if(keysplit[1]!=='SNGL'){
+		$('#sampleParametersPageHeader').text('Set ' + String(keysplit[1]) + ', ' + 'container' + ' ' + containerCounter);
+	}else{
+		$('#sampleParametersPageHeader').text('Single set , ' + 'container' + ' ' + containerCounter);
+		}
+    var query = ls.getItem(key);//looks for  the key in localStorage
+    var data = query.split("&");//search and split each element in the local storage by '&' delimiter 
     for (var i = 0; i < data.length; i++) {
         var item = data[i].split("=");
-        console.log($("#" + String(item[0])).val() + '==>' + item[1]);
+        //console.log($("#" + String(item[0])).val() + '==>' + item[1]);
         $("#" + String(item[0])).val(String(item[1]));
-        // result[item[0]] = item[1];
-        //console.log(item[0]+'='+item[1]);
-        //setDataInForm(result[item[0]],item[1]);
-        console.log('Array index ' + i + ' ' + $("#" + String(item[0])).val());
     }
 
     //return result;
 }
-
+//Checks the local storage and create a user friendly report of the data stored
 function createReport(key) {
     $('#reportTable').empty();
     var query = ls.getItem(key);
@@ -535,6 +531,9 @@ function createReport(key) {
 		
         var table = $('#reportTable');
         var item = data[i].split("=");
+		
+		if(item[1] === '+' || item[1] ===''){
+		}else{
 		switch(item[0]){
 			case 'method':
 				table.append('<tr><td>' + 'Method' + '</td><td>' + String(item[1]) + '</td></tr>'); 
@@ -544,9 +543,9 @@ function createReport(key) {
 				break;
 			case 'compositeOrIndividual':
 				if(item[1] === 'composite'){
-				table.append('<tr><td>' + 'Composite' + '</td><td>' + 'true' + '</td></tr>');
+					table.append('<tr><td>' + 'Composite' + '</td><td>' + 'true' + '</td></tr>');
 				}else{
-				table.append('<tr><td>' + 'Composite' + '</td><td>' + 'false' + '</td></tr>');
+					table.append('<tr><td>' + 'Composite' + '</td><td>' + 'false' + '</td></tr>');
 				}
 				break;
 			case 'station':
@@ -629,23 +628,203 @@ function createReport(key) {
 			case 'P84164':
 				table.append('<tr><td>' + 'Sampler Type' + '</td><td>' + item[1] + '</td></tr>');
 				break;
+			case 'P00009':
+				table.append('<tr><td>' + 'Location in cross section: Left' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case 'P00009R':
+				table.append('<tr><td>' + 'Location in cross section: Left Remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P72103':
+				table.append('<tr><td>' + 'Location in cross section: Right' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P72103R':
+				table.append('<tr><td>' + 'Location in cross section: Right remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00003':
+				table.append('<tr><td>' + 'Sampling depth' + '</td><td>' + item[1]+' ft'  + '</td></tr>');
+				break;
+			case'P00003R':
+				table.append('<tr><td>' + 'Sampling depth remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00004':
+				table.append('<tr><td>' + 'Stream width' + '</td><td>' + item[1]+' ft' + '</td></tr>');	
+				break;
+			case'P00004R':
+				table.append('<tr><td>' + 'Stream width remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00064':
+				table.append('<tr><td>' + 'Mean depth of stream' + '</td><td>' + item[1]+' ft' + '</td></tr>');
+				break;
+			case'P00064R':
+				table.append('<tr><td>' + 'Mean depth of stream remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'M2LAB':
+				table.append('<tr><td>' + 'Message to lab' + '</td><td>' + item[1].replace(/\+/g, ' ') + '</td></tr>');
+				break;
+			case'P00061':
+				table.append('<tr><td>' + 'Instantaneous discharge' + '</td><td>' + item[1]+' cfs' + '</td></tr>');
+				break;
+			case'P00061R':
+				table.append('<tr><td>' + 'Instantaneous discharge remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00061M':
+				table.append('<tr><td>' + 'Instantaneous discharge method' + '</td><td>' + item[1] + '</td></tr>');
+				break;	
+			case'P00010':
+				table.append('<tr><td>' + 'Water temperature' + '</td><td>' + item[1] +String.fromCharCode(176)+'C'+ '</td></tr>');
+				break;
+			case'P00010R':
+				table.append('<tr><td>' + 'Water temperature remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00010M':
+				table.append('<tr><td>' + 'Water temperature method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00010N':
+				table.append('<tr><td>' + 'Water temperature null value qualifier' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00063':
+				table.append('<tr><td>' + 'Number of sampling points' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00063R':
+				table.append('<tr><td>' + 'Number of sampling points remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00020':
+				table.append('<tr><td>' + 'Air temperature' + '</td><td>' +  item[1] +String.fromCharCode(176)+'C' + '</td></tr>');
+				break;
+			case'P00020R':
+				table.append('<tr><td>' + 'Air temperature remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00020M':
+				table.append('<tr><td>' + 'Air temperature method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00020N':
+				table.append('<tr><td>' + 'Air temperature null value qualifier' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00065':
+				table.append('<tr><td>' + 'Gage height' + '</td><td>' + item[1] +' ft'+ '</td></tr>');
+				break;
+			case'P00065R':
+				table.append('<tr><td>' + 'Gage height remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00065M':
+				table.append('<tr><td>' + 'Gage height method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00095':
+				table.append('<tr><td>' + 'Specific conductance' + '</td><td>' + item[1]+' per cm at 25'+String.fromCharCode(176)+'C' + '</td></tr>');
+				break;
+			case'P00095R':
+				table.append('<tr><td>' + 'Gage height remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00095M':
+				table.append('<tr><td>' + 'Gage height method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P00095N':
+				table.append('<tr><td>' + 'Gage height null value qualifier' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63675':
+				table.append('<tr><td>' + 'Turbidity' + '</td><td>' + item[1]+' NTU, 400-600nm, 90'+String.fromCharCode(177)+'30'+String.fromCharCode(176) + '</td></tr>');
+				break;
+			case'P63675R':
+				table.append('<tr><td>' + 'Turbidity remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63675M':
+				table.append('<tr><td>' + 'Turbidity method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63675N':
+				table.append('<tr><td>' + 'Turbidity null value qualifier' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63676':
+				table.append('<tr><td>' + 'Turbidity' + '</td><td>' + item[1]+' NTU,400-600nm, multiple angles' + '</td></tr>');
+				break;
+			case'P63676R':
+				table.append('<tr><td>' + 'Turbidity remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63676M':
+				table.append('<tr><td>' + 'Turbidity  method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63676N':
+				table.append('<tr><td>' + 'Turbidity null value qualifier' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63680':
+				table.append('<tr><td>' + 'Turbidity' + '</td><td>' + item[1]+' NTU,780-900nm,90'+String.fromCharCode(177)+'2.5'+String.fromCharCode(176) + '</td></tr>');
+				break;
+			case'P63680R':
+				table.append('<tr><td>' + 'Turbidity remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63680M':
+				table.append('<tr><td>' + 'Turbidity  method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P63680N':
+				table.append('<tr><td>' + 'Turbidity null value qualifier' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P65225':
+				table.append('<tr><td>' + 'Transparency, transparecy tube' + '</td><td>' + item[1]+' cm' + '</td></tr>');
+				break;
+			case'P65225R':
+				table.append('<tr><td>' + 'Transparency remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P65225M':
+				table.append('<tr><td>' + 'Transparency method' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P65225N':
+				table.append('<tr><td>' + 'Transparency null value qualifier' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P30333':
+				table.append('<tr><td>' + 'Bag mesh, bedload sampler' + '</td><td>' + item[1] +'mm' + '</td></tr>');
+				break;
+			case'P30333R':
+				table.append('<tr><td>' + 'Bag mesh, bedload sampler remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P04117':
+				table.append('<tr><td>' + 'Thether line used for collecting sample' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P04118':
+				table.append('<tr><td>' + 'Composite samples in cross-sectional bedload measurement' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P04119':
+				table.append('<tr><td>' + 'Vertical in composite sample' + '</td><td>' + item[1] +' s' + '</td></tr>');
+				break;
+			case'P04120':
+				table.append('<tr><td>' + 'Rest time on bed for Bedload sample' + '</td><td>' + item[1]+' s' + '</td></tr>');
+				break;
+			case'P04120R':
+				table.append('<tr><td>' + 'Rest time on bed for Bedload sample remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P04121':
+				table.append('<tr><td>' + 'Horizontal width of vertical' + '</td><td>' + item[1]+' ft' + '</td></tr>');
+				break;
+			case'P04121R':
+				table.append('<tr><td>' + 'Horizontal width of vertical remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;	
+			case'P82073':
+				table.append('<tr><td>' + 'Starting time' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P82073R':
+				table.append('<tr><td>' + 'Starting time remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P82074':
+				table.append('<tr><td>' + 'Ending time' + '</td><td>' + item[1] + '</td></tr>');
+				break;
+			case'P82074R':
+				table.append('<tr><td>' + 'Ending time remark' + '</td><td>' + item[1] + '</td></tr>');
+				break;	
+	
 			
-		}			
 			
-        //table.append('<tr><td>' + String(item[0]) + '</td><td>' + String(item[1]) + '</td></tr>');
-        //$("#"+String(item[0])).val(String(item[1]));
-        //console.log('Array index ' + i + ' ' +$("#"+String(item[0])).val() );
+        }
         console.log('createReport(): Excuted');
     }
-	$('#reportTable tr td:contains('+')').each(function(index, element) {
-            if($(this).text() === '+'){
-				$(this).parent().remove();	
-				console.log('removed');
-			}
-        });
-    $('#reportTable tr:odd').css("background-color", '#9FF');
+	//Checks for table data containing '+' values (+ = null) and remove from table to optimize space
+	//$('#reportTable tr td:contains('+')').each(function(index, element) {
+      //      if($(this).text() === '+'){
+		//		$(this).parent().remove();	
+			//	console.log('removed');
+			//}
+      //  });
+ }
+    $('#reportTable tr:odd').css("background-color", '#9FF'); //paints odd rows with cyan 
 }
-
+//Checks cache status
 function checkCache() {
 
     var appCache = window.applicationCache;
@@ -680,8 +859,8 @@ function checkCache() {
             return 'UKNOWN CACHE STATUS';
             break;
     };
-
 }
+
 //Loads localStorage to set defaults 
 $(document).ready(function (e) {
     //login(ls.getItem('#userType'));
@@ -690,7 +869,8 @@ $(document).ready(function (e) {
     if (checkCache() === 'UPDATEREADY') {
         window.applicationCache.update();
     }
-    initialize();
+	
+    initialize()
     //getJsonFromUrl();
 
 
