@@ -59,7 +59,7 @@ function initialize() {
 
                 $('#sampleSets').empty();
                 setLetter = 65;
-                for (i = 0; i < ls.getItem('#setQuantity'); i++) {
+                for (i = 0; i < $('#setQuantity').val(); i++) {
                     $('#sampleSets').append(createButton('Set' + ' ' + String.fromCharCode(setLetter), '#setProperties', 'changeSet(this.id)', String.fromCharCode(setLetter)));
                     setLetter++;
                 }
@@ -217,11 +217,9 @@ function initialize() {
                     custom_float: true,
                 },
                 P00020: {
-
                     custom_float: true,
                 },
                 P00061: {
-
                     custom_float: true,
                 },
                 M2LAB: {
@@ -364,7 +362,7 @@ function setTitle(id, value) {
 //Create button elements and appends it to the div block
 function createButton(buttonText, hrefLink, onclk, id) {
     console.log('=>' + onclk);
-    if (buttonText === 'View') {
+    if (buttonText === 'View' || buttonText === 'Edit') {
         var button = '<a href="' + hrefLink + '" onClick="' + onclk + '" data-rel="dialog" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + id + '"' + '>' +
             '<span class="ui-btn-inner ui-btn-corner-all">' +
             '<span class="ui-btn-text">' + buttonText + '</span>' +
@@ -500,21 +498,27 @@ function login(text) {
 }
 //Get the form data of past unfinished forms(i.e Current Samples).
 function getJsonFromLocalStorage(key) {
+	
 	keysplit = key.split('&');
 	console.log(keysplit[2]);
 	containerCounter = parseInt(String(keysplit[2]));
 	if(keysplit[1]!=='SNGL'){
 		$('#sampleParametersPageHeader').text('Set ' + String(keysplit[1]) + ', ' + 'container' + ' ' + containerCounter);
 	}else{
-		$('#sampleParametersPageHeader').text('Single set , ' + 'container' + ' ' + containerCounter);
+		$('#sampleParametersPageHeader').text('Single container' + ' ' + containerCounter);
 		}
     var query = ls.getItem(key);//looks for  the key in localStorage
     var data = query.split("&");//search and split each element in the local storage by '&' delimiter 
     for (var i = 0; i < data.length; i++) {
         var item = data[i].split("=");
         //console.log($("#" + String(item[0])).val() + '==>' + item[1]);
+		if(String(item[0]) == 'beginTime'){
+			$("#" + String(item[0])).val(String(item[1].replace('%3A',':')));
+			console.log($("#" + String(item[0])).val());
+		}else{
         $("#" + String(item[0])).val(String(item[1]));
-    }
+    	}
+	}
 
     //return result;
 }
@@ -596,7 +600,7 @@ function createReport(key) {
 				break;
 				
 			case 'beginTime':
-				table.append('<tr><td>' + 'Begin time' + '</td><td>' + item[1] + '</td></tr>');
+				table.append('<tr><td>' + 'Begin time' + '</td><td>' + item[1].replace('%3A',':') + '</td></tr>');
 				break;
 			case 'timeDatum':
 				table.append('<tr><td>' + 'Time datum' + '</td><td>' + item[1] + '</td></tr>');

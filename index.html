@@ -42,7 +42,7 @@ margin: 0.6em 10% 0.8em !important;
     ###################################################
     -->
 <div data-role="page" id="userPage">
- <div data-role="header" data-position="fixed">
+ <div data-role="header" data-position="fixed" data-tap-toggle="false">
         	<h3>SED_WE</h3>            
     </div>
   <div data-role="content"><h3>Select your role:</h3>
@@ -57,7 +57,7 @@ margin: 0.6em 10% 0.8em !important;
         </li>
    </ul>
   </div>
-   <div data-role="footer" data-position="fixed">
+   <div data-role="footer" data-position="fixed" data-tap-toggle="false">
    		<h3> </h3>
     </div>
 </div>
@@ -67,7 +67,7 @@ margin: 0.6em 10% 0.8em !important;
     ###################################################
     -->
 <div data-role="page" id="HomePage" >
-    <div data-role="header" data-position="fixed" >
+    <div data-role="header" data-position="fixed" data-tap-toggle="false" >
             	<h3 id='HomePageHeader'></h3>
     </div>
     <div data-role="content">
@@ -89,7 +89,7 @@ margin: 0.6em 10% 0.8em !important;
         <h1>Tutorials</h1>
         </div>
         </div>
-    <div data-role="footer" data-position="fixed">
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
         <div class="ui-grid-b">
            <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
@@ -98,13 +98,13 @@ margin: 0.6em 10% 0.8em !important;
 </div><!-- #HomePage-->
     
 <div data-role="page" id="currentSamplePage" >
-   <div data-role="header" data-position="fixed">
+   <div data-role="header" data-position="fixed" data-tap-toggle="false">
         <h3>Current Samples</h3>
     </div>
     <div data-role="content">
     	<div id='currentSamples'></div>
     </div>
-    <div data-role="footer" data-position="fixed">
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
         <div class="ui-grid-b">
            <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
@@ -113,21 +113,21 @@ margin: 0.6em 10% 0.8em !important;
 </div><!--#currentSamplePage-->
     
 <div data-role="page" id='reportPage'> 
-	<div data-role="header" id='reportHeader' data-position="fixed"><h3>Report</h3></div> 
+	<div data-role="header" id='reportHeader' data-position="fixed" data-tap-toggle="false"><h3>Report</h3></div> 
 		<div data-role="content" id='reportContent'>
         	<table id="reportTable"></table>
        	</div><!--content-->
 </div><!--#reportPage--> 
     
 <div data-role="page" id="menuPage">
-    <div data-role="header" id='menuHeader' data-position="fixed"><h3>Menu</h3></div> 
+    <div data-role="header" id='menuHeader' data-position="fixed" data-tap-toggle="false"><h3>Menu</h3></div> 
 		<div data-role="content" id='menuContent'>
             <a href="#HomePage" data-role="button" data-theme="b">Home</a>   
         </div><!--content-->
 </div><!--#menuPage--> 
     	
 <div data-role="page" id="newSample" >
-    <div data-role="header"  data-position="fixed"> 
+    <div data-role="header"  data-position="fixed" data-tap-toggle="false"> 
         	<h3>Add new sample</h3>
     </div>
     <div data-role="content">
@@ -140,7 +140,7 @@ margin: 0.6em 10% 0.8em !important;
             </li>
         </ul>
     </div>
-    <div data-role="footer" data-position="fixed">
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
         <div class="ui-grid-b">
            <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
@@ -149,7 +149,7 @@ margin: 0.6em 10% 0.8em !important;
 </div><!--#newSample-->
 
 <div data-role="page" id="page2" >
-    <div data-role="header" data-position="fixed">
+    <div data-role="header" data-position="fixed" data-tap-toggle="false">
         	<h1 id="page2Header"></h1>
 
     </div>
@@ -179,7 +179,7 @@ margin: 0.6em 10% 0.8em !important;
             </div>
             </div>
             <label for="date">Begin Date:</label>
-            <input name="date" id="beginDate" type="date" onChange="save_data(this.id,this.value)" />
+            <input name="date" placeholder="YYYY/MM/DD" id="beginDate" type="date" onChange="save_data(this.id,this.value)" />
 
             <div class="hide">
             <label for='EVENT'>Hydrologic event:</label>
@@ -225,7 +225,7 @@ margin: 0.6em 10% 0.8em !important;
       ##################################################################
       -->
     </div>
-    <div data-role="footer" data-position="fixed">
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
          <div class="ui-grid-b">
            <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
@@ -236,7 +236,7 @@ margin: 0.6em 10% 0.8em !important;
 </div>
 
 <div data-role="page" id="sampleParametersPage">
-    <div data-role="header" data-position="fixed">
+    <div data-role="header" data-position="fixed" data-tap-toggle="false">
          <h1 id="sampleParametersPageHeader"> </h1>
 
     </div>
@@ -248,9 +248,9 @@ margin: 0.6em 10% 0.8em !important;
         <form id="sampleParameters">
             
             <label for="beginDate1">Begin Date:</label>
-            <input type="date" name="beginDate" id="beginDate1" onChange="save_data(this.name,this.value)" required/>
+            <input type="date" placeholder="YYYY/MM/DD"name="beginDate" id="beginDate1" onChange="save_data(this.name,this.value)" required/>
             <label for="beginTime">Begin Time:</label>
-            <input type="time" name="beginTime" id="beginTime" onChange="save_data(this.name,this.value)" required/>
+            <input type="time" placeholder="HHMM"name="beginTime" id="beginTime" onChange="save_data(this.name,this.value)" required/>
            
            <div class="hide">
             <label for='timeDatum'>Time Datum:</label>
@@ -693,7 +693,7 @@ margin: 0.6em 10% 0.8em !important;
                 <label for="P00061">Instantaneous discharge:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P00061" id="P00061" required onChange="save_data(this.name,this.value)" />
+                    <input type="number" name="P00061" id="P00061"  onChange="save_data(this.name,this.value)" />
                 </div>
                 <div class="ui-block-b">
                     <select name="P00061R" id="P00061R" onChange="save_data(this.name,this.value)">
@@ -732,7 +732,7 @@ margin: 0.6em 10% 0.8em !important;
                 <label for="P00010">Water Temperature:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="text" name="P00010" id="P00010" onChange="save_data(this.name,this.value)" required/>
+                    <input type="text" name="P00010" id="P00010" onChange="save_data(this.name,this.value)" />
                 </div>
                 
                 <div class="ui-block-b">
@@ -777,7 +777,7 @@ margin: 0.6em 10% 0.8em !important;
                 <label for="P00063">Number of sampling point:</label>
                  <div class="ui-grid-c">
                  <div class="ui-block-a">
-                    <input type="number" name="P00063" id="P00063" onChange="save_data(this.name,this.value)" required/>
+                    <input type="number" name="P00063" id="P00063" onChange="save_data(this.name,this.value)" />
                 </div>
                 <div class="ui-block-b">
                     <select name="P00063R" id="P00063R" onChange="save_data(this.name,this.value)">
@@ -839,7 +839,7 @@ margin: 0.6em 10% 0.8em !important;
                 <label for="P00065">Gage height:</label>
                 <div class="ui-grid-c">
                 <div class="ui-block-a">
-                    <input type="number" name="P00065" id="P00065" onChange="save_data(this.name,this.value)" required/>
+                    <input type="number" name="P00065" id="P00065" onChange="save_data(this.name,this.value)" />
                 </div>
                 
                 <div class="ui-block-b">
@@ -1193,7 +1193,7 @@ margin: 0.6em 10% 0.8em !important;
             </div>
         </form>
     </div>
-    <div data-role="footer" data-position="fixed">
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
      <div class="ui-grid-b">
            <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
@@ -1203,14 +1203,14 @@ margin: 0.6em 10% 0.8em !important;
     </div>
 </div>
 <div data-role="page" id="multiSet" >
-    <div data-role="header" data-position="fixed">
+    <div data-role="header" data-position="fixed" data-tap-toggle="false">
     	<h3>Select a sample set</h3>
     </div>
     <div data-role="content" >
      <div id="sampleSets">
      </div>
     </div>
-	<div data-role="footer" data-position="fixed">
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
          <div class="ui-grid-b">
            <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
@@ -1221,7 +1221,7 @@ margin: 0.6em 10% 0.8em !important;
 
 
 <div data-role="page" id="setProperties" >
-  <div data-role="header" data-position="fixed">
+  <div data-role="header" data-position="fixed" data-tap-toggle="false">
   	<h1 id='setHeader'></h1>
   </div>
   <div data-role="content">
@@ -1266,7 +1266,7 @@ margin: 0.6em 10% 0.8em !important;
   <!--/div-->
   
   <span>(**) Possible add-on analysis for individual containers.</span>
-<div data-role="footer" data-position="fixed">
+<div data-role="footer" data-position="fixed" data-tap-toggle="false">
     <div class="ui-grid-b">
            <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
