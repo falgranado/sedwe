@@ -15,7 +15,9 @@ function initialize() {
     } else if (Modernizr.localstorage) {
         alert("This application may store data on your device");
     }
-    if (ls.length !== 0) {
+	
+	//Code commented on request of Dianne Lopez following Jeb Brown suggestion
+    /*if (ls.length !== 0) {
         for (i = 0; i < ls.length; i++) {
             console.log( !! ls.key(i).match(stationSetContainerRegex));
             if (!ls.key(i).match(stationSetContainerRegex)) {
@@ -28,13 +30,13 @@ function initialize() {
                 console.log('Got' + ' ' + ls.key(i) + ' ' + 'from local storage');
             }
         }
-    }
+    }*/
     //Add custom rules for validation
     $.validator.addMethod("custom_number", function (value, element) {
-        return value.match(/^([0-9,\+-]+|)$/);
+        return value.match(/^([0-9,\+-]+|)$/);//Accepts only numbers or blank space
     }, "Please enter a valid custom number");
     $.validator.addMethod("custom_float", function (value, element) {
-        return value.match(/^([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*)|)$/);
+        return value.match(/^([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*)|)$/);//Accepts only floats or blank space
     }, "Please enter a valid float number");
 
 
@@ -87,7 +89,7 @@ function initialize() {
                 var data = query.split('&');
                 if (data[0] !== station) {
                     station = data[0];
-                    $('#currentSamples').append(createButton(data[0].substring(1), '#multiSet', "createCurrentSets('" + data[0] + "')", data[0]));
+                    $('#currentSamples').append(createButton(data[0].substring(1), '#currentShipmentContainer', "createCurrentSets('" + data[0] + "')", data[0]));
                 } else if (!ls.key(i).match(stationSetContainerRegex)) {
                     $('#currentSamples').append('<span> There are no samples </span>')
                 }
@@ -96,7 +98,7 @@ function initialize() {
             }
         }
     });
-    $('#currentSamplePage').on('pageinit', function () {
+    $('#currentShipmentPage').on('pageinit', function () {
 
 
     });
@@ -362,13 +364,13 @@ function setTitle(id, value) {
 //Create button elements and appends it to the div block
 function createButton(buttonText, hrefLink, onclk, id) {
     console.log('=>' + onclk);
-    if (buttonText === 'View' || buttonText === 'Edit') {
-        var button = '<a href="' + hrefLink + '" onClick="' + onclk + '" data-rel="dialog" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + id + '"' + '>' +
+    if (buttonText === 'View' ) {
+       var button = '<a href="' + hrefLink + '" onClick="' + onclk + '" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-rel="dialog" data-role="button" data-theme="c"' + '' + 'id="' + id + '"' + '>' +
             '<span class="ui-btn-inner ui-btn-corner-all">' +
             '<span class="ui-btn-text">' + buttonText + '</span>' +
             '</span>' +
             '</a>';
-    } else {
+		} else {
         var button = '<a href="' + hrefLink + '" onClick="' + onclk + '" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-role="button" data-theme="c"' + '' + 'id="' + id + '"' + '>' +
             '<span class="ui-btn-inner ui-btn-corner-all">' +
             '<span class="ui-btn-text">' + buttonText + '</span>' +
@@ -385,8 +387,8 @@ function createCollapsible(collapsibleText, id) {
 
 function createCurrentSets(station) {
     console.log('c123');
-    $('#sampleSets').empty();
-    $('#addSampleSet').hide();
+    $('#currentShipmentSamples').empty();
+    //$('#addSampleSet').hide();
     console.log('c1234');
     var counter = 1;
     for (i = 0; i < ls.length; i++) {
@@ -402,24 +404,24 @@ function createCurrentSets(station) {
                 if (data[0] === station && data[1] !== nextData[1]) {
 
                     if (data[1] === 'SNGL') {
-                        $('#sampleSets').append(createCollapsible('Single set', data[1]));
+                        $('#currentShipmentSamples').append(createCollapsible('Single set', data[1]));
                     } else {
-                        $('#sampleSets').append(createCollapsible('Set' + data[1], data[1]));
+                        $('#currentShipmentSamples').append(createCollapsible('Set' + data[1], data[1]));
                     }
                     //$('#set'+data[1]).collapsible();
                     counter = 1;
                     var bool = true;
                     while (bool) {
                         var key = data[0] + '&' + data[1] + '&' + counter;
-                        var startGrid = '<div class="ui-grid-b">';
+                        var startGrid = '<div class="ui-grid-A">';
                         var blockA = '<div class="ui-block-a">';
                         var blockB = '</div><div class="ui-block-b">';
-                        var blockC = '</div><div class="ui-block-c">';
+						var controlGroup = '<div data-role="controlgroup" data-type="horizontal">';
                         var endGrid = '</div></div><!-- /grid-b -->';
 
                         if (key in ls) {
                             console.log('Typeof: ' + typeof (key) + ' counter: ' + counter + ' data[2]: ' + data[2] + ' data[0]: ' + data[0] + ' key: ' + key);
-                            $('#set' + data[1]).append(startGrid + blockA + '<h2>Container ' + counter + '</h2>' + blockB + createButton('Edit', '#sampleParametersPage', "getJsonFromLocalStorage('" + station + '&' + data[1] + '&' + counter + "');changeSet('" + data[1] + "')", counter) + blockC + createButton('View', '#reportPage', "createReport('" + station + '&' + data[1] + '&' + counter + "');", 'view' + counter) + endGrid).trigger('create');
+                            $('#set' + data[1]).append(startGrid + blockA + 'Container ' + counter + '' + blockB +controlGroup+ createButton('Edit', '#sampleParametersPage', "getJsonFromLocalStorage('" + station + '&' + data[1] + '&' + counter + "');changeSet('" + data[1] + "')", counter)+ createButton('View', '#reportPage', "createReport('" + station + '&' + data[1] + '&' + counter + "');", 'view' + counter) + endGrid).trigger('create');
                             counter++;
                         } else {
                             bool = false
@@ -427,7 +429,7 @@ function createCurrentSets(station) {
                         //bool = false;
                     }
                     $('#set' + data[1]).collapsible();
-                    $('#sampleSets').collapsibleset({
+                    $('#currentShipmentSamples').collapsibleset({
                         inset: false
                     });
                 //}
@@ -449,7 +451,7 @@ function changeSet(id) {
         $('#setHeader').text('Set ' + id);
     } else if ($('#singleMultiContainer').val() == 'single') {
         save_data('set', 'SNGL');
-        ls.setItem('#containersQuantity', ls.getItem('#setQuantity'));
+        $('#containersQuantity').val($('#setQuantity').val());
         $('#setHeader').text($('#setQuantity').val() + ' ' + 'single container(s)');
 
 
@@ -460,11 +462,11 @@ function changeSet(id) {
 function loopTroughContainers() {
     console.log('Container counter = ' + containerCounter);
     //containerCounter++;
-    if (containerCounter <= ls.getItem('#containersQuantity')) {
+    if (containerCounter <= $('#containersQuantity').val()) {
         $('#sampleParameters2').submit(); //Submit handler takes care of storing data
 
     }
-    if (containerCounter >= ls.getItem('#containersQuantity')) {
+    if (containerCounter >= $('#containersQuantity').val()) {
         $('#sampleParameters2').submit();//Submit handler takes care of storing data
 		
                 if ($('#singleMultiContainer').val() == 'multi') {

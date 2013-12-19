@@ -74,11 +74,11 @@ margin: 0.6em 10% 0.8em !important;
         <div data-collapsed="false" data-content-theme="c" data-iconpos="right" data-role="collapsible" data-theme="a" data-collapsed-icon="plus" data-expanded-icon="minus" >
         <h1>Shipments Manager</h1>
         <ul data-role="listview">
-            <li><a href="#newSample" data-transition="slide">Add sets or groups</a>
+            <li><a href="#newSample">Add sets or groups of sets</a>
             </li>
-            <li><a href="#currentSamplePage" id='currentButton' data-transition="slide">Current</a>
+            <li><a href="#currentShipmentPage" id='currentButton'>Current</a>
             </li>
-            <li><a href="#" data-transition="slide">History</a>
+            <li><a href="#">History</a>
             </li>
         </ul>
         </div>
@@ -97,11 +97,12 @@ margin: 0.6em 10% 0.8em !important;
 	</div><!--footer-->
 </div><!-- #HomePage-->
     
-<div data-role="page" id="currentSamplePage" >
+<div data-role="page" id="currentShipmentPage" >
    <div data-role="header" data-position="fixed" data-tap-toggle="false">
-        <h3>Current Samples</h3>
+        <h3>Current Shipment</h3>
     </div>
     <div data-role="content">
+    	<h4>Select a station:</h4>
     	<div id='currentSamples'></div>
     </div>
     <div data-role="footer" data-position="fixed" data-tap-toggle="false">
@@ -110,7 +111,25 @@ margin: 0.6em 10% 0.8em !important;
            <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
         </div><!--ui-grid-b-->
       </div><!--footer-->
-</div><!--#currentSamplePage-->
+</div><!--#currentShipmentPage-->
+
+<div data-role="page" id="currentShipmentContainer" >
+  <div data-role="header" id="currentShipmentContainerHeader" data-position="fixed" data-tap-toggle="false">
+    <h1>Select a sample set</h1>
+  </div>
+  <div data-role="content">
+  	<div id="currentShipmentSamples"></div>
+  </div>
+  <div data-role="footer" data-position="fixed" data-tap-toggle="false" >
+     <div class="ui-grid-b">
+           <div class="ui-block-a"><a href="#" data-icon="arrow-l" data-iconpos="left" data-role="button" data-rel="back" data-direction="reverse">Back</a></div>
+           <div class="ui-block-b"><a href="#menuPage" data-icon="bars" data-role="button" data-rel="dialog">Menu</a></div>
+     </div><!--ui-grid-b-->
+  </div>
+</div>
+
+
+
     
 <div data-role="page" id='reportPage'> 
 	<div data-role="header" id='reportHeader' data-position="fixed" data-tap-toggle="false"><h3>Report</h3></div> 
@@ -122,7 +141,8 @@ margin: 0.6em 10% 0.8em !important;
 <div data-role="page" id="menuPage">
     <div data-role="header" id='menuHeader' data-position="fixed" data-tap-toggle="false"><h3>Menu</h3></div> 
 		<div data-role="content" id='menuContent'>
-            <a href="#HomePage" data-role="button" data-theme="b">Home</a>   
+            <a href="#HomePage" data-role="button" data-theme="b">Home</a> 
+            <a href="#userPage" data-role="button" data-theme="b">Change role</a>     
         </div><!--content-->
 </div><!--#menuPage--> 
     	
@@ -213,7 +233,7 @@ margin: 0.6em 10% 0.8em !important;
              <div class="ui-block-b">
             	<select id="singleMultiContainer" name="singleMultiContainer"  onChange="save_data(this.id,this.value)">
                 	<option value="" selected>--Select Container or Set--</option>
-               	 	<option value="single">Single container sample</option>
+               	 	<option id value="single">Single container sample</option>
                	 	<option value="multi">Multiple sets container</option>
            		</select>
            	  </div>
